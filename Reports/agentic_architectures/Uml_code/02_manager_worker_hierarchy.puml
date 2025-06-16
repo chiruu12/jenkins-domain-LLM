@@ -1,0 +1,47 @@
+@startuml
+'Description: A hierarchical agent system where a Manager
+'             agent triages a problem and delegates sub-tasks
+'             to specialized Worker agents based on the error type.
+!theme vibrant
+
+title Manager-Worker Hierarchy
+
+actor User
+
+package "Agent Framework" {
+  component "Manager Agent" as Manager
+  note right of Manager
+    **Responsibilities:**
+    * Classify Failure Type
+    * Delegate to appropriate Worker
+  end note
+
+  package "Specialized Workers" {
+    component "Config Checker Agent" as ConfigWorker
+    note bottom of ConfigWorker
+      **Handles:** CONFIGURATION_ERROR
+    end note
+    
+    component "Log Analysis Agent" as LogWorker
+    note bottom of LogWorker
+      **Handles:** FLAKY_TEST, INFRA_FAILURE
+    end note
+
+    component "Bug Reproduction Agent" as BugWorker
+    note bottom of BugWorker
+      **Handles:** BUG_REPRODUCTION
+    end note
+  }
+  
+  component "Shared Tools" as Tools
+}
+
+User -down-> Manager : "Why did my build fail?"
+Manager -down-> LogWorker : "1. Analyze logs for failure category"
+LogWorker -right-> Tools : "Use File Tools"
+LogWorker -up-> Manager : "Result: CONFIGURATION_ERROR"
+Manager -down-> ConfigWorker : "2. Find the specific config issue"
+ConfigWorker -right-> Tools : "Use File Tools"
+ConfigWorker -up-> Manager : "Result: Parameter mismatch"
+Manager -up-> User : "3. Final Diagnosis Report"
+@enduml
