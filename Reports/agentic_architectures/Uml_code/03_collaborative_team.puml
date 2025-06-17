@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+
+title Collaborative Team Architecture
+
+actor User
+
+package "Shared Tools" {
+    component "RAG System"
+    component "File Tools"
+}
+
+package "Collaborative Framework" {
+    component "Log Analysis Agent" as LogAgent
+    component "Code & History Agent" as CodeAgent
+    component "Infra & Config Agent" as InfraAgent
+
+    LogAgent <--> CodeAgent
+    CodeAgent <--> InfraAgent
+    InfraAgent <--> LogAgent
+}
+
+User -> LogAgent : "Diagnose this failure"
+
+note bottom of LogAgent #90EE90
+  **Focus:** Raw logs, stack traces
+end note
+
+note bottom of CodeAgent #90EE90
+  **Focus:** Commits, flaky patterns
+end note
+
+note bottom of InfraAgent #90EE90
+  **Focus:** Job parameters, agent status
+end note
+
+LogAgent ..> "Focus: Raw logs, stack traces"
+CodeAgent ..> "Focus: Commits, flaky patterns"
+InfraAgent ..> "Focus: Job parameters, agent status"
+
+@enduml

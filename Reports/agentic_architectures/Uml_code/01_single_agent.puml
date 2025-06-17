@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+title Single Agent Architecture
+
+actor User
+
+package "Agent Framework" {
+    component "Jenkins LLM Agent" as Agent
+    component "File Tools" as FileTools
+    component "RAG System" as RAGSystem
+
+    Agent -right-> FileTools
+    Agent -down-> RAGSystem
+}
+
+Agent -up-> User : "3. Synthesize findings and report"
+User -down-> Agent : "Diagnose build failure"
+Agent -left-> RAGSystem : "1. Get similar past failures"
+RAGSystem -up-> Agent
+Agent -left-> FileTools : "2. Analyze build logs & config files"
+FileTools -up-> Agent
+
+@enduml

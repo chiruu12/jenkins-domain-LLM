@@ -1,0 +1,19 @@
+@startuml
+!theme spacelab
+
+title Sequential Pipeline Architecture
+
+actor User
+
+package "Agentic Pipeline" {
+  rectangle "1. Log Cleaning Agent" as Agent1
+  rectangle "2. Failure Categorization Agent" as Agent2
+  rectangle "3. Diagnosis & Reporting Agent" as Agent3
+}
+
+User -down-> Agent1 : "Process this raw build log"
+Agent1 -right-> Agent2 : "Cleaned Log & Key Snippets"
+Agent2 -right-> Agent3 : "Category: FLAKY_TEST, Evidence: [details]"
+Agent3 -up-> User : "Final Diagnosis Report"
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+title Hierarchical Team (Hybrid)
+
+actor User
+component "Manager Agent" as Manager
+
+package "Analysis Team" {
+    component "Log Agent" as LogAgent
+    component "Code Agent" as CodeAgent
+    LogAgent <--> CodeAgent
+}
+
+package "Verification Team" {
+    component "Config Agent" as ConfigAgent
+    component "Infra Agent" as InfraAgent
+    ConfigAgent <--> InfraAgent
+}
+
+User -> Manager : "Diagnose this complex failure"
+Manager -> "Analysis Team" : "1. Analyze this failure"
+"Analysis Team" -> Manager : "2. Findings: Possible config issue"
+Manager -> "Verification Team" : "3. Verify config and infra status"
+"Verification Team" -> Manager : "4. Confirmation: It's a config error"
+Manager -> User : "5. Final Comprehensive Report"
+@enduml

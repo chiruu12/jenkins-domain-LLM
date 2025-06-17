@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+title Agent with Self-Correction Loop
+
+actor User
+participant "Generator Agent" as Generator
+participant "Critic Agent" as Critic
+
+User -> Generator : "Diagnose this failure."
+activate Generator
+
+note over Generator : Accesses tools (RAG, Files)
+
+Generator -> Critic : "Draft 1: The build failed."
+activate Critic
+
+loop Refinement Loop
+    Critic --> Generator : "Critique: Diagnosis is too generic.\nPinpoint the file and line number."
+    note over Generator : Revise draft based on feedback.
+    Generator -> Critic : "Draft 2: Compilation error in User.java:42."
+    Critic --> Generator : "Critique: Approved."
+end
+
+deactivate Critic
+Generator -> User : "Final Diagnosis: Compilation error in User.java:42."
+deactivate Generator
+
+@enduml

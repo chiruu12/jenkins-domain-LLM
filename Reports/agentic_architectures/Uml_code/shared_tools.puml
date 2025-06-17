@@ -1,0 +1,17 @@
+@startuml
+!theme plain
+
+title Shared Tools
+
+package "Shared Tools" {
+    interface "File System Tools" as FS_Tools {
+        + list_files_in_build()
+        + get_file_content()
+        + reduce_tokens(file) : string
+    }
+
+    interface "RAG System" as RAG_System {
+        + retrieve_context(query) : string
+    }
+}
+@enduml

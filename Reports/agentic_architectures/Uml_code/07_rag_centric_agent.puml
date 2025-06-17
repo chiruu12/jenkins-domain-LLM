@@ -1,0 +1,36 @@
+@startuml
+!theme spacelab
+
+title RAG-Centric Agent Architecture
+
+actor User
+
+package "RAG System" {
+    package "Offline: Knowledge Base Construction" {
+        card "Raw Data\n(Jenkins Docs, Logs, Code)" as RawData
+        node "Indexer\n(Graph & Vector)" as Indexer
+
+        database "Vector DB\n(For semantic search)" as VectorDB
+        database "Graph DB\n(Entities & Relationships)" as GraphDB
+
+        RawData --> Indexer : Process & Extract
+        Indexer --> VectorDB : Store Embeddings
+        Indexer --> GraphDB : Store Entities & Relations
+    }
+
+    package "Online: Retrieval & Generation" {
+        rectangle "Jenkins RAG Agent" as RAG_Agent
+        rectangle "Retriever" as Retriever
+
+        RAG_Agent -> Retriever : 1. Formulate Query
+        Retriever --> RAG_Agent : 3. Return structured context
+
+        Retriever --> VectorDB : "2a. Semantic Search for similar docs"
+        Retriever --> GraphDB : "2b. Traverse graph for related entities"
+    }
+}
+
+User -> RAG_Agent : "Why do builds fail when using Java 17?"
+RAG_Agent --> User : "4. Synthesize context into final answer"
+
+@enduml
