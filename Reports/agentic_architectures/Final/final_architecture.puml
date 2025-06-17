@@ -1,0 +1,67 @@
+@startuml
+!theme vibrant
+
+title Detailed Workflow of Jenkins AI Diagnosis Pipeline
+
+|User|
+start
+:Provide Raw Build Log;
+
+|#LightSkyBlue|Log Cleaning Agent|
+:1. Clean & Filter Log;
+note right
+  - Remove ANSI codes
+  - Extract ERROR/FAILURE lines
+end note
+--> [Cleaned Log Snippets]
+
+|#LightGreen|Failure Categorization Agent|
+:2. Classify Failure Type;
+note right
+  - Use simple LLM call
+  - Determine high-level category
+end note
+--> [Category + Evidence]
+
+|#Khaki|Self-Correction Loop|
+partition "Generator & Critic Agents" {
+    :3. Start Diagnosis Cycle;
+    note right: This loop continues until the diagnosis is approved or retries are exhausted.
+
+    repeat
+        :<b>Generator:</b> Gather Context using Tools;
+        note left
+          - Query RAG System for docs
+          - Access File System for `pom.xml` etc.
+        end note
+
+        :<b>Generator:</b> Generate Diagnosis Draft;
+        --> [Draft Diagnosis]
+
+        :<b>Critic:</b> Evaluate Draft Quality;
+
+        if (Is Diagnosis Specific and Actionable?) then (yes)
+            :<b>Critic:</b> Approve Diagnosis;
+            break
+        else (no)
+            :<b>Critic:</b> Generate Corrective Feedback (Critique);
+            --> [Critique]
+            :<b>Generator:</b> Receive Critique for next attempt;
+        endif
+    repeat while (Diagnosis Rejected)
+
+}
+
+|#LightPink|Final Output|
+:4. Format Approved Diagnosis;
+note right
+  The final, high-quality report
+  that passed the Critic's evaluation.
+end note
+
+|User|
+--> [Final Diagnosis Report]
+:Receive Actionable Report;
+stop
+
+@enduml
