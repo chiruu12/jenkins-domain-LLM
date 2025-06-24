@@ -1,0 +1,344 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<linked-hash-map>
+  <entry>
+    <string>2</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="org.jenkinsci.plugins.workflow.graph.FlowStartNode" plugin="workflow-api@1363.v03f731255494">
+        <parentIds/>
+        <id>2</id>
+      </node>
+      <actions>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704957451</startTime>
+        </wf.a.TimingAction>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>3</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepAtomNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>2</string>
+        </parentIds>
+        <id>3</id>
+        <descriptorId>org.jenkinsci.plugins.workflow.multibranch.JobPropertyStep</descriptorId>
+      </node>
+      <actions>
+        <cps.a.ArgumentsActionImpl plugin="workflow-cps@4018.vf02e01888da_f">
+          <arguments>
+            <entry>
+              <string>properties</string>
+              <list>
+                <org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+                  <symbol>parameters</symbol>
+                  <arguments class="linked-hash-map">
+                    <entry>
+                      <string>&lt;anonymous&gt;</string>
+                      <list>
+                        <org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+                          <symbol>gitParameter</symbol>
+                          <arguments class="linked-hash-map">
+                            <entry>
+                              <string>branch</string>
+                              <string></string>
+                            </entry>
+                            <entry>
+                              <string>branchFilter</string>
+                              <string>.*</string>
+                            </entry>
+                            <entry>
+                              <string>defaultValue</string>
+                              <string>git-client-6.1.0</string>
+                            </entry>
+                            <entry>
+                              <string>description</string>
+                              <string>My git parameter in a scripted Pipeline</string>
+                            </entry>
+                            <entry>
+                              <string>name</string>
+                              <string>MY_GIT_PARAMETER</string>
+                            </entry>
+                            <entry>
+                              <string>quickFilterEnabled</string>
+                              <boolean>false</boolean>
+                            </entry>
+                            <entry>
+                              <string>parameterType</string>
+                              <string>PT_TAG</string>
+                            </entry>
+                            <entry>
+                              <string>selectedValue</string>
+                              <string>NONE</string>
+                            </entry>
+                            <entry>
+                              <string>sortMode</string>
+                              <string>NONE</string>
+                            </entry>
+                            <entry>
+                              <string>tagFilter</string>
+                              <string>git-client-6*</string>
+                            </entry>
+                            <entry>
+                              <string>type</string>
+                              <string>GitParameterDefinition</string>
+                            </entry>
+                            <entry>
+                              <string>useRepository</string>
+                              <string>https://github.com/jenkinsci/git-client-plugin.git</string>
+                            </entry>
+                          </arguments>
+                          <interpolatedStrings/>
+                        </org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+                      </list>
+                    </entry>
+                  </arguments>
+                  <interpolatedStrings/>
+                </org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+              </list>
+            </entry>
+          </arguments>
+          <sensitiveVariables/>
+          <isUnmodifiedBySanitization>true</isUnmodifiedBySanitization>
+        </cps.a.ArgumentsActionImpl>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704957453</startTime>
+        </wf.a.TimingAction>
+        <s.a.LogStorageAction/>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>4</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepStartNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>3</string>
+        </parentIds>
+        <id>4</id>
+        <descriptorId>org.jenkinsci.plugins.workflow.support.steps.ExecutorStep</descriptorId>
+      </node>
+      <actions>
+        <s.a.LogStorageAction/>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704957458</startTime>
+        </wf.a.TimingAction>
+        <org.jenkinsci.plugins.workflow.support.steps.ExecutorStepExecution_-QueueItemActionImpl plugin="workflow-durable-task-step@1405.v1fcd4a_d00096">
+          <id>91263</id>
+        </org.jenkinsci.plugins.workflow.support.steps.ExecutorStepExecution_-QueueItemActionImpl>
+        <s.a.WorkspaceActionImpl>
+          <node>mark-pc5-ssh</node>
+          <path>C:\J\IC\workspace\a-scripted-with-parameters</path>
+          <labels class="sorted-set">
+            <hudson.model.labels.LabelAtom>10.0</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>2009</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>Windows10</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>amd64</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>amd64-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>amd64-windows-10.0</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>docker-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-1.8+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.11+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.25+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.30+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.34+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.35+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.39+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.43+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.45+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.46+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.47</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-2.47+</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>git-lfs</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>highmem</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>highram</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>java</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>jdk11</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>jdk17</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>jdk21</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>jdk8</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>maven-11-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>maven-17-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>maven-21-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>maven-windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>vm</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>windows</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>windows-10.0</hudson.model.labels.LabelAtom>
+            <hudson.model.labels.LabelAtom>windows-2019</hudson.model.labels.LabelAtom>
+          </labels>
+        </s.a.WorkspaceActionImpl>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>5</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepStartNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>4</string>
+        </parentIds>
+        <id>5</id>
+        <descriptorId>org.jenkinsci.plugins.workflow.support.steps.ExecutorStep</descriptorId>
+      </node>
+      <actions>
+        <wf.a.BodyInvocationAction plugin="workflow-api@1363.v03f731255494"/>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704957463</startTime>
+        </wf.a.TimingAction>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>6</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepAtomNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>5</string>
+        </parentIds>
+        <id>6</id>
+        <descriptorId>org.jenkinsci.plugins.workflow.steps.scm.GenericSCMStep</descriptorId>
+      </node>
+      <actions>
+        <cps.a.ArgumentsActionImpl plugin="workflow-cps@4018.vf02e01888da_f">
+          <arguments>
+            <entry>
+              <string>scm</string>
+              <org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+                <symbol>scmGit</symbol>
+                <arguments class="linked-hash-map">
+                  <entry>
+                    <string>branches</string>
+                    <list>
+                      <linked-hash-map>
+                        <entry>
+                          <string>name</string>
+                          <string>refs/tags/origin/3.11.x</string>
+                        </entry>
+                      </linked-hash-map>
+                    </list>
+                  </entry>
+                  <entry>
+                    <string>userRemoteConfigs</string>
+                    <list>
+                      <linked-hash-map>
+                        <entry>
+                          <string>url</string>
+                          <string>https://github.com/jenkinsci/git-client-plugin.git</string>
+                        </entry>
+                      </linked-hash-map>
+                    </list>
+                  </entry>
+                </arguments>
+                <interpolatedStrings>
+                  <string>refs/tags/origin/3.11.x</string>
+                </interpolatedStrings>
+              </org.jenkinsci.plugins.workflow.cps.UninstantiatedDescribableWithInterpolation>
+            </entry>
+          </arguments>
+          <sensitiveVariables/>
+          <isUnmodifiedBySanitization>true</isUnmodifiedBySanitization>
+        </cps.a.ArgumentsActionImpl>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704957464</startTime>
+        </wf.a.TimingAction>
+        <s.a.LogStorageAction/>
+        <wf.a.ErrorAction plugin="workflow-api@1363.v03f731255494">
+          <error class="hudson.AbortException">
+            <detailMessage>Couldn&apos;t find any revision to build. Verify the repository and branch configuration for this job.</detailMessage>
+            <stackTrace>
+              <trace>PluginClassLoader for git//hudson.plugins.git.GitSCM.determineRevisionToBuild(GitSCM.java:1155)</trace>
+              <trace>PluginClassLoader for git//hudson.plugins.git.GitSCM._checkout(GitSCM.java:1312)</trace>
+              <trace>PluginClassLoader for git//hudson.plugins.git.GitSCM.checkout(GitSCM.java:1278)</trace>
+              <trace>PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep.checkout(SCMStep.java:136)</trace>
+              <trace>PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:101)</trace>
+              <trace>PluginClassLoader for workflow-scm-step//org.jenkinsci.plugins.workflow.steps.scm.SCMStep$StepExecutionImpl.run(SCMStep.java:88)</trace>
+              <trace>PluginClassLoader for workflow-step-api//org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution.lambda$start$0(SynchronousNonBlockingStepExecution.java:49)</trace>
+              <trace>java.base/java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)</trace>
+              <trace>java.base/java.util.concurrent.FutureTask.run(Unknown Source)</trace>
+              <trace>java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)</trace>
+              <trace>java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</trace>
+              <trace>java.base/java.lang.Thread.run(Unknown Source)</trace>
+            </stackTrace>
+            <suppressedExceptions>
+              <wf.a.ErrorAction_-ErrorId>
+                <stackTrace/>
+                <suppressedExceptions class="empty-list"/>
+                <uuid>7c1cd1d5-1538-47cd-b600-2aea2cd6254d</uuid>
+              </wf.a.ErrorAction_-ErrorId>
+            </suppressedExceptions>
+          </error>
+        </wf.a.ErrorAction>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>7</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepEndNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>6</string>
+        </parentIds>
+        <id>7</id>
+        <startId>5</startId>
+      </node>
+      <actions>
+        <wf.a.BodyInvocationAction plugin="workflow-api@1363.v03f731255494"/>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704958269</startTime>
+        </wf.a.TimingAction>
+        <wf.a.ErrorAction plugin="workflow-api@1363.v03f731255494">
+          <error class="hudson.AbortException" reference="../../../../../entry[5]/Tag/actions/wf.a.ErrorAction/error"/>
+        </wf.a.ErrorAction>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>8</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="cps.n.StepEndNode" plugin="workflow-cps@4018.vf02e01888da_f">
+        <parentIds>
+          <string>7</string>
+        </parentIds>
+        <id>8</id>
+        <startId>4</startId>
+      </node>
+      <actions>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704958271</startTime>
+        </wf.a.TimingAction>
+        <wf.a.ErrorAction plugin="workflow-api@1363.v03f731255494">
+          <error class="hudson.AbortException" reference="../../../../../entry[5]/Tag/actions/wf.a.ErrorAction/error"/>
+        </wf.a.ErrorAction>
+        <wf.a.ErrorAction plugin="workflow-api@1363.v03f731255494">
+          <error class="hudson.AbortException" reference="../../../../../entry[5]/Tag/actions/wf.a.ErrorAction/error"/>
+        </wf.a.ErrorAction>
+      </actions>
+    </Tag>
+  </entry>
+  <entry>
+    <string>9</string>
+    <Tag plugin="workflow-support@961.v51869f7b_d409">
+      <node class="org.jenkinsci.plugins.workflow.graph.FlowEndNode" plugin="workflow-api@1363.v03f731255494">
+        <parentIds>
+          <string>8</string>
+        </parentIds>
+        <id>9</id>
+        <startId>2</startId>
+        <result>
+          <name>FAILURE</name>
+          <ordinal>2</ordinal>
+          <color>RED</color>
+          <completeBuild>true</completeBuild>
+        </result>
+      </node>
+      <actions>
+        <wf.a.ErrorAction plugin="workflow-api@1363.v03f731255494">
+          <error class="hudson.AbortException" reference="../../../../../entry[5]/Tag/actions/wf.a.ErrorAction/error"/>
+        </wf.a.ErrorAction>
+        <wf.a.TimingAction plugin="workflow-api@1363.v03f731255494">
+          <startTime>1740704958274</startTime>
+        </wf.a.TimingAction>
+      </actions>
+    </Tag>
+  </entry>
+</linked-hash-map>

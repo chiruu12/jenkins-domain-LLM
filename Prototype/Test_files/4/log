@@ -1,0 +1,35 @@
+[2025-02-12T04:25:46.962Z] Started by user [8mha:////4OW44Qvewr4B4eqoelw+2xoOFtXUFqtKC2p2HTU7QB71AAAAmB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAyuEgYe/dLi1CL93PLEzJJUAGJxEMvBAAAA[0mMark Waite
+[2025-02-12T04:25:46.969Z] org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+[2025-02-12T04:25:46.969Z] WorkflowScript: 1: unexpected token: < @ line 1, column 54.
+[2025-02-12T04:25:46.969Z]    eddableBadgeConfiguration(id: <'my-id',
+[2025-02-12T04:25:46.969Z]                                  ^
+[2025-02-12T04:25:46.969Z] 
+[2025-02-12T04:25:46.969Z] 1 error
+[2025-02-12T04:25:46.969Z] 
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.ErrorCollector.failIfErrors(ErrorCollector.java:309)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.ErrorCollector.addFatalError(ErrorCollector.java:149)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.ErrorCollector.addError(ErrorCollector.java:119)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.ErrorCollector.addError(ErrorCollector.java:131)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.SourceUnit.addError(SourceUnit.java:349)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.antlr.AntlrParserPlugin.transformCSTIntoAST(AntlrParserPlugin.java:225)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.antlr.AntlrParserPlugin.parseCST(AntlrParserPlugin.java:191)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.SourceUnit.parse(SourceUnit.java:233)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.CompilationUnit$1.call(CompilationUnit.java:189)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.CompilationUnit.applyToSourceUnits(CompilationUnit.java:966)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.CompilationUnit.doPhaseOperation(CompilationUnit.java:626)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.CompilationUnit.processPhaseOperations(CompilationUnit.java:602)
+[2025-02-12T04:25:46.969Z] 	at org.codehaus.groovy.control.CompilationUnit.compile(CompilationUnit.java:579)
+[2025-02-12T04:25:46.969Z] 	at groovy.lang.GroovyClassLoader.doParseClass(GroovyClassLoader.java:323)
+[2025-02-12T04:25:46.969Z] 	at groovy.lang.GroovyClassLoader.parseClass(GroovyClassLoader.java:293)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for script-security//org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.GroovySandbox$Scope.parse(GroovySandbox.java:163)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for workflow-cps//org.jenkinsci.plugins.workflow.cps.CpsGroovyShell.doParse(CpsGroovyShell.java:190)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for workflow-cps//org.jenkinsci.plugins.workflow.cps.CpsGroovyShell.reparse(CpsGroovyShell.java:175)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for workflow-cps//org.jenkinsci.plugins.workflow.cps.CpsFlowExecution.parseScript(CpsFlowExecution.java:652)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for workflow-cps//org.jenkinsci.plugins.workflow.cps.CpsFlowExecution.start(CpsFlowExecution.java:598)
+[2025-02-12T04:25:46.969Z] 	at PluginClassLoader for workflow-job//org.jenkinsci.plugins.workflow.job.WorkflowRun.run(WorkflowRun.java:343)
+[2025-02-12T04:25:46.969Z] 	at hudson.model.ResourceController.execute(ResourceController.java:101)
+[2025-02-12T04:25:46.969Z] 	at hudson.model.Executor.run(Executor.java:446)
+[2025-02-12T04:25:46.985Z] [Gitea] do not publish assets due to build being non-Successfully
+[2025-02-12T04:25:46.985Z] [withMaven] downstreamPipelineTriggerRunListener - Failure to introspect build steps: java.io.IOException: alpine-hello-world #15 did not yet start
+[2025-02-12T04:25:46.985Z] [withMaven] downstreamPipelineTriggerRunListener - Failure to introspect build steps: java.io.IOException: alpine-hello-world #15 did not yet start
+[2025-02-12T04:25:46.985Z] Finished: FAILURE

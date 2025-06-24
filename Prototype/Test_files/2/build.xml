@@ -1,0 +1,109 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<flow-build plugin="workflow-job@1505.vea_4b_20a_4a_495">
+  <actions>
+    <hudson.model.ParametersAction>
+      <safeParameters class="sorted-set">
+        <string>DESCRIPTION_SETTER_DESCRIPTION</string>
+      </safeParameters>
+      <parameters>
+        <net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterValue plugin="git-parameter@0.11.0">
+          <name>MY_GIT_PARAMETER</name>
+          <value>origin/master</value>
+        </net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterValue>
+      </parameters>
+      <parameterDefinitionNames>
+        <string>MY_GIT_PARAMETER</string>
+      </parameterDefinitionNames>
+    </hudson.model.ParametersAction>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>mwaite</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.metrics.impl.TimeInQueueAction plugin="metrics@4.2.21-464.vc9fa_a_0d6265d">
+      <queuingDurationMillis>3</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>0</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+    </jenkins.metrics.impl.TimeInQueueAction>
+    <org.jenkinsci.plugins.workflow.libs.LibrariesAction plugin="pipeline-groovy-lib@752.vdddedf804e72">
+      <libraries/>
+    </org.jenkinsci.plugins.workflow.libs.LibrariesAction>
+    <jenkins.metrics.impl.SubTaskTimeInQueueAction plugin="metrics@4.2.21-464.vc9fa_a_0d6265d">
+      <queuingDurationMillis>4</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>3</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+      <executingDurationMillis>1720</executingDurationMillis>
+      <workUnitCount>1</workUnitCount>
+    </jenkins.metrics.impl.SubTaskTimeInQueueAction>
+  </actions>
+  <queueId>91254</queueId>
+  <timestamp>1740704840278</timestamp>
+  <startTime>1740704840283</startTime>
+  <result>FAILURE</result>
+  <duration>1774</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <execution class="org.jenkinsci.plugins.workflow.cps.CpsFlowExecution">
+    <result>FAILURE</result>
+    <script>properties([
+  parameters([
+    gitParameter(branch: &apos;&apos;,
+                 branchFilter: &apos;.*&apos;,
+                 defaultValue: &apos;git-client-6.1.0&apos;,
+                 description: &apos;My git parameter in a scripted Pipeline&apos;,
+                 name: &apos;MY_GIT_PARAMETER&apos;,
+                 quickFilterEnabled: false,
+                 selectedValue: &apos;NONE&apos;,
+                 sortMode: &apos;NONE&apos;,
+                 tagFilter: &apos;git-client-6*&apos;,
+                 type: &apos;GitParameterDefinition&apos;,
+                 useRepository: &apos;https://github.com/jenkinsci/git-client-plugin.git&apos;)
+  ]),
+])
+
+node() {
+    checkout scmGit(branches: [[name: &quot;refs/tags/${params.MY_GIT_PARAMETER}&quot;]],
+                userRemoteConfigs: [[url: &apos;https://github.com/jenkinsci/git-client-plugin.git&apos;]])
+
+}</script>
+    <loadedScripts class="linked-hash-map"/>
+    <durabilityHint>PERFORMANCE_OPTIMIZED</durabilityHint>
+    <timings class="map">
+      <entry>
+        <string>flowNode</string>
+        <long>1472193</long>
+      </entry>
+      <entry>
+        <string>classLoad</string>
+        <long>41950658</long>
+      </entry>
+      <entry>
+        <string>runQueue</string>
+        <long>22095873</long>
+      </entry>
+      <entry>
+        <string>run</string>
+        <long>20937758</long>
+      </entry>
+      <entry>
+        <string>parse</string>
+        <long>27616524</long>
+      </entry>
+    </timings>
+    <internalCalls class="sorted-set"/>
+    <sandbox>true</sandbox>
+    <iota>9</iota>
+    <head>1:9</head>
+    <done>true</done>
+    <resumeBlocked>false</resumeBlocked>
+  </execution>
+  <completed>true</completed>
+  <checkouts class="hudson.util.PersistedList"/>
+</flow-build>
