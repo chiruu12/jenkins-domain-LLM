@@ -26,6 +26,7 @@ def run_diagnosis_pipeline(raw_log: str, workspace_path: str, enable_self_correc
         "TEST_FAILURE": test_failure_agent,
         "DEPENDENCY_ERROR": dependency_error_agent,
         "INFRA_FAILURE": infra_failure_agent,
+        "UNKNOWN": default_agent
     }
 
     specialist_agent = agent_selection_map.get(failure_category, default_agent)

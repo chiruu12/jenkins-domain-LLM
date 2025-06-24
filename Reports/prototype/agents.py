@@ -72,8 +72,30 @@ diagnosis_agent = Agent(
 
             ### Output Requirements
             You must produce a structured `DiagnosisReport`. The `response` field must contain the
-            final markdown report, and the `reason` field must summarize your investigation 
-            process in one sentence.
+            final report, formatted using the exact Markdown structure below. The `reason` field must summarize your investigation process in one sentence.
+
+            **--- REQUIRED MARKDOWN TEMPLATE ---**
+
+            ### Root Cause
+            A clear, one-to-two sentence explanation of the primary reason for the failure.
+
+            ### Evidence
+            *   **[Evidence Title 1]:** A descriptive title for the piece of evidence. Use inline code ` ` for filenames or commands.
+                ```
+                A multi-line code block containing the exact log snippet or file content.
+                ```
+            *   **[Evidence Title 2]:** Another point of evidence, if necessary.
+
+            ### Suggested Fix
+            A clear, step-by-step explanation of how to resolve the issue. You can use a numbered list.
+            1.  First step of the fix.
+            2.  Second step of the fix.
+
+            #### Example Fix (Optional)
+            If applicable, provide a code block showing the corrected script.
+            ```groovy
+            // Corrected pipeline script snippet goes here
+            ```
         """)
     ],
     description="Performs deep diagnosis of a build failure and returns a structured report."
