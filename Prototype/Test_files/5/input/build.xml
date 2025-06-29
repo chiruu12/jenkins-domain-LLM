@@ -1,0 +1,138 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<matrix-build plugin="matrix-project@845.vffd7fa_f27555">
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>mwaite</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.metrics.impl.TimeInQueueAction plugin="metrics@4.2.21-461.v881e35d8fa_b_a_">
+      <queuingDurationMillis>2</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>0</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+    </jenkins.metrics.impl.TimeInQueueAction>
+    <org.jenkinsci.plugins.envinject.EnvInjectPluginAction plugin="envinject@2.922.v2274200dd258"/>
+    <hudson.plugins.git.util.BuildData plugin="git@5.7.0">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/origin/master</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.1.1">
+              <sha1>4536371890f8f7d8cb810f61da81e07dc09f5b31</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/origin/master</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>5</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>https://github.com/MarkEWaite/jenkins-demo</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <io.jenkins.plugins.forensics.git.reference.GitCommitsRecord plugin="git-forensics@2.2.1">
+      <scmKey>git https://github.com/MarkEWaite/jenkins-demo</scmKey>
+      <latestCommit>4536371890f8f7d8cb810f61da81e07dc09f5b31</latestCommit>
+      <recordingType>INCREMENTAL</recordingType>
+      <latestCommitLink>&lt;a href=&quot;https://github.com/MarkEWaite/jenkins-demo/commit/4536371890f8f7d8cb810f61da81e07dc09f5b31&quot;&gt;4536371&lt;/a&gt;</latestCommitLink>
+      <targetParentCommit>0000000000000000000000000000000000000000</targetParentCommit>
+      <commits/>
+      <errorMessages/>
+      <infoMessages>
+        <string>Recording commits of &apos;git https://github.com/MarkEWaite/jenkins-demo&apos;</string>
+        <string>Found previous build &apos;Tools/ant-auto-install-check #4&apos; that contains recorded Git commits</string>
+        <string>-&gt; Starting recording of new commits since &apos;4536371&apos;</string>
+        <string>-&gt; Single parent commit found - branch is already descendant of target branch head</string>
+        <string>-&gt; Using head commit &apos;4536371&apos; as starting point</string>
+        <string>-&gt; No new commits found</string>
+        <string>-&gt; Git commit decorator successfully obtained &apos;hudson.plugins.git.browser.GithubWeb@25cd7c83&apos; to render commit links</string>
+      </infoMessages>
+    </io.jenkins.plugins.forensics.git.reference.GitCommitsRecord>
+  </actions>
+  <queueId>85993</queueId>
+  <timestamp>1737752144374</timestamp>
+  <startTime>1737752144389</startTime>
+  <result>FAILURE</result>
+  <duration>364641</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/jenkins_home/workspace/Tools/ant-auto-install-check</workspace>
+  <hudsonVersion>2.492.1-rc35785.d40b_d64b_a_42f</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@5.7.0">
+    <authorOrCommitter>true</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+  <axes>
+    <hudson.matrix.JDKAxis>
+      <name>jdk</name>
+      <values>
+        <string>jdk8</string>
+        <string>jdk11</string>
+        <string>jdk17</string>
+        <string>jdk21</string>
+      </values>
+    </hudson.matrix.JDKAxis>
+    <org.jenkinsci.plugins.elasticaxisplugin.ElasticAxis plugin="elastic-axis@615.vb_f7c20ec040e">
+      <name>label</name>
+      <values>
+        <string>cb-pc</string>
+        <string>cb-pc2-ssh</string>
+        <string>mark-pc8-ssh</string>
+        <string>mark-pc5-ssh</string>
+        <string>mark-pc3-ssh</string>
+        <string>mark-pc4-ssh</string>
+        <string>mark-pc6-ssh</string>
+        <string>win-11-a-ssh</string>
+        <string>ibm-s390-jagent</string>
+        <string>ubuntu-22-f</string>
+        <string>ubuntu-22-d</string>
+        <string>ubuntu-22-a</string>
+        <string>gcp-ubuntu-20-c</string>
+        <string>gcp-ubuntu-22-a</string>
+        <string>gcp-ubuntu-20-d</string>
+        <string>gcp-ubuntu-22-b</string>
+        <string>fedora-a-jagent</string>
+        <string>gcp-ubuntu-24-b</string>
+        <string>ampere-c-jagent</string>
+        <string>debian11-a-jagent</string>
+        <string>gcp-suse-15-a</string>
+        <string>freebsd-13-a-jagent</string>
+        <string>gcp-rocky-linux-9-b</string>
+        <string>freebsd-13-b-jagent</string>
+        <string>rhel-8-a-jagent</string>
+        <string>gcp-debian-unstable-c</string>
+        <string>opensuse-a-jagent</string>
+        <string>gcp-rocky-9-c</string>
+        <string>gcp-debian-12-b</string>
+        <string>gcp-debian-11-b</string>
+        <string>gcp-debian-12-a</string>
+        <string>debian12-a-jagent</string>
+        <string>ubuntu-22-g</string>
+        <string>gcp-debian-testing-c</string>
+        <string>testing-b-jagent</string>
+        <string>testing-e-jagent</string>
+        <string>gcp-debian-testing-d</string>
+      </values>
+      <label>windows,Unix</label>
+      <ignoreOffline>true</ignoreOffline>
+      <dontExpandLabels>false</dontExpandLabels>
+    </org.jenkinsci.plugins.elasticaxisplugin.ElasticAxis>
+  </axes>
+</matrix-build>

@@ -1,0 +1,34 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.triggers.TimerTrigger_-TimerTriggerCause/>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.metrics.impl.TimeInQueueAction plugin="metrics@4.2.21-461.v881e35d8fa_b_a_">
+      <queuingDurationMillis>2580073</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>2580053</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+    </jenkins.metrics.impl.TimeInQueueAction>
+    <org.jenkinsci.plugins.envinject.EnvInjectPluginAction plugin="envinject@2.922.v2274200dd258"/>
+  </actions>
+  <queueId>98996</queueId>
+  <timestamp>1738123800598</timestamp>
+  <startTime>1738123800610</startTime>
+  <result>FAILURE</result>
+  <duration>25</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/jenkins_home/workspace/Bugs-Individual/Bugs-10-000-to-19-999/JENKINS-14917-create-tag-and-poll-scm</workspace>
+  <hudsonVersion>2.492.1-rc35785.d40b_d64b_a_42f</hudsonVersion>
+  <scm class="hudson.scm.NullChangeLogParser"/>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

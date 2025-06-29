@@ -47,7 +47,7 @@ with st.sidebar:
 
     uploaded_workspace_files = st.file_uploader(
         label="Upload Workspace Files (Optional)",
-        help="Upload supporting files like build.xml, pom.xml, or Jenkinsfile.",
+        help="Upload supporting files like build.xml or Jenkinsfile.",
         accept_multiple_files=True
     )
 

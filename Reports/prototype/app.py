@@ -13,7 +13,6 @@ st.set_page_config(
     layout="wide"
 )
 
-
 st.markdown("""
     <style>
         /* Target the h3 elements created by st.markdown */

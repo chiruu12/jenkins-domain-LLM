@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from agno.tools import Toolkit
 
@@ -22,15 +23,16 @@ class JenkinsWorkspaceTools(Toolkit):
 
     def read_file_from_workspace(self, file_path: str) -> str:
         try:
-            target_path = self.base_path / file_path
+            target_path = self.base_path.joinpath(file_path)
+            resolved_target_path = target_path.resolve()
 
-            if not target_path.resolve().is_relative_to(self.base_path):
+            if os.path.commonpath([self.base_path, resolved_target_path]) != str(self.base_path):
                 return "Error: Path traversal detected. Access denied."
 
-            if not target_path.is_file():
+            if not resolved_target_path.is_file():
                 return f"Error: File not found at '{file_path}'."
 
-            return target_path.read_text(encoding="utf-8", errors="ignore")
+            return resolved_target_path.read_text(encoding="utf-8", errors="ignore")
         except Exception as e:
             return f"An unexpected error occurred while reading '{file_path}': {e}"
 
@@ -41,4 +43,5 @@ class KnowledgeBaseTools(Toolkit):
         self.register(self.query_knowledge_base)
 
     def query_knowledge_base(self, query: str) -> str:
-        return "Placeholder: For 'CONFIGURATION_ERROR', common issues involve pom.xml version conflicts or missing properties."
+        "This is a placeholder for querying a knowledge base(RAG)."
+        return "Placeholder"
