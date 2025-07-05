@@ -1,0 +1,10 @@
+.env
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.idea/
+
+Prototype/streamlit_workspace/
