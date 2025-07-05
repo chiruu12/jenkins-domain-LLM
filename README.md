@@ -37,7 +37,7 @@ The initial proposal centered on fine-tuning a domain-specific LLM. However, the
 ```
 ## Development
 
-An initial pull request has been submitted to the Jenkins project to establish the baseline for this new agentic architecture.
+An initial pull request has been submitted to establish the baseline for this new agentic architecture.
 
 *   **PR:** [#1](https://github.com/chiruu12/jenkins-domain-LLM/pull/1)
 *   **Title:** "Adding Prototype"
