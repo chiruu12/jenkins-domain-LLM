@@ -1,0 +1,118 @@
+Started by upstream project "[8mha:////4KFNFdU0l1kdnCEm+OKNM+E15ZucPxhurkQQZOl+68uAAAAAwB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAz7EgZf/az8JH2X/OTs1CIkpq6PWzCY66SbU1KsW5yTmatbnlmSoVuQU5qemVesm1aUnwuWQhbVBwAq52BiAgEAAA==[0mDocker/Docker-LFS/B-lts-slim-with-plugins-from-lts-with-plugins" build number [8mha:////4AL5wj9LEX0c+NMM5c4Y7WgvWAk+kamxmVijFP22CrNSAAAAwh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAymEgZ//az8JH2X/OTs1CIkpq6PWzCY66SbU1KsW5yTmatbnlmSoVuQU5qemVesm1aUnwuWQhbVNzQAAI48bkwEAQAA[0m10
+originally caused by:
+ Started by an SCM change
+ Started by upstream project "[8mha:////4C6a/Zhu7Lo9VqebX1Y7OhNh6lKSI5EpUPv2uadnj546AAAAvh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzzEgZX/az8JH2X/OTs1CIkpq6PWzCY66SbU1KsW5yTmatbnlmSoVuQU5qemVesm1aUnwuX0gcA25Z7E/oAAAA=[0mDocker/Docker-LFS/B-lts-slim-with-plugins-from-lts-slim" build number [8mha:////4KlCo6JeeFdwW/7n9irqhCDLgOunIdufumHmbU9XfuVyAAAAvh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLQIwSBjf9rPwkfZf85OzUIiSmro9bMJjrpJtTUqxbnJOZq1ueWZKhW5BTmp6ZV6ybVpSfC5fStwAAMGHxSvsAAAA=[0m8
+ originally caused by:
+  Started by an SCM change
+  Started by upstream project "[8mha:////4NF+1Nczr26N/1LVZzhGVP0WZBT+K2Xo0poLdQvCCf80AAAAsR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzVEgZj/az8JH2X/OTs1CIkpq6PWzCY66ibU1KsW5yTmaubVpSfC+LpAwAdzayC6AAAAA==[0mDocker/Docker-LFS/A-lts-slim-from-lts" build number [8mha:////4DGah+rYswZitWgPLomX4BCoiCYGPE+Hd70xhpUha4lIAAAAsR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLQIwSBhP9rPwkfZf85OzUIiSmro9bMJjrqJtTUqxbnJOZq5tWlJ8L4umbAwAupFXY6QAAAA==[0m7
+  originally caused by:
+   Started by an SCM change
+Running as SYSTEM
+[EnvInject] - Loading node environment variables.
+Building remotely on [8mha:////4G4FYpwT2qUGz217dqI82olQ/+9IVVw9YyiInZJi4fy2AAAApx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzBEgZp/eT83ILSktQi/ZTUpMzEPEND3UTdrMT01LwSABuM2m/QAAAA[0mdebian11-a-jagent (Unix git-2.11+ Debian-11 git-2.25+ amd64-Debian docker maven-17 Debian jdk17 java jdk11 jdk8 linux maven-11 11 git-2.30+ git-1.8+ maven jagent Linux jdk21 amd64-Debian-11 linux-amd64 vm git-lfs maven-21 git-2.30 amd64) in workspace /home/jagent/mark-pc2.markwaite.net-agent/workspace/Docker/Docker-LFS/C-lts-slim-with-plugins-add-credentials-from-lts-slim-with-plugins
+[git] $ sh -e /home/jagent/mark-pc2.markwaite.net-agent/tools/git/hudson5722820688787303728.sh
+[git] $ sh -e /home/jagent/mark-pc2.markwaite.net-agent/tools/git/hudson814764422400349759.sh
+The recommended git tool is: /usr/bin/git
+using credential MarkEWaite-github-token-2019-05-25
+using credential MarkEWaite-github-token-2019-05-25
+ > /usr/bin/git rev-parse --resolve-git-dir /home/jagent/mark-pc2.markwaite.net-agent/workspace/Docker/Docker-LFS/C-lts-slim-with-plugins-add-credentials-from-lts-slim-with-plugins/.git # timeout=10
+Fetching changes from 2 remote Git repositories
+ > /usr/bin/git config remote.private.url https://github.com/MarkEWaite/docker-private-lfs # timeout=10
+Fetching upstream changes from https://github.com/MarkEWaite/docker-private-lfs
+ > /usr/bin/git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+using GIT_ASKPASS to set credentials MarkEWaite github token 2021-07-19
+ > /usr/bin/git fetch --tags --force --progress -- https://github.com/MarkEWaite/docker-private-lfs +refs/heads/*:refs/remotes/private/* # timeout=10
+ > /usr/bin/git config remote.public.url https://github.com/MarkEWaite/docker-lfs # timeout=10
+Fetching upstream changes from https://github.com/MarkEWaite/docker-lfs
+using GIT_ASKPASS to set credentials MarkEWaite github token 2021-07-19
+ > /usr/bin/git fetch --tags --force --progress -- https://github.com/MarkEWaite/docker-lfs +refs/heads/*:refs/remotes/public/* # timeout=10
+ > /usr/bin/git rev-parse refs/remotes/private/public/lts-slim-with-plugins^{commit} # timeout=10
+ > /usr/bin/git rev-parse public/lts-slim-with-plugins^{commit} # timeout=10
+ > /usr/bin/git rev-parse refs/remotes/public/lts-slim-with-plugins^{commit} # timeout=10
+Merging Revision a5d20884b5fdfb1f1ffbbb79bcbd6838cb222063 (public/lts-slim-with-plugins) to private/lts-slim-with-plugins-add-credentials, UserMergeOptions{mergeRemote='private', mergeTarget='lts-slim-with-plugins-add-credentials', mergeStrategy='DEFAULT', fastForwardMode='FF'}
+ > /usr/bin/git rev-parse private/lts-slim-with-plugins-add-credentials^{commit} # timeout=10
+Enabling Git LFS pull
+ > /usr/bin/git config core.sparsecheckout # timeout=10
+ > /usr/bin/git checkout -f private/lts-slim-with-plugins-add-credentials # timeout=10
+ > /usr/bin/git branch -a -v --no-abbrev # timeout=10
+ > /usr/bin/git branch -D lts-slim-with-plugins # timeout=10
+ > /usr/bin/git checkout -b lts-slim-with-plugins private/lts-slim-with-plugins-add-credentials # timeout=10
+ > /usr/bin/git config --get remote.private.url # timeout=10
+using GIT_ASKPASS to set credentials MarkEWaite github token 2021-07-19
+ > /usr/bin/git lfs pull private # timeout=10
+ > /usr/bin/git remote # timeout=10
+ > /usr/bin/git config --get remote.private.url # timeout=10
+using GIT_ASKPASS to set credentials MarkEWaite github token 2021-07-19
+ > /usr/bin/git merge --ff a5d20884b5fdfb1f1ffbbb79bcbd6838cb222063 # timeout=10
+Enabling Git LFS pull
+ > /usr/bin/git config core.sparsecheckout # timeout=10
+ > /usr/bin/git checkout -f a5d20884b5fdfb1f1ffbbb79bcbd6838cb222063 # timeout=10
+ > /usr/bin/git branch -a -v --no-abbrev # timeout=10
+ > /usr/bin/git branch -D lts-slim-with-plugins # timeout=10
+ > /usr/bin/git checkout -b lts-slim-with-plugins a5d20884b5fdfb1f1ffbbb79bcbd6838cb222063 # timeout=10
+ > /usr/bin/git config --get remote.private.url # timeout=10
+using GIT_ASKPASS to set credentials MarkEWaite github token 2021-07-19
+ > /usr/bin/git lfs pull private # timeout=10
+hudson.plugins.git.GitException: Command "/usr/bin/git lfs pull private" returned status code 2:
+stdout: 
+stderr: [5ab5fbefb7a6234905e1b79f95d70e2969c049d07d5140ee2dfc80f8dd3a0110] Object does not exist on the server: [404] Object does not exist on the server
+[1639b22999dcffae1c64a2c1e91f3de6c687e4f0444aab860eb26fbd07f2ffd6] Object does not exist on the server: [404] Object does not exist on the server
+[ce0a4e06a8773c52004d065c638a8e867f02f4ce4d5c41579aea397fd2288497] Object does not exist on the server: [404] Object does not exist on the server
+Failed to fetch some objects from 'https://github.com/MarkEWaite/docker-private-lfs.git/info/lfs'
+
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandIn(CliGitAPIImpl.java:2843)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl.launchCommandWithCredentials(CliGitAPIImpl.java:2188)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl$9.execute(CliGitAPIImpl.java:3189)
+Also:   hudson.remoting.Channel$CallSiteStackTrace: Remote call to debian11-a-jagent
+		at hudson.remoting.Channel.attachCallSiteStackTrace(Channel.java:1923)
+		at hudson.remoting.UserRequest$ExceptionResponse.retrieve(UserRequest.java:384)
+		at hudson.remoting.Channel.call(Channel.java:1112)
+		at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler.execute(RemoteGitImpl.java:155)
+		at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+		at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+		at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler.invoke(RemoteGitImpl.java:140)
+		at PluginClassLoader for git-client/jdk.proxy21/jdk.proxy21.$Proxy108.execute(Unknown Source)
+		at PluginClassLoader for git//hudson.plugins.git.extensions.impl.PreBuildMerge.decorateRevisionToBuild(PreBuildMerge.java:89)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM.determineRevisionToBuild(GitSCM.java:1162)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM._checkout(GitSCM.java:1312)
+		at PluginClassLoader for git//hudson.plugins.git.GitSCM.checkout(GitSCM.java:1278)
+		at hudson.scm.SCM.checkout(SCM.java:540)
+		at hudson.model.AbstractProject.checkout(AbstractProject.java:1250)
+		at hudson.model.AbstractBuild$AbstractBuildExecution.defaultCheckout(AbstractBuild.java:649)
+		at jenkins.scm.SCMCheckoutStrategy.checkout(SCMCheckoutStrategy.java:85)
+		at hudson.model.AbstractBuild$AbstractBuildExecution.run(AbstractBuild.java:522)
+		at hudson.model.Run.execute(Run.java:1833)
+		at hudson.model.FreeStyleBuild.run(FreeStyleBuild.java:44)
+		at hudson.model.ResourceController.execute(ResourceController.java:101)
+		at hudson.model.Executor.run(Executor.java:446)
+Caused: hudson.plugins.git.GitException: Could not checkout lts-slim-with-plugins with start point a5d20884b5fdfb1f1ffbbb79bcbd6838cb222063
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.CliGitAPIImpl$9.execute(CliGitAPIImpl.java:3199)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler$GitCommandMasterToSlaveCallable.call(RemoteGitImpl.java:173)
+	at PluginClassLoader for git-client//org.jenkinsci.plugins.gitclient.RemoteGitImpl$CommandInvocationHandler$GitCommandMasterToSlaveCallable.call(RemoteGitImpl.java:164)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:225)
+	at hudson.remoting.UserRequest.perform(UserRequest.java:50)
+	at hudson.remoting.Request$2.run(Request.java:391)
+	at hudson.remoting.InterceptingExecutorService.lambda$wrap$0(InterceptingExecutorService.java:81)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused: java.io.IOException
+	at PluginClassLoader for git//hudson.plugins.git.GitSCM.checkout(GitSCM.java:1280)
+	at hudson.scm.SCM.checkout(SCM.java:540)
+	at hudson.model.AbstractProject.checkout(AbstractProject.java:1250)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.defaultCheckout(AbstractBuild.java:649)
+	at jenkins.scm.SCMCheckoutStrategy.checkout(SCMCheckoutStrategy.java:85)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.run(AbstractBuild.java:522)
+	at hudson.model.Run.execute(Run.java:1833)
+	at hudson.model.FreeStyleBuild.run(FreeStyleBuild.java:44)
+	at hudson.model.ResourceController.execute(ResourceController.java:101)
+	at hudson.model.Executor.run(Executor.java:446)
+[git] $ sh -e /home/jagent/mark-pc2.markwaite.net-agent/tools/git/hudson15810609903987719281.sh
+[git] $ sh -e /home/jagent/mark-pc2.markwaite.net-agent/tools/git/hudson12543314782534568364.sh
+The recommended git tool is: /usr/bin/git
+using credential MarkEWaite-github-token-2019-05-25
+using credential MarkEWaite-github-token-2019-05-25
+[Gitea] do not publish assets due to build being non-Successfully
+Finished: FAILURE

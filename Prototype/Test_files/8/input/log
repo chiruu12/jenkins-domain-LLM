@@ -1,0 +1,28 @@
+Started by timer
+Running as SYSTEM
+[EnvInject] - Loading node environment variables.
+Building on the built-in node in workspace /var/jenkins_home/workspace/Bugs-Individual/Bugs-10-000-to-19-999/JENKINS-14917-create-tag-and-poll-scm
+[GitCheckoutListener] SCM 'hudson.scm.NullSCM' is not of type GitSCM
+[JENKINS-14917-create-tag-and-poll-scm] $ /bin/bash /tmp/jenkins18431518907590721830.sh
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/tmp/jenkins18431518907590721830.sh: line 10: datefile: Permission denied
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+/tmp/jenkins18431518907590721830.sh: line 14: datefile: Permission denied
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: not a git repository (or any parent up to mount point /var)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+Build step 'Execute shell' marked build as failure
+[Text Finder] Searching console output...
+[Text Finder] Finished searching for pattern 'Created tag please-build-.* and notified Jenkins to poll' in console output.
+[Text Finder] Setting build result to 'UNSTABLE'.
+[Gitea] do not publish assets due to build being non-Successfully
+Finished: FAILURE

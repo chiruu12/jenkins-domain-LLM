@@ -13,6 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
+
 st.markdown("""
     <style>
         /* Target the h3 elements created by st.markdown */
@@ -46,7 +47,7 @@ with st.sidebar:
 
     uploaded_workspace_files = st.file_uploader(
         label="Upload Workspace Files (Optional)",
-        help="Upload supporting files like build.xml, pom.xml, or Jenkinsfile.",
+        help="Upload supporting files like build.xml or Jenkinsfile.",
         accept_multiple_files=True
     )
 

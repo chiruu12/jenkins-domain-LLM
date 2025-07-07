@@ -1,0 +1,464 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<flow-build plugin="workflow-job@1508.v9cb_c3a_a_89dfd">
+  <actions>
+    <hudson.model.ParametersAction>
+      <safeParameters class="sorted-set">
+        <string>DESCRIPTION_SETTER_DESCRIPTION</string>
+      </safeParameters>
+      <parameters>
+        <net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterValue plugin="git-parameter@435.va_f85861c663a_">
+          <name>MY_GIT_TAG</name>
+          <value>git-client-5.0.1</value>
+        </net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterValue>
+      </parameters>
+      <parameterDefinitionNames>
+        <string>MY_GIT_TAG</string>
+      </parameterDefinitionNames>
+    </hudson.model.ParametersAction>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>mwaite</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.metrics.impl.TimeInQueueAction plugin="metrics@4.2.21-464.vc9fa_a_0d6265d">
+      <queuingDurationMillis>6</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>0</buildableDurationMillis>
+      <waitingDurationMillis>1</waitingDurationMillis>
+    </jenkins.metrics.impl.TimeInQueueAction>
+    <org.jenkinsci.plugins.workflow.libs.LibrariesAction plugin="pipeline-groovy-lib@752.vdddedf804e72">
+      <libraries/>
+    </org.jenkinsci.plugins.workflow.libs.LibrariesAction>
+    <hudson.plugins.git.util.BuildData plugin="git@5.7.0">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/tags/git-client-5.0.1</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1>392f979fb33ac9e9c8d60f6e32fe04d00824ae66</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/tags/git-client-5.0.1</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>35</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+        <entry>
+          <string>refs/tags/git-client-6.1.0</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1>673e5a8c4df7dcae1efc92b504b0d92ae87d2a48</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/tags/git-client-6.1.0</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1 reference="../../marked/sha1"/>
+              <branches class="list">
+                <hudson.plugins.git.Branch reference="../../../marked/branches/hudson.plugins.git.Branch"/>
+              </branches>
+            </revision>
+            <hudsonBuildNumber>30</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+        <entry>
+          <string>refs/tags/git-client-6.0.0</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1>7788b35d6ed8d0294a7492dcfd50ee3d94a55fa5</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/tags/git-client-6.0.0</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1 reference="../../marked/sha1"/>
+              <branches class="list">
+                <hudson.plugins.git.Branch reference="../../../marked/branches/hudson.plugins.git.Branch"/>
+              </branches>
+            </revision>
+            <hudsonBuildNumber>34</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+        <entry>
+          <string>refs/tags/git-client-6.1.2</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1>80219b8d41e5787ed48023a1c0d69ad4526039c1</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/tags/git-client-6.1.2</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1 reference="../../marked/sha1"/>
+              <branches class="list">
+                <hudson.plugins.git.Branch reference="../../../marked/branches/hudson.plugins.git.Branch"/>
+              </branches>
+            </revision>
+            <hudsonBuildNumber>27</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+        <entry>
+          <string>refs/tags/git-client-6.1.1</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1>3443c0e2fe0977a9f7b7f1c6745dd27d9e9616d5</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/tags/git-client-6.1.1</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision plugin="git-client@6.2.0-rc3724.fa_d154b_2da_b_6">
+              <sha1 reference="../../marked/sha1"/>
+              <branches class="list">
+                <hudson.plugins.git.Branch reference="../../../marked/branches/hudson.plugins.git.Branch"/>
+              </branches>
+            </revision>
+            <hudsonBuildNumber>28</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>https://github.com/jenkinsci/git-client-plugin.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState plugin="workflow-scm-step@437.v05a_f66b_e5ef8">
+      <revisionStates>
+        <entry>
+          <string>git https://github.com/jenkinsci/git-client-plugin.git</string>
+          <hudson.scm.SCMRevisionState_-None/>
+        </entry>
+      </revisionStates>
+    </org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState>
+    <io.jenkins.plugins.forensics.git.reference.GitCommitsRecord plugin="git-forensics@3.2.0">
+      <scmKey>git https://github.com/jenkinsci/git-client-plugin.git</scmKey>
+      <latestCommit>392f979fb33ac9e9c8d60f6e32fe04d00824ae66</latestCommit>
+      <recordingType>INCREMENTAL</recordingType>
+      <latestCommitLink>&lt;a href=&quot;https://github.com/jenkinsci/git-client-plugin/commit/392f979fb33ac9e9c8d60f6e32fe04d00824ae66&quot;&gt;392f979&lt;/a&gt;</latestCommitLink>
+      <targetParentCommit>0000000000000000000000000000000000000000</targetParentCommit>
+      <commits>
+        <string>392f979fb33ac9e9c8d60f6e32fe04d00824ae66</string>
+        <string>4ebbacce3b6af9fa6c4e9d94831c93f1b77c7d10</string>
+        <string>33d4f4c984dd4b449e18be13ccd1880c486648f2</string>
+        <string>784d6f64672d65dc0337c03438b00147c372545e</string>
+        <string>7d038ebdf92047b29c442eb5d6fda2066f34e2e4</string>
+        <string>463189f113e179116e2914282d1b5b04f4e6bfdd</string>
+        <string>d4b5aec9c7409ca8d55e41b4ee5778a654493a0b</string>
+        <string>4f1d4a41e82d2f42fbf2effbff5a9422b7cc1141</string>
+        <string>9ca1f0f85c80dd3c20626c1f3a516719f4ed496e</string>
+        <string>5aaa98111cec7bb07ae35e8b2e0b8aa2e8e89355</string>
+        <string>6d349dc611127e23334c7cdf7710e545b2359b4f</string>
+        <string>be38a10aa18e23b91ccff0b14edd9ef94af85513</string>
+        <string>27b759dc5c7518901e773f9151d89afcc79ec3b6</string>
+        <string>008fcac8b1a3da44b5a136a9ad90d70e2dc098a1</string>
+        <string>2c995e607fbc66412a05d34f0fb01fbcd55569b1</string>
+        <string>27d5896789ba13ed6793f17e72b38f8be7de5fb6</string>
+        <string>622b9608ee54b12093ff3b168af1e44cb6987ccc</string>
+        <string>5d105def7c9f74daa94f03318651e6f727022354</string>
+        <string>452744b46070454fd1fe7aca31505b7bb12f6b33</string>
+        <string>edf97003e05dae7b35613b5059edebdb2496141a</string>
+        <string>d409dff51dfb55982e70bb388092e01712244b4d</string>
+        <string>c21a41e1c8220c57e6608fc6be055929f0664a16</string>
+        <string>61b0a1c32e64a295bdbd3e4587b779b3f349126d</string>
+        <string>f3aa8a27c1dc349466c68e79c02ddbdc7ff8845c</string>
+        <string>02a013c26340bc4b1aa9a8d314f7b74b64dfe642</string>
+        <string>d6e997f248686cba785a9f920c012f9b0b00edbd</string>
+        <string>1e910dc17fa97d74a382d7b9251e152e8fd91343</string>
+        <string>351d08c168df7e61e1fde4bc6e99bd6a12aa8318</string>
+        <string>dbb617dd80ff274b0f05b3441f5ffee620575d1e</string>
+        <string>89c50a30b4fbc965316dd931cde70c52d859e873</string>
+        <string>20c4928cf13cd3010143f42a8904b8586d5ca83e</string>
+        <string>64bc149131e660a71a6933cf17d4c513d82e3662</string>
+        <string>cfff2ee6f67a267f4bdcf8dd59b053c6cce39431</string>
+        <string>d2279bd5272e40b8eb52de376fe00d2f557e2945</string>
+        <string>fb9d2ca1189fd2c02e593ffda9922b3cf10fca45</string>
+        <string>2dab3cd1eac84a584567b31b22e851cde589cf88</string>
+        <string>47f02df9fbaac193c51c6e22b6160bc0f304bc47</string>
+        <string>f64218b3215ebaff2c42ecc1184415be8afa77a6</string>
+        <string>22fd74fe3715d2eebe2d9bf32b72e848b1208446</string>
+        <string>54672422793f45b22403812c11745885945da887</string>
+        <string>3c4d150b3e7e954665b135a5816a45a53b878585</string>
+        <string>a6ebfe35b75c341cb7390f21428aded5e5b0caa5</string>
+        <string>9e303932edb7f866816716e0969b424d0e2da298</string>
+        <string>e74b004affcb717583a33e23e966a9bc6cd09601</string>
+        <string>c5db30de168eff610b060f0634a83164243b4a80</string>
+        <string>780c79a7e9486d10e25ec74454b2ba9421988c34</string>
+        <string>52f1ab4af1684dbad97a398d1d03198a84771c66</string>
+        <string>fcdcb2df6f28ea94863baf2a632a19e3f5b0e085</string>
+        <string>3cb1e3c2cd4db44af2832c22bd12069ddb9a2026</string>
+        <string>4a07f8a608029b40562a050b3aa48a6e2fc35c92</string>
+        <string>c03cc915b37233988c2ee09f5eeacfcef6498cb3</string>
+        <string>123e49900035494411832466a809ee94e9259c5d</string>
+        <string>4b4e830f77b3e4347dc0ff3ba3e697a47beffee3</string>
+        <string>4b9dc02e6533248138e50429c0ba4a63639f1346</string>
+        <string>394e59405da00912b29b66a10d8516067cdfd941</string>
+        <string>611ed2bb5b518387fe9931e02b0945f04d2e7145</string>
+        <string>bdeb1fb6d7c5a51d079f5e0d05b0d140f9215b40</string>
+        <string>e80446d22103e68b500a233172117596b1dc0581</string>
+        <string>829a0fb94d8bc0644a65bd8873a1f00a05a54300</string>
+        <string>ac221d5313c7cfd2fc0c17a35d09e9c2bc0c4b8a</string>
+        <string>fb3a59e089c32398d002dea1d13c243652e68734</string>
+        <string>d0ae562724d8c7898e3d4465d05928b1d21798b6</string>
+        <string>b054eb9045bd735d5496a3683baaa920cc084286</string>
+        <string>9d3d4f10f59342916457492487f34be3d0842179</string>
+        <string>3ae560c5fab96d548b40f825d910649e87f48281</string>
+        <string>4a6a7dc46307c1cd869abdff1c9ab93f341f8131</string>
+        <string>df3e69e40570364c48ed700c97a630679b0b7dce</string>
+        <string>2f9ac682db539c866db441d18866b952cea35503</string>
+        <string>62b07e4b4149855b2fec72f90016c81af711b93b</string>
+        <string>790378d2156775385a0d1c678b3574b862bb1d19</string>
+        <string>af2300a904c9e0c53f70dac162f271f01ee9d56c</string>
+        <string>fb095329937ff9216be52e261ea2b4c75f739552</string>
+        <string>6c6266dcb8895419db2000fbcc14b575d14c6978</string>
+        <string>75743d55ebcfe489935d8ae31e87642fd129f9eb</string>
+        <string>24db6a8c259f4cc403b6c4cb45f2bd9adeccf298</string>
+        <string>9b18b1ca4561af168100551bce0e2910a7a98826</string>
+        <string>f08e18993d6333b0aa98f5e30aec02656f92590a</string>
+        <string>88630f6c21de6c041ee9d9844aa75eac607c84c3</string>
+        <string>b6010712ee93d68c7cc3270c3ed255510e687864</string>
+        <string>b75cdbcc2fd6a367433d7ace4a1168467e950947</string>
+        <string>082320dfcbf8dc9c2eed3ab5d8acf17a1d32077b</string>
+        <string>e79346dcffdf4d015075893fba4912e0d10dc40e</string>
+        <string>bfaf52f6bfa634bf8596fd7bbaa045ec9949ce49</string>
+        <string>fd976a30157a2646674aa3f018cd1b30c99515f4</string>
+        <string>b9e59e04712d70ea0f6ef94c23abe21040cccc06</string>
+        <string>0e4ceaafb712f50d75336e1d2d858ba3bf749e59</string>
+        <string>b6891b245f8ddd232acda234bd9803cf213bceff</string>
+        <string>a30976b949dd1452993d97ede7d16649dedf31a1</string>
+        <string>2d05154fb4ba61e8d364cda6fd32f630c85427a1</string>
+        <string>67d24c9add4d8393e6cf2a78ca775319ad4b8d40</string>
+        <string>9dcc15563532354c64bfebe9a16c641c81a3382c</string>
+        <string>c839dfbfab5731286d7ddcb44e96c16bbe95da89</string>
+        <string>79bf87988d406756277963851c7d9b041191ff7a</string>
+        <string>97febff825cb75bc4a0aa0a27e32594a102ef041</string>
+        <string>afdc329c679d7d32afa3bbef9fdabaf3f70ea8f0</string>
+        <string>b60dfd8642929da98adeaeca67321859220ddccd</string>
+        <string>ef82c14038c2675634b2288b6d56702e2b458d5d</string>
+        <string>18d05efdafc8685bf0c4dbf702c75f40f3f2e3ea</string>
+        <string>008ebfa2184d6db8cb457283b2d260e967ea5792</string>
+        <string>e8fe6f8b93d3d33363dca91a8443f01d791e0bbb</string>
+        <string>c32038ac9b100526722f817f8b69b45e1c74e265</string>
+        <string>8816c02e18373001704698eed564aa544036cc98</string>
+        <string>4f8934a4a5b820ac8103b50a31976b90fef8f4a7</string>
+        <string>8c251161f8296fd659bd4082ad526bd269f66ea3</string>
+        <string>98dcfe3d56a3dc00b2ec0268dafe279fab6e0193</string>
+        <string>fb9473b3163c2fb51af9877e9f93c224d0889cbf</string>
+        <string>564affb54404d98bf2868345b308689b872704aa</string>
+        <string>b1d1ec8f4334fd0f637d9b5e7c43dbf56d687b8a</string>
+        <string>1714981270b6c07fb93650e6dde92c127bdc2525</string>
+        <string>d1783b8565801e3d449caff783353036793ac075</string>
+        <string>f2d2c67112131f9979ebc202e1d29a4e6f3bbd45</string>
+        <string>1cb30559daead85150f50c87bfb96743914f6832</string>
+        <string>4e8fb51184a36574f75319ac1c297d0f693a3e26</string>
+        <string>c37534b268d2500b2a71c27d7638ae09d0d87cec</string>
+        <string>f31c77972da2474fcd7e8d0c4da400a1052f84c6</string>
+        <string>87a78b78fc373c95e2c293fc18cd8b81b0d5f894</string>
+        <string>78a14f1d53ad366e556c2d140eb32517b536b02f</string>
+        <string>ef6fb0f054c157a78b26ddb3a2589ca8285704cc</string>
+        <string>873c5e4c915ca2dd7b19dc37e0cef35d9249759e</string>
+        <string>3f8d950d6066ffff53f7200398a8ce073d4e4e67</string>
+        <string>3470f8f3cdf95e9164531018375731b4b5475647</string>
+        <string>c19b13b46bf5b7807892d1815cc796df8ce7fd87</string>
+        <string>9ab8d682cef9fd2b268bb460d53cd244660699e0</string>
+        <string>5d10b8fac1c5b2a166105121bda63d15afe608ee</string>
+        <string>93916ed98796c5701e36ae78edfe4eab5cec6b72</string>
+        <string>5ac7a98ba912430f4f3caaa63d3323d2a20fdfc3</string>
+        <string>d7aa6e0969fbc9f278fd8eb4263532eea25b8880</string>
+        <string>415c492a9d63bc1558d2f2118f3d47a29bced919</string>
+        <string>fb3b33396cba01d73604743bf17103da46ca7418</string>
+        <string>f9252f4da6ee6295183b99c01069ee8c9607395c</string>
+        <string>aa08e73b34d70bd0c37d0eac77f0c08ab11d956d</string>
+        <string>0c10ec34d5a1dc28585ed2260beb70dc2a880b88</string>
+        <string>93d5407df8c7df9f0acf18d37f9f694a232c45d1</string>
+        <string>68a0211b8aa166f48b1d9b85b16b2b3617c86e12</string>
+        <string>0fb4ce47118bcba143d6c36a4e3cb5142287a4db</string>
+        <string>058e745a94f90b5983fda3c2eedf26cedefe5992</string>
+        <string>51d02fa04b2f97f1c487bf42c4a73a72b9e02c58</string>
+        <string>8895994795f38b9779f92e44afaf4d20fc1c2f27</string>
+        <string>2fc4916af03d511d9e74053c025f9b284930aaf7</string>
+        <string>fb88089474cc19d5bf68da9045f7967cf393a904</string>
+        <string>1e203478997b47375e6d90cb7307510a7120240d</string>
+        <string>77b6bb24fabee47c66226d7a60c776f253148859</string>
+        <string>885c8ac1865c5d0a3410024cfdd4e1e1bdbd9e17</string>
+        <string>2bc2afa086ab3ca57049533eb552c9bb8094faeb</string>
+        <string>cf26819b0c465c66852a01f1b8e899b7ccfac1ca</string>
+        <string>223080e0c8097d0e19532a3317432fdf6f640a84</string>
+        <string>ecd1afbdb242a816e7dacbdb0c327f7a05f402a8</string>
+        <string>6d9a74fa7afda4c5810cceef08edf19ff209601c</string>
+        <string>bc8e9a2a29f0a0da802010dcf5a8cb9b618b99b8</string>
+        <string>c1ac1b837e99f597088778704cf66c37e55373e9</string>
+        <string>d2a0aaecf9045b45b383fca38b2d8571c4720ea8</string>
+        <string>45e6fa2aa7c3c9da5446dc3368820d40a585d5cd</string>
+        <string>c7f026d59d03afdc1081127dff09a4e0f16c9378</string>
+        <string>0b04f7e9df1cc7591b0c498a832f78d7b466ac29</string>
+        <string>371591c660fe36642095e662323f75fabec5533a</string>
+        <string>cc7850be457122abe63c823cd48a7db9c142e24c</string>
+        <string>54426af446d8a7716fa599b772e6efc91d56ab6b</string>
+        <string>b64d0a5dc79f6d3b0f8542dcf5837cb9c24d5e8c</string>
+        <string>14532482f4f7cab2f85e659af8bcde3af9bdea78</string>
+        <string>d549e4a498ea1485437f7a299dee646d38338161</string>
+        <string>6335cacf78d80cf254831b31b3a1b4a8e9a43bdc</string>
+        <string>a1f6f3447dfb61ec179d63e63bd5c1e0a67ed9f3</string>
+        <string>34311fb5a50904fbe6f7f74f237621db02918eb6</string>
+        <string>587d5f2cffaf264e57177d957d28bb4e1783c42e</string>
+        <string>680140054ce96066bbb3a2cb9ac3d2db42662589</string>
+        <string>1c60b837ad5fe1b44d449fab54cd88d6f8e10ec0</string>
+        <string>a27276b2a6ef505b8223eade41cb76e54ca6b9dc</string>
+        <string>daa032bc1f4f40e4cffff3a2e0faac233ab83576</string>
+        <string>1e9ab062ddc8736a399485d48d67a575c1d73dbf</string>
+        <string>5c3aed786d503932b8806c7f370e3e7c92216830</string>
+        <string>b15c71579194893952b4531436dc17ddc58cfd56</string>
+        <string>e69456b31a8b8f043d5960db93ffe4c9abd43459</string>
+        <string>352b949ef158f3a1e0abfe31c5976f19290c4a66</string>
+        <string>df19449cd12b8abe4688bfec4d9c64f9b7222a08</string>
+        <string>553ecc043897aee75c5402ad530e23ab0aaf44f3</string>
+        <string>6be2cdcf7c2d2e8c4d83dfeb34ee8294e2b5a744</string>
+        <string>8a6a4e4b0cd98d0e35010953cfa718be9d181470</string>
+        <string>93820341be05602bd5ea2623e8a35e268c2f11ec</string>
+        <string>fbcecac8c32d358bce08bfb7fba1e42893e17a9f</string>
+        <string>c0e9008a045469f61f6a7e232f6b1d2d9e1a0333</string>
+        <string>57d44fb21dba14c1941ae238b1a6440377fff6a2</string>
+        <string>1bc4699fbbe0d3b653c8a4f7df37970d7fbafaee</string>
+        <string>f89efbdbbeb76dab2f43572d6837e87161b10e1c</string>
+        <string>66c60ff09d2a16b4766a818b506afcbc65e8fc26</string>
+        <string>c32b0b5a84aa28f5d47fb966f65a69e515808b2b</string>
+        <string>4f459a556312c3df38b095402dd422c08a0fd3ed</string>
+        <string>cd3aac5a11c184ba2b93821d9a6ca7b116dbc777</string>
+        <string>f33c490106bfd02df32f2977e625a000ac3d8e50</string>
+        <string>47cdee8c8493485bbb2f729d2ab874003bc8fa6a</string>
+        <string>c5e399916e1b9ba0f56ad520935afe48670e71c7</string>
+        <string>3e9e508415b28f3bf21941580f159ff4adc18d30</string>
+        <string>5ad259f8ab5245801f4706ce9afaf8ebf689743d</string>
+        <string>4e8153ecb40bf747d02c6ae346226499bbd7fb21</string>
+        <string>6a0a77d91afee320c647112d47cf9f0357acb4ca</string>
+        <string>7298aff428fc67ab1737e86bd8ee8de7742ab574</string>
+        <string>099a57affce173cf8c518b74643f5e40e73fdc5e</string>
+        <string>d0e0b7804621b99a382afe7ccdc83f1e237321c8</string>
+        <string>376f42ef5a1debc707f0dbf99e5f5eb7a66d3bac</string>
+        <string>26b4e0780b38c948f8722d27867c52e2a0b90e77</string>
+        <string>6541bbbc75d9f1d87650641dfb784ac53cbb5dff</string>
+      </commits>
+      <errorMessages/>
+      <infoMessages>
+        <string>Recording commits of &apos;git https://github.com/jenkinsci/git-client-plugin.git&apos;</string>
+        <string>Found previous build &apos;a-scripted-with-parameters #34&apos; that contains recorded Git commits</string>
+        <string>-&gt; Starting recording of new commits since &apos;7788b35&apos;</string>
+        <string>-&gt; Single parent commit found - branch is already descendant of target branch head</string>
+        <string>-&gt; Using head commit &apos;392f979&apos; as starting point</string>
+        <string>-&gt; Recorded 200 new commits</string>
+        <string>-&gt; Git commit decorator successfully obtained &apos;hudson.plugins.git.browser.GithubWeb@31829885&apos; to render commit links</string>
+      </infoMessages>
+    </io.jenkins.plugins.forensics.git.reference.GitCommitsRecord>
+    <jenkins.metrics.impl.SubTaskTimeInQueueAction plugin="metrics@4.2.21-464.vc9fa_a_0d6265d">
+      <queuingDurationMillis>11169</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>11168</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+      <executingDurationMillis>7648</executingDurationMillis>
+      <workUnitCount>1</workUnitCount>
+    </jenkins.metrics.impl.SubTaskTimeInQueueAction>
+  </actions>
+  <queueId>169803</queueId>
+  <timestamp>1743108889824</timestamp>
+  <startTime>1743108889832</startTime>
+  <result>FAILURE</result>
+  <duration>19096</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <execution class="org.jenkinsci.plugins.workflow.cps.CpsFlowExecution">
+    <result>FAILURE</result>
+    <script>properties([
+  parameters([
+    gitParameter(defaultValue: &apos;git-client-6.0.0&apos;,
+                 description: &apos;My git parameter in a scripted Pipeline&apos;,
+                 name: &apos;MY_GIT_TAG&apos;,
+                 tagFilter: &apos;git-client-[56]*&apos;,
+                 type: &apos;PT_TAG&apos;,
+                 useRepository: &apos;https://github.com/jenkinsci/git-client-plugin.git&apos;)
+  ]),
+])
+
+node(&apos;alpine&apos;) {
+    checkout scmGit(branches: [[name: &quot;refs/tags/${params.MY_GIT_TAG}&quot;]],
+                    userRemoteConfigs: [[url: &apos;https://github.com/jenkinsci/git-client-plugin.git&apos;]])
+    sh &apos;mkdir target &amp;&amp; date &gt;&gt; target/date &amp;&amp; cat target/date&apos;
+    cleanWs deleteDirs: true, externalDelete: &apos;rm -rf %s&apos;, notFailBuild: true, patterns: [[pattern: &apos;target**&apos;, type: &apos;INCLUDE&apos;]]
+    sh &apos;ls -d target&apos;
+}</script>
+    <loadedScripts class="linked-hash-map"/>
+    <durabilityHint>PERFORMANCE_OPTIMIZED</durabilityHint>
+    <timings class="map">
+      <entry>
+        <string>flowNode</string>
+        <long>8294915</long>
+      </entry>
+      <entry>
+        <string>classLoad</string>
+        <long>46476930</long>
+      </entry>
+      <entry>
+        <string>runQueue</string>
+        <long>287306666</long>
+      </entry>
+      <entry>
+        <string>run</string>
+        <long>555775418</long>
+      </entry>
+      <entry>
+        <string>parse</string>
+        <long>16474549</long>
+      </entry>
+    </timings>
+    <internalCalls class="sorted-set"/>
+    <sandbox>true</sandbox>
+    <iota>12</iota>
+    <head>1:12</head>
+    <done>true</done>
+    <resumeBlocked>false</resumeBlocked>
+  </execution>
+  <completed>true</completed>
+  <checkouts class="hudson.util.PersistedList">
+    <org.jenkinsci.plugins.workflow.job.WorkflowRun_-SCMCheckout>
+      <scm class="hudson.plugins.git.GitSCM" plugin="git@5.7.0">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>https://github.com/jenkinsci/git-client-plugin.git</url>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>refs/tags/git-client-5.0.1</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="empty-list"/>
+        <extensions/>
+      </scm>
+      <node>alpine-jdk21-000eabzzx2qwr</node>
+      <workspace>/home/jenkins/agent/workspace/a-scripted-with-parameters</workspace>
+      <changelogFile>/var/jenkins_home/builds/a-scripted-with-parameters/35/changelog8600797547155242401.xml</changelogFile>
+      <pollingBaseline class="hudson.scm.SCMRevisionState$None" reference="../../../actions/org.jenkinsci.plugins.workflow.steps.scm.MultiSCMRevisionState/revisionStates/entry/hudson.scm.SCMRevisionState_-None"/>
+    </org.jenkinsci.plugins.workflow.job.WorkflowRun_-SCMCheckout>
+  </checkouts>
+</flow-build>

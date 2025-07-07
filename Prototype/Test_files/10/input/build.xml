@@ -1,0 +1,60 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UpstreamCause>
+            <upstreamProject>Docker/Docker-LFS/B-lts-slim-with-plugins-from-lts-with-plugins</upstreamProject>
+            <upstreamUrl>job/Docker/job/Docker-LFS/job/B-lts-slim-with-plugins-from-lts-with-plugins/</upstreamUrl>
+            <upstreamBuild>10</upstreamBuild>
+            <upstreamCauses>
+              <hudson.triggers.SCMTrigger_-SCMTriggerCause/>
+              <hudson.model.Cause_-UpstreamCause>
+                <upstreamProject>Docker/Docker-LFS/B-lts-slim-with-plugins-from-lts-slim</upstreamProject>
+                <upstreamUrl>job/Docker/job/Docker-LFS/job/B-lts-slim-with-plugins-from-lts-slim/</upstreamUrl>
+                <upstreamBuild>8</upstreamBuild>
+                <upstreamCauses>
+                  <hudson.triggers.SCMTrigger_-SCMTriggerCause/>
+                  <hudson.model.Cause_-UpstreamCause>
+                    <upstreamProject>Docker/Docker-LFS/A-lts-slim-from-lts</upstreamProject>
+                    <upstreamUrl>job/Docker/job/Docker-LFS/job/A-lts-slim-from-lts/</upstreamUrl>
+                    <upstreamBuild>7</upstreamBuild>
+                    <upstreamCauses>
+                      <hudson.triggers.SCMTrigger_-SCMTriggerCause/>
+                    </upstreamCauses>
+                  </hudson.model.Cause_-UpstreamCause>
+                </upstreamCauses>
+              </hudson.model.Cause_-UpstreamCause>
+            </upstreamCauses>
+          </hudson.model.Cause_-UpstreamCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <jenkins.metrics.impl.TimeInQueueAction plugin="metrics@4.2.21-464.vc9fa_a_0d6265d">
+      <queuingDurationMillis>380073</queuingDurationMillis>
+      <blockedDurationMillis>0</blockedDurationMillis>
+      <buildableDurationMillis>380070</buildableDurationMillis>
+      <waitingDurationMillis>0</waitingDurationMillis>
+    </jenkins.metrics.impl.TimeInQueueAction>
+    <org.jenkinsci.plugins.envinject.EnvInjectPluginAction plugin="envinject@2.926.v69c9b_3896a_96"/>
+    <com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder plugin="credentials@1408.va_622a_b_f5b_1b_1">
+      <boundCredentials class="concurrent-hash-map"/>
+    </com.cloudbees.plugins.credentials.builds.CredentialsParameterBinder>
+  </actions>
+  <queueId>129084</queueId>
+  <timestamp>1741714727462</timestamp>
+  <startTime>1741714727473</startTime>
+  <result>FAILURE</result>
+  <duration>13145</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn>debian11-a-jagent</builtOn>
+  <workspace>/home/jagent/mark-pc2.markwaite.net-agent/workspace/Docker/Docker-LFS/C-lts-slim-with-plugins-add-credentials-from-lts-slim-with-plugins</workspace>
+  <hudsonVersion>2.492.2</hudsonVersion>
+  <scm class="hudson.scm.NullChangeLogParser"/>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>
