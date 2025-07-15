@@ -1,0 +1,69 @@
+@startuml
+!theme plain
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+title Agentic Workflow with Multi-Provider Support
+
+actor User
+
+node "Diagnosis Pipeline" as Pipeline {
+    component "Universal\nDiagnostic Agent" as Agent
+    interface "LLM API\nAdapter" as Adapter
+}
+
+database "Jenkins Build Data\n(Logs, XMLs)" as JenkinsData
+
+package "Toolbox" {
+    component "MCP Build\nAnalysis Tool" as MCP_Tool
+}
+
+package "Configuration" {
+    component "Provider Config\n(e.g., model, API key)" as Config
+}
+
+package "Cloud LLM Services" {
+    cloud "OpenAI" as OpenAI
+    cloud "Anthropic" as Anthropic
+    cloud "Groq" as Groq
+    cloud "OpenRouter" as OpenRouter
+    cloud "Fireworks AI" as Fireworks
+}
+
+package "User Infrastructure" {
+    component "Self-Hosted LLM\n(e.g., via vLLM)" as SelfHosted
+}
+
+' --- Workflow Connections ---
+User -right--> Pipeline : "1. Submits log/query"
+Pipeline .up..> Config : "2. Reads configuration"
+Pipeline -down-> Agent : "3. Initializes with task"
+
+' --- Agent Actions ---
+Agent .left..> MCP_Tool : "4. Gathers context"
+MCP_Tool --> JenkinsData : "Reads build data"
+Agent -right--> Adapter : "5. Sends request\n   (context + query)"
+
+' --- Dynamic Provider Selection ---
+Adapter <|.. OpenAI
+Adapter <|.. Anthropic
+Adapter <|.. Groq
+Adapter <|.. OpenRouter
+Adapter <|.. Fireworks
+Adapter <|.. SelfHosted
+
+note right of Adapter
+  The Adapter dynamically routes
+  the agent's call to the
+  LLM provider specified
+  in the configuration.
+end note
+
+Adapter <.down. Config
+
+' --- Response Flow ---
+Agent <.. Adapter: "6. Receives LLM response"
+Agent -up-> Pipeline : "7. Formats report"
+Pipeline -up--> User: "8. Receives final diagnosis"
+
+@enduml

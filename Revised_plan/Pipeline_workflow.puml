@@ -1,0 +1,67 @@
+@startuml
+!theme plain
+autonumber
+
+title Diagnosis Pipeline Workflow
+
+actor User
+boundary "DiagnosisPipeline" as Pipeline
+participant "Diagnostic Agent" as MainAgent
+participant "Critic Agent" as CriticAgent
+participant "MCP Build\nAnalysis Tool" as Tool
+database "Jenkins Data" as Data
+
+group Initial Diagnosis (First Interaction)
+    User -> Pipeline: start_diagnosis(log)
+    activate Pipeline
+
+    Pipeline -> Tool: gather_context()
+    activate Tool
+    Tool -> Data: Read build files
+    Tool --> Pipeline: Return context
+    deactivate Tool
+
+    Pipeline -> MainAgent: run_diagnosis(context)
+    activate MainAgent
+    MainAgent --> Pipeline: Return draft_report
+    deactivate MainAgent
+
+    Pipeline -> CriticAgent: critique_report(draft_report)
+    activate CriticAgent
+    CriticAgent --> Pipeline: Return critique_result
+    deactivate CriticAgent
+
+    alt critique_result is Approved
+        Pipeline --> User: Final Report
+    else Needs Revision
+        note over Pipeline, MainAgent: Agent refines its answer based on critic's feedback.
+        Pipeline -> MainAgent: run_diagnosis(context, critique)
+        activate MainAgent
+        MainAgent --> Pipeline: Return final_report
+        deactivate MainAgent
+        Pipeline --> User: Final Report (Revised)
+    end
+    deactivate Pipeline
+end
+
+... A short time later ...
+
+group Ongoing Conversation (Follow-up)
+    User -> Pipeline: follow_up_query("Tell me more about the error.")
+    activate Pipeline
+
+    note over Pipeline, MainAgent
+        The critic is bypassed for faster
+        conversational turns.
+    end note
+
+    Pipeline -> MainAgent: run_diagnosis(query)
+    activate MainAgent
+    MainAgent --> Pipeline: Return response
+    deactivate MainAgent
+
+    Pipeline --> User: Conversational Response
+    deactivate Pipeline
+end
+
+@enduml
