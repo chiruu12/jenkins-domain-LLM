@@ -46,14 +46,14 @@ This PR includes:
 *   The refactored code demonstrating the modular agent factories and externalized prompt management.
 *   A set of initial diagnostic examples (input logs/build files and their corresponding agent generated outputs). These are baseline results intended for mentor review. The feedback from this review will be used for iteratively improving the agent's prompts and overall performance.
 
-*   **PR:** [#1](https://github.com/chiruu12/jenkins-domain-LLM/pull/2)
+*   **PR:** [#2](https://github.com/chiruu12/jenkins-domain-LLM/pull/2)
 *   **Title:** "Adding Revised Plan"
 *   **Status:** Merged
 
 This PR includes:
 * This PR contains the revised project plan based on mentor feedback.
 
-*   **PR:** [#1](https://github.com/chiruu12/jenkins-domain-LLM/pull/3)
+*   **PR:** [#3](https://github.com/chiruu12/jenkins-domain-LLM/pull/3)
 *   **Title:** "Adding LLM Adaptor"
 *   **Status:** Merged
 
