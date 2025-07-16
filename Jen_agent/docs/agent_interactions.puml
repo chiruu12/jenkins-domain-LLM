@@ -1,0 +1,133 @@
+@startuml
+'------------------------------------------------------------
+' File: agent_interactions.puml
+' Description: Visualizes the different agent interaction
+'              workflows based on the selected operating mode.
+'------------------------------------------------------------
+
+!theme plain
+skinparam monochrome true
+skinparam handwritten false
+skinparam packageStyle rectangle
+skinparam noteBackgroundColor #FFFFFF
+skinparam noteBorderColor #666666
+skinparam defaultTextAlignment center
+skinparam lifelineStrategy solid
+
+actor User
+
+box "Agent Pipeline" #White
+    participant RouterAgent as "Router Agent"
+    participant SpecialistAgent as "Specialist Agent\n(e.g., Config, Test)"
+    participant CriticAgent as "Critic Agent"
+    participant QuickSummaryAgent as "Quick Summary\nAgent"
+    participant InteractiveAgent as "Interactive\nAgent"
+    participant LearningAgent as "Learning Agent"
+end box
+
+database KnowledgeBase as "Knowledge Base\n(RAG)"
+
+'============================================================
+' GROUP 1: Standard Diagnosis Mode
+'============================================================
+group Standard Diagnosis Mode
+
+    User -> RouterAgent: Submits log for full diagnosis
+    activate RouterAgent
+
+    RouterAgent -> RouterAgent: Classifies failure type
+    RouterAgent -> SpecialistAgent: Invokes with failure category
+    deactivate RouterAgent
+
+    activate SpecialistAgent
+    loop Self-Correction (Max Retries)
+        SpecialistAgent -> SpecialistAgent: Generates draft diagnosis report
+        SpecialistAgent -> CriticAgent: Submits draft for review
+        activate CriticAgent
+
+        alt Report is Approved
+            CriticAgent --> SpecialistAgent: Approval
+            deactivate CriticAgent
+            SpecialistAgent -> User: Returns final DiagnosisReport
+            deactivate SpecialistAgent
+        else Report is Rejected
+            CriticAgent --> SpecialistAgent: Sends critique feedback
+            deactivate CriticAgent
+            SpecialistAgent -> SpecialistAgent: Refines diagnosis based on feedback
+        end
+    end
+end
+
+'============================================================
+' GROUP 2: Quick Summary Mode
+'============================================================
+group Quick Summary Mode
+
+    User -> QuickSummaryAgent: Requests quick summary of failure
+    activate QuickSummaryAgent
+
+    loop Self-Correction (Max Retries)
+        QuickSummaryAgent -> QuickSummaryAgent: Generates draft summary
+        QuickSummaryAgent -> CriticAgent: Submits for review
+        activate CriticAgent
+
+        alt Report is Approved
+            CriticAgent --> QuickSummaryAgent: Approval
+            deactivate CriticAgent
+            QuickSummaryAgent -> User: Returns final QuickSummaryReport
+            deactivate QuickSummaryAgent
+        else Report is Rejected
+            CriticAgent --> QuickSummaryAgent: Sends critique feedback
+            deactivate CriticAgent
+        end
+    end
+end
+
+
+'============================================================
+' GROUP 3: Interactive Debugging Mode
+'============================================================
+group Interactive Debugging Mode
+
+    User -> InteractiveAgent: Starts interactive session with log
+    activate InteractiveAgent
+
+    loop Self-Correction (Max Retries)
+        InteractiveAgent -> InteractiveAgent: Generates clarifying question
+        InteractiveAgent -> CriticAgent: Submits for review
+        activate CriticAgent
+
+        alt Question is Valid
+            CriticAgent --> InteractiveAgent: Approval
+            deactivate CriticAgent
+            InteractiveAgent -> User: Asks clarifying question and suggests actions
+            deactivate InteractiveAgent
+        else Question is Invalid
+            CriticAgent --> InteractiveAgent: Sends critique feedback
+            deactivate CriticAgent
+        end
+    end
+
+    note right of User: User's response starts a new cycle.
+end
+
+
+'============================================================
+' GROUP 4: Learning Mode
+'============================================================
+group Learning Mode
+
+    User -> LearningAgent: Asks a question about a Jenkins concept
+    activate LearningAgent
+
+    LearningAgent -> KnowledgeBase: Queries for relevant information
+    activate KnowledgeBase
+    KnowledgeBase --> LearningAgent: Returns documentation excerpts
+    deactivate KnowledgeBase
+
+    LearningAgent -> Learning_Agent: Synthesizes explanation
+    LearningAgent -> User: Returns final LearningReport with links
+    deactivate LearningAgent
+end
+
+@enduml
