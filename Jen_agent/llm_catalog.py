@@ -18,7 +18,9 @@ from agno.models.ollama import Ollama
 
 from pydantic import ValidationError
 from data_models import ModelConfig, LLMCatalog, ProviderConfig
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 
@@ -83,13 +85,16 @@ def get_model_config(provider_key: str, model_key: str) -> ModelConfig:
         model_id = provider_map[model_key]
         return ModelConfig(provider_key=provider_key, model_key=model_key, model_id=model_id)
 
-    print(f"Warning: Model key '{model_key}' not found for provider '{provider_key}'. Attempting provider's default.")
-
+    logger.warning(
+        f"Model key {model_key} not found for provider {provider_key}. Attempting provider's default."
+    )
     provider_config = CATALOG.providers.get(provider_key)
     if provider_config:
         default_model_id = provider_config.default_model
         default_model_key = f"Default ({default_model_id.split('/')[-1]})"
-        print(f"Info: Falling back to default model for '{provider_key}': '{default_model_id}'")
+        logger.info(
+            f"Falling back to default model for {provider_key}: {default_model_id}",
+        )
         return ModelConfig(provider_key=provider_key, model_key=default_model_key, model_id=default_model_id)
 
     raise ValueError(f"Error: Provider '{provider_key}' is not a valid provider. Check the CATALOG configuration.")

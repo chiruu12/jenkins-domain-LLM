@@ -44,14 +44,15 @@ class KnowledgeBaseTools(Toolkit):
 
     def query_knowledge_base(self, query: str) -> str:
         "This is a placeholder for querying a knowledge base(RAG)."
-        return "Placeholder"
+        raise NotImplementedError("query_knowledge_base() has not been implemented yet.")
 
 #TODO: add the MCP tool
-class Jenkins_MCPToo(Toolkit):
+class Jenkins_MCPTool(Toolkit):
     def __init__(self):
         super().__init__(name="jenkins_mcp_tool")
         self.register(self.query_mcp)
 
     def query_mcp(self, query: str) -> str:
         "This is a placeholder for querying the MCP."
-        return "Placeholder"
+        raise NotImplementedError("Qquery_mcp() has not been implemented yet.")
+

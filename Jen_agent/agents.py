@@ -12,7 +12,7 @@ from data_models import (
     ModelConfig, QuickSummaryReport,
     RoutingDecision
 )
-from llm_catelog import CATALOG
+from llm_catalog import CATALOG
 from tools import JenkinsWorkspaceTools, KnowledgeBaseTools
 
 
