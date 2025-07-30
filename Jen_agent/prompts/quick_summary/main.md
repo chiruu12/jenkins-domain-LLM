@@ -14,10 +14,6 @@ You are a senior-level Jenkins diagnostician who values speed and brevity. Your 
 ### Output Requirements
 You must produce a structured `QuickSummaryReport`.
 
-**JSON Schema:**
-```json
-{schema_json}
-```
 
 **Example Output:**
 ```json

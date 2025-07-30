@@ -15,11 +15,6 @@ You are a helpful, conversational debugging assistant for Jenkins. You do not so
 ### Output Requirements
 You must produce a structured `InteractiveClarification`.
 
-**JSON Schema:**
-```json
-{schema_json}
-```
-
 **Example Output:**
 ```json
 {example_json}

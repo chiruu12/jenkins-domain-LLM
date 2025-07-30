@@ -1,11 +1,14 @@
 import json
-from typing import Any, List, Optional, Type
-from agno.agent import Agent
-from agno.tools import Toolkit
+from typing import Any, List, Optional, Type, Dict
 from pydantic import BaseModel
 
 import config
 import prompt_examples
+from agno.agent import Agent
+from agno.tools import Toolkit
+from agno.models.base import Model
+from functools import lru_cache
+import logging
 from data_models import (
     CritiqueReport, DiagnosisReport,
     InteractiveClarification, LearningReport,
@@ -15,7 +18,11 @@ from data_models import (
 from llm_catalog import CATALOG
 from tools import JenkinsWorkspaceTools, KnowledgeBaseTools
 
+logger = logging.getLogger(__name__)
 
+_model_instances: Dict[str, Model] = {}
+
+@lru_cache(maxsize=4)
 def _load_and_format_prompt(prompt_path: str, response_model: Type[BaseModel], example: str) -> str:
     """Loads a prompt template and injects the JSON schema and an example."""
     full_path = config.PROMPTS_DIR / f"{prompt_path}.md"
@@ -23,8 +30,7 @@ def _load_and_format_prompt(prompt_path: str, response_model: Type[BaseModel], e
         raise FileNotFoundError(f"Prompt file not found: {full_path}")
 
     template = full_path.read_text()
-    schema = json.dumps(response_model.model_json_schema(), indent=2)
-    return template.format(schema_json=schema, example_json=example)
+    return template.format(example_json=example)
 
 
 def _create_agent(
@@ -37,18 +43,25 @@ def _create_agent(
         custom_tools: Optional[List[Toolkit]] = None,
         **model_kwargs: Any,
 ) -> Agent:
-    """A private helper factory to create and configure an agent."""
-    provider_config = CATALOG.providers.get(model_config.provider_key)
-    if not provider_config or not provider_config.model_class:
-        raise NotImplementedError(
-            f"Provider '{model_config.provider_key}' is not configured or supported in the catalog."
-        )
+    model_cache_key = f"{model_config.provider_key}:{model_config.model_id}"
 
-    model_instance = provider_config.model_class(id=model_config.model_id, **model_kwargs)
+    if model_cache_key not in _model_instances:
+        logger.info(f"Cache MISS for model '{model_cache_key}'. Creating new client instance.")
+        provider_config = CATALOG.providers.get(model_config.provider_key)
+        if not provider_config or not provider_config.model_class:
+            raise NotImplementedError(
+                f"Provider '{model_config.provider_key}' is not configured or supported in the catalog."
+            )
+
+        model_instance = provider_config.model_class(id=model_config.model_id, **model_kwargs)
+        _model_instances[model_cache_key] = model_instance
+    else:
+        logger.info(f"Using Cached model '{model_cache_key}'.")
+        model_instance = _model_instances[model_cache_key]
 
     final_tools = base_tools + (custom_tools or [])
 
-    formatted_prompt = _load_and_format_prompt(prompt_path, response_model, example)
+    formatted_prompt = _load_and_format_prompt(prompt_path, example)
 
     return Agent(
         model=model_instance,
@@ -61,7 +74,7 @@ def _create_agent(
 
 def get_common_tools() -> List[Toolkit]:
     """Returns a list of tools common to most diagnostic agents."""
-    return [JenkinsWorkspaceTools(base_directory_path="."), KnowledgeBaseTools()]
+    return [JenkinsWorkspaceTools(base_directory_path=config.WORKSPACE_BASE_DIR), KnowledgeBaseTools()]
 
 def get_router_agent(model_config: ModelConfig, **kwargs) -> Agent:
     """Creates the agent that classifies the failure type."""

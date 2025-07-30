@@ -35,6 +35,9 @@ class RoutingDecision(BaseModel):
     failure_category: Literal[
         "CONFIGURATION_ERROR", "TEST_FAILURE", "DEPENDENCY_ERROR", "INFRA_FAILURE", "UNKNOWN"
     ] = Field(description="The single, most likely category for the build failure.")
+    relevant_log_snippets: List[str] = Field(
+        description="A list of the most critical log lines (5-10 lines) that directly indicate the reason for the failure."
+    )
 
 class DiagnosisReport(BaseModel):
     root_cause: str = Field(description="A clear, one-to-two sentence explanation of the primary reason for the failure.")

@@ -16,11 +16,6 @@ You are an expert at diagnosing **Infrastructure Failures** within Jenkins. You 
 ### Output Requirements
 You must produce a structured `DiagnosisReport`.
 
-**JSON Schema:**
-```json
-{schema_json}
-```
-
 **Example Output:**
 ```json
 {example_json}

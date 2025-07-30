@@ -33,30 +33,17 @@ def _validate_agent_and_prompt(
         expected_response_model: type,
         expected_tool_names: list[str]
 ):
-    """
-    Performs a set of standard validations on a created agent instance.
-    """
     assert isinstance(agent_instance, Agent)
     assert agent_instance.response_model == expected_response_model
 
     prompt_text = agent_instance.instructions[0]
-    print(f"Prompt text for {agent_instance.description}:\n{prompt_text}\n")
     assert isinstance(prompt_text, str)
-    assert "{schema_json}" not in prompt_text, "Schema placeholder was not replaced"
     assert "{example_json}" not in prompt_text, "Example placeholder was not replaced"
 
     try:
-        schema_parts = prompt_text.split("JSON Schema:**\n```json\n")
-        if len(schema_parts) > 1:
-            schema_str = schema_parts[1].split("\n```")[0]
-            schema_json = json.loads(schema_str)
-            assert schema_json["title"] == expected_response_model.__name__
-        else:
-            pytest.fail("Could not find JSON Schema block in the prompt.")
-
         example_parts = prompt_text.split("Example Output:**\n```json\n")
         if len(example_parts) > 1:
-            example_str = example_parts[1].split("\n```")[0]
+            example_str = example_parts.split("\n```")[0]
             example_json = json.loads(example_str)
             expected_response_model(**example_json)
         else:
