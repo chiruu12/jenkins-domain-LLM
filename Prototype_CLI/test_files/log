@@ -1,0 +1,61 @@
+[2025-03-27T20:54:49.833Z] Started by user [8mha:////4OW44Qvewr4B4eqoelw+2xoOFtXUFqtKC2p2HTU7QB71AAAAmB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAyuEgYe/dLi1CL93PLEzJJUAGJxEMvBAAAA[0mMark Waite
+[2025-03-27T20:54:49.857Z] [8mha:////4BhHjuIZeJJVhe1gyrFDfBjSJzhIDRVRgk8VzujeDh42AAAAoh+LCAAAAAAAAP9tjTEOwjAQBM8BClpKHuFItIiK1krDC0x8GCfWnbEdkooX8TX+gCESFVvtrLSa5wtWKcKBo5UdUu8otU4GP9jS5Mixv3geZcdn2TIl9igbHBs2eJyx4YwwR1SwULBGaj0nRzbDRnX6rmuvydanHMu2V1A5c4MHCFXMWcf8hSnC9jqYxPTz/BXAFEIGsfuclm8zQVqFvQAAAA==[0m[Pipeline] Start of Pipeline
+[2025-03-27T20:54:50.044Z] [8mha:////4KNHsZ6VB+kH0oDqsGDDNwXhvv+n4dr1O85LvGMjoXOEAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQSbaGmsbAmNJ0AWEZb8zwLrbuWJvJp3kLiJlZNMMm+a93rDOic4UbLcG+wdZu14DKOti0+U+lugiXu6ck2YKRguzSSpM+cFJRUDS1gDKwEbgzpQdmgLbIVXD9UGhba9lFS/o4DGdQM8gYlqLiqVL8wJdvexy4Q/z18BzLEA29ce4gfya1RxvAAAAA==[0m[Pipeline] properties
+[2025-03-27T20:54:50.084Z] [8mha:////4OwpkTiaX5gXr8fj3xHlEnxckBGRR8rKDL7sSuTqcEXyAAAApR+LCAAAAAAAAP9tjUEKwjAURH8qXbh16SFSEHfiym3IxhPEJMa04f82SW1XnsireQejBVcODMwMDO/5gjpFOFJ0vLXYeUza8z6MriQ+UeyugSbe0oVrwkTBcmknScaeliopW1jEKlgJWFvUgZJHl2EjWnVXTVDomnOOZTsIqLwZ4AFMFHJWMX/LHGF7G00i/HH+AmDuM7Bd8f7zq9/WVBy+wAAAAA==[0m[Pipeline] node
+[2025-03-27T20:55:01.293Z] Running on [8mha:////4Exy0Liac7ms4HpTXiINv1wqJqkgjYFQiEEImvOrQgL0AAAAtB+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAy1EgZN/eT83ILSktQi/cScgsy8VFUjl6yUbCNDIG1gYJCamFRVVWFUWF6kDwAji5O23gAAAA==[0malpine-jdk21-000eabzzx2qwr on mark-pc2 in /home/jenkins/agent/workspace/a-scripted-with-parameters
+[2025-03-27T20:55:01.304Z] [8mha:////4Pd4lGsUy24xDfZSrQgsTn3Lv+KY8ipxOaaZOkcblt8RAAAApR+LCAAAAAAAAP9tjTEOwjAUQ3+KOrAycoh0gQkxsUZZOEFIQkgb/d8mKe3EibgadyBQiQlLlmxL1nu+oE4RjhQdby12HpP2vA+jK4lPFLtroIm3dOGaMFGwXNpJkrGnpUrKFhaxClYC1hZ1oOTRZdiIVt1VExS65pxj2Q4CKm8GeAAThZxVzN8yR9jeRpMIf5y/AJj7DGxXvP/86jc09154wAAAAA==[0m[Pipeline] {
+[2025-03-27T20:55:01.493Z] [8mha:////4FRV7Fyx6YUOyMRyHen5Y/VTczWlwKyquIy/ACLu1Ve7AAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQRbaWOsbAmNJ0AWEZb8zwLrbuWJvJp3kLiJlZNMMm+a93rDOic4UbLcG+wdZu14DKOti0+U+lugiXu6ck2YKRguzSSpM+cFJRUDS1gDKwEbgzpQdmgLbIVXD9UGhba9lFS/o4DGdQM8gYlqLiqVL8wJdvexy4Q/z18BzLEA29ce4gcPryYRvAAAAA==[0m[Pipeline] checkout
+[2025-03-27T20:55:01.862Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson16410005670176417364.sh
+[2025-03-27T20:55:01.899Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson18090120260990654448.sh
+[2025-03-27T20:55:01.915Z] The recommended git tool is: NONE
+[2025-03-27T20:55:02.392Z] No credentials specified
+[2025-03-27T20:55:02.405Z] Cloning the remote Git repository
+[2025-03-27T20:55:02.463Z] Cloning repository https://github.com/jenkinsci/git-client-plugin.git
+[2025-03-27T20:55:02.502Z]  > /usr/bin/git init /home/jenkins/agent/workspace/a-scripted-with-parameters # timeout=10
+[2025-03-27T20:55:02.533Z] Fetching upstream changes from https://github.com/jenkinsci/git-client-plugin.git
+[2025-03-27T20:55:02.535Z]  > /usr/bin/git --version # timeout=10
+[2025-03-27T20:55:02.550Z]  > git --version # 'git version 2.47.2'
+[2025-03-27T20:55:02.551Z]  > /usr/bin/git fetch --tags --force --progress -- https://github.com/jenkinsci/git-client-plugin.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2025-03-27T20:55:04.606Z] Avoid second fetch
+[2025-03-27T20:55:04.635Z] Checking out Revision 392f979fb33ac9e9c8d60f6e32fe04d00824ae66 (refs/tags/git-client-5.0.1)
+[2025-03-27T20:55:04.849Z] Commit message: "[maven-release-plugin] prepare release git-client-5.0.1"
+[2025-03-27T20:55:04.202Z]  > /usr/bin/git config remote.origin.url https://github.com/jenkinsci/git-client-plugin.git # timeout=10
+[2025-03-27T20:55:04.206Z]  > /usr/bin/git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+[2025-03-27T20:55:04.608Z]  > /usr/bin/git rev-parse refs/remotes/origin/refs/tags/git-client-5.0.1^{commit} # timeout=10
+[2025-03-27T20:55:04.628Z]  > /usr/bin/git rev-parse refs/tags/git-client-5.0.1^{commit} # timeout=10
+[2025-03-27T20:55:04.641Z]  > /usr/bin/git config core.sparsecheckout # timeout=10
+[2025-03-27T20:55:04.645Z]  > /usr/bin/git checkout -f 392f979fb33ac9e9c8d60f6e32fe04d00824ae66 # timeout=10
+[2025-03-27T20:55:04.852Z]  > /usr/bin/git rev-list --no-walk 392f979fb33ac9e9c8d60f6e32fe04d00824ae66 # timeout=10
+[2025-03-27T20:55:04.881Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson6008167177967614995.sh
+[2025-03-27T20:55:04.902Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson8703857496291992247.sh
+[2025-03-27T20:55:04.918Z] The recommended git tool is: NONE
+[2025-03-27T20:55:04.923Z] No credentials specified
+[2025-03-27T20:55:04.934Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson3338985669642472234.sh
+[2025-03-27T20:55:04.953Z] [git] $ sh -e /home/jenkins/agent/tools/git/hudson8040951074042659635.sh
+[2025-03-27T20:55:04.967Z] The recommended git tool is: NONE
+[2025-03-27T20:55:04.972Z] No credentials specified
+[2025-03-27T20:55:04.924Z]  > /usr/bin/git rev-parse HEAD^{commit} # timeout=10
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] Recording commits of 'git https://github.com/jenkinsci/git-client-plugin.git'
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] Found previous build 'a-scripted-with-parameters #34' that contains recorded Git commits
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] -> Starting recording of new commits since '7788b35'
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] -> Single parent commit found - branch is already descendant of target branch head
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] -> Using head commit '392f979' as starting point
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] -> Recorded 200 new commits
+[2025-03-27T20:55:08.124Z] [GitCheckoutListener] -> Git commit decorator successfully obtained 'hudson.plugins.git.browser.GithubWeb@31829885' to render commit links
+[2025-03-27T20:55:08.127Z] [8mha:////4GyjzCX+1EI1UpQLGcD/tE/7iThl+zCNLTfw4dYfK8eJAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQRbGQtjZUtoPAGyiLDkfxZYdytP5NW8g8RNrJxkknnTvNcb1jnBiZLl3mDvMGvHYxhtXXyi1N8CTdzTlWvCTMFwaSZJnTkvKKkYWMIaWAnYGNSBskNbYCu8eqg2KLTtpaT6HQU0rhvgCUxUc1GpfGFOsLuPXSb8ef4KYI4F2L72ED9Onj0IvAAAAA==[0m[Pipeline] sh
+[2025-03-27T20:55:08.498Z] + mkdir target
+[2025-03-27T20:55:08.498Z] + date
+[2025-03-27T20:55:08.498Z] + cat target/date
+[2025-03-27T20:55:08.498Z] Thu Mar 27 20:55:08 UTC 2025
+[2025-03-27T20:55:08.518Z] [8mha:////4FceFbTVdggSeEfkjqyOzr6JOWqcD3quAYQauiiY37luAAAAox+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQRbmZgYK1tC4wmQRYQl/7PAult5Iq/mHSRuYuUkk8yb5r3esM4JTpQs9wZ7h1k7HsNo6+ITpf4WaOKerlwTZgqGSzNJ6sx5QUnFwBLWwErAxqAOlB3aAlvh1UO1QaFtLyXV7yigcd0AT2CimotK5Qtzgt197DLhz/NXAHMswPa1h/gBgYKlj7wAAAA=[0m[Pipeline] cleanWs
+[2025-03-27T20:55:08.523Z] [WS-CLEANUP] Deleting project workspace...
+[2025-03-27T20:55:08.607Z] [WS-CLEANUP] done
+[2025-03-27T20:55:08.608Z] [8mha:////4LUjRIC8WRtvW5zSHM+JqI4pKIdYLisB9iiBJBwYvymMAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQRbWRhjZUtoPAGyiLDkfxZYdytP5NW8g8RNrJxkknnTvNcb1jnBiZLl3mDvMGvHYxhtXXyi1N8CTdzTlWvCTMFwaSZJnTkvKKkYWMIaWAnYGNSBskNbYCu8eqg2KLTtpaT6HQU0rhvgCUxUc1GpfGFOsLuPXSb8ef4KYI4F2L72ED/As76WvAAAAA==[0m[Pipeline] sh
+[2025-03-27T20:55:08.888Z] + ls -d target
+[2025-03-27T20:55:08.888Z] ls: target: No such file or directory
+[2025-03-27T20:55:08.901Z] [8mha:////4GD7lyAXRhNrDe/0jgXMLETT2/mNy/TfQdcYwIgPkB8rAAAAox+LCAAAAAAAAP9tjTESgjAQRT84FraWHiJoYeVY2WZoPEGEGAOZXUwWofJEXs07yMiMlb/67zXv9cYyRRw5OtVYaj2lyqsu9G56auDYXgMPquGLqpgSB6tKO5Rc29OMJYvFvCzHQmNlqQqcPDnBWjfmYYpgyBVniZM7aOS+vuOJTE9lMVG+MEZsbn2dmH6dvwGMXSfId1tBtv8AExtCpb0AAAA=[0m[Pipeline] }
+[2025-03-27T20:55:08.905Z] [8mha:////4FCfaNB1PwBsPGJ0QWzIQfmpw6fyyuLIHpHdqk552ZRMAAAAox+LCAAAAAAAAP9tjbEOgjAURS8YB1dHP6KExM04uTYsfkGFWgvNe9g+hMkv8tf8B4kkTt7pnrOc1xvrFHHk6FRrqfOUaq/6MLj5qZFjdw08qpYvqmZKHKyq7FhxY08LViwWy7IcK42NpTpw8uQEW92ahymCIVecJc7uoJH75o4nMj2XxUT5whSxuw1NYvp1/gYw9b0gL0tBtv8ANQIl770AAAA=[0m[Pipeline] // node
+[2025-03-27T20:55:08.911Z] [8mha:////4MpxWpoRj05yzz1k7q7v59B2RxO4+cfSZrm+seWmtZZ0AAAAoh+LCAAAAAAAAP9tjTESgjAQRT84FraWHiKMtI6VbYbGE0SIMZDZxWQRKk/k1byDjMxY+av/XvNeb6xTxJGjU62lzlOqverD4OanRo7dNfCoWr6omilxsKqyY8WNPS1YsVgsy3KsNDaW6sDJkxNsdWsepgiGXHGWOLuDRu6bO57I9FwWE+ULU8TuNjSJ6df5G8DU94J8Xwqy8gPQ3eZBvQAAAA==[0m[Pipeline] End of Pipeline
+[2025-03-27T20:55:08.928Z] ERROR: script returned exit code 1
+[2025-03-27T20:55:08.942Z] [Gitea] do not publish assets due to build being non-Successfully
+[2025-03-27T20:55:08.944Z] Finished: FAILURE

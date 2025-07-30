@@ -43,6 +43,7 @@ def run_diagnosis_pipeline(raw_log: str, workspace_path: str, enable_self_correc
     logger.debug(f"Cleaned Log:\n{cleaned_log}\n")
 
     routing_decision = router_agent.run(message=cleaned_log)
+    logger.info(f"STEP 2: Routing Decision Made. Decision: {routing_decision}")
     failure_category_decision = routing_decision.content.failure_category
     logger.info(f"STEP 2: Routing Complete. Initial Decision: {failure_category_decision}")
 
