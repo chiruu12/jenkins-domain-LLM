@@ -1,0 +1,14 @@
+streamlit
+python-dotenv
+agno
+pydantic
+pytest
+vllm
+cohere
+google-genai
+groq
+llama-api-client
+LiteLLM
+LMStudio
+ollama-python
+mistralai

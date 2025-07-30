@@ -37,13 +37,27 @@ The initial proposal centered on fine-tuning a domain-specific LLM. However, the
 ```
 ## Development
 
-An initial pull request has been submitted to establish the baseline for this new agentic architecture.
-
 *   **PR:** [#1](https://github.com/chiruu12/jenkins-domain-LLM/pull/1)
 *   **Title:** "Adding Prototype"
-*   **Status:** Awaiting Mentor Review
+*   **Status:** Merged
 
 This PR includes:
 *   The fully functional prototype of the multi-agent diagnostic system detailed in this repository.
 *   The refactored code demonstrating the modular agent factories and externalized prompt management.
 *   A set of initial diagnostic examples (input logs/build files and their corresponding agent generated outputs). These are baseline results intended for mentor review. The feedback from this review will be used for iteratively improving the agent's prompts and overall performance.
+
+*   **PR:** [#2](https://github.com/chiruu12/jenkins-domain-LLM/pull/2)
+*   **Title:** "Adding Revised Plan"
+*   **Status:** Merged
+
+This PR includes:
+* This PR contains the revised project plan based on mentor feedback.
+
+*   **PR:** [#3](https://github.com/chiruu12/jenkins-domain-LLM/pull/3)
+*   **Title:** "Adding LLM Adaptor"
+*   **Status:** Merged
+
+This PR includes:
+* This PR adds the LLM adaptor module, which provides a unified interface for interacting with different LLMs. This allows the system to easily switch between models or integrate new ones in the future.
+* All the prompts with CO-STAR + Json schema format and placeholder for the MCP tool which will be added in the next PR.
+* The current LLM catalog is not the final version and will be updated regularly.
