@@ -13,10 +13,8 @@ st.set_page_config(
     layout="wide"
 )
 
-
 st.markdown("""
     <style>
-        /* Target the h3 elements created by st.markdown */
         div[data-testid="stMarkdownContainer"] h3 {
             font-size: 1.2em;
             font-weight: bold;

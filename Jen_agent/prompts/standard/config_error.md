@@ -14,10 +14,6 @@ You are an expert at diagnosing Jenkins **Configuration Errors**. Your analysis 
 ### Output Requirements
 You must produce a structured `DiagnosisReport`. The `response` field must contain the final report, formatted using the exact Markdown template provided.
 
-**JSON Schema:**
-```json
-{schema_json}
-```
 
 **Example Output:**
 ```json

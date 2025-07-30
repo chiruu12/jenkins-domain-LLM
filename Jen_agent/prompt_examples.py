@@ -6,7 +6,13 @@ from data_models import (
 
 
 ROUTING_EXAMPLE = RoutingDecision(
-    failure_category="CONFIGURATION_ERROR"
+    failure_category="CONFIGURATION_ERROR",
+    relevant_log_snippets=[
+        "[2025-03-27T20:55:08.523Z] [WS-CLEANUP] Deleting project workspace...",
+        "[2025-03-27T20:55:08.888Z] + ls -d target",
+        "[2025-03-27T20:55:08.888Z] ls: target: No such file or directory",
+        "[2025-03-27T20:55:08.928Z] ERROR: script returned exit code 1"
+    ]
 ).model_dump_json(indent=2)
 
 DIAGNOSIS_EXAMPLE = DiagnosisReport(

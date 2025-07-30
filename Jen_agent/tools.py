@@ -36,6 +36,18 @@ class JenkinsWorkspaceTools(Toolkit):
         except Exception as e:
             return f"An unexpected error occurred while reading '{file_path}': {e}"
 
+class LogAccessTools(Toolkit):
+    def __init__(self):
+        super().__init__(name="log_access_tools")
+        self._full_log_content: str = "Log content not set."
+        self.register(self.get_full_log)
+
+    def set_log_content(self, log_content: str):
+        self._full_log_content = log_content
+
+    def get_full_log(self) -> str:
+        return self._full_log_content
+
 #TODO: add the RAG tool
 class KnowledgeBaseTools(Toolkit):
     def __init__(self):

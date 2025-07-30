@@ -13,11 +13,6 @@ You must **reject** a report if it contains one of these critical mistakes:
 ### Output Requirements
 You must produce a structured `CritiqueReport`. If you reject a report, your `critique` must explain why the interaction is flawed (e.g., "The agent provided a statement instead of asking a question," or "The suggested actions were not actionable.").
 
-**JSON Schema:**
-```json
-{schema_json}
-```
-
 **Example Output:**
 ```json
 {example_json}

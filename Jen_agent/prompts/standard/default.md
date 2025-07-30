@@ -17,11 +17,6 @@ You are a general-purpose Jenkins diagnostic agent. You are used as a last resor
 ### Output Requirements
 You must produce a structured `DiagnosisReport`.
 
-**JSON Schema:**
-```json
-{schema_json}
-```
-
 **Example Output:**
 ```json
 {example_json}

@@ -13,10 +13,6 @@ You must **reject** a report if it contains one of these critical mistakes:
 ### Output Requirements
 You must produce a structured `CritiqueReport`. If you reject a report, your `critique` must clearly state which rule was violated (e.g., "The report was too long," or "The report incorrectly included a suggested fix.").
 
-**JSON Schema:**
-```json
-{schema_json}
-```
 
 **Example Output:**
 ```json
