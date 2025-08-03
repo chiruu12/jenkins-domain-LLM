@@ -29,15 +29,16 @@ def _load_prompt_template(prompt_path: str, output_example: str, tools: List[Bas
         raise FileNotFoundError(f"Main prompt file not found: {main_template_path}")
     main_template = main_template_path.read_text()
 
-    main_template = main_template.format(example_json=output_example)
-
     tool_prompts = [tool.prompt for tool in tools if tool.prompt]
 
     if tool_prompts:
         combined_tool_usage = "\n---\n".join(tool_prompts)
-        final_prompt = main_template.replace("{tool_usage}", combined_tool_usage)
+        prompt = main_template.replace("{tool_usage}", combined_tool_usage)
     else:
-        final_prompt = main_template.replace("# Tool Usage\n{tool_usage}", "")
+        prompt = main_template.replace("### Tool Usage", "")
+        prompt = prompt.replace("{tool_usage}", "")
+
+    final_prompt = prompt.format(example_json=output_example)
 
     return final_prompt
 
