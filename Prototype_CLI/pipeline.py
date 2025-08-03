@@ -1,6 +1,7 @@
 import logging
 import difflib
 from sanitizer import LogSanitizer
+import config
 from log_manager import LLMInteractionLogger
 from agents import get_router_agent, get_specialist_agent, get_critic_agent, get_common_tools
 from tools.knowledge_base import KnowledgeBaseTools
@@ -39,28 +40,24 @@ async def run_diagnosis_pipeline(
     failure_category = routing_response.content.failure_category
     logger.info(f"STEP 2: Routing Complete. Decision: {failure_category}")
 
-    agent_factory_map = {
-        "CONFIGURATION_ERROR": "CONFIGURATION_ERROR",
-        "TEST_FAILURE": "TEST_FAILURE",
-        "DEPENDENCY_ERROR": "DEPENDENCY_ERROR",
-        "INFRA_FAILURE": "INFRA_FAILURE",
-        "UNKNOWN": "UNKNOWN",
-    }
-    agent_key = _get_best_agent_key(failure_category, list(agent_factory_map.keys()))
+    agent_key = _get_best_agent_key(failure_category, list(config.agent_factory_map.keys()))
+    log_snippets = routing_response.content.relevant_log_snippets
+    formatted_snippets = "\n".join(log_snippets)
 
     logger.info("STEP 3: Preparing Specialist Agent and Tools...")
-    common_tools = get_common_tools(kb_tool=kb_tool)
+    workspace_tool = JenkinsWorkspaceTools(base_directory_path=workspace_path, prompt_dir=config.PROMPTS_DIR)
+    log_tool = LogAccessTools(prompt_dir=config.PROMPTS_DIR)
+    log_tool.set_log_content(cleaned_log)
 
-    for tool in common_tools:
-        if isinstance(tool, JenkinsWorkspaceTools):
-            tool.base_path = workspace_path
-        if isinstance(tool, LogAccessTools):
-            tool.set_log_content(cleaned_log)
+    specialist_tools = [workspace_tool, kb_tool, log_tool]
 
-    specialist_agent = get_specialist_agent(agent_key, common_tools=common_tools)
+    specialist_agent = get_specialist_agent(agent_key, tools=specialist_tools)
     logger.info(f"STEP 3: Specialist Agent '{specialist_agent.description}' selected.")
 
-    diagnosis_prompt = f"The failure has been classified as {agent_key}. Please investigate the following logs and attached workspace files to produce a detailed diagnosis report.\n\nLogs:\n{cleaned_log}"
+    diagnosis_prompt = (
+        f"The failure has been classified as {agent_key}. Please investigate the provided logs and "
+        f"workspace to produce a detailed diagnosis report.\nRelevant Log Snippets:\n{formatted_snippets}"
+    )
 
     if not enable_self_correction:
         logger.info("STEP 4: Single-Pass Diagnosis Running...")

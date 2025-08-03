@@ -70,11 +70,19 @@ class LLMInteractionLogger:
             messages = []
             if response.messages:
                 for msg in response.messages:
+                    logged_metrics = None
+
+                    if msg.metrics:
+                        if msg.role == "assistant":
+                            clean_metrics = vars(msg.metrics).copy()
+                            clean_metrics.pop('timer', None)
+                            logged_metrics = clean_metrics
+
                     messages.append({
                         "role": msg.role,
                         "content": msg.content,
                         "tool_calls": msg.tool_calls,
-                        "metrics": msg.metrics if msg.metrics else None
+                        "metrics": logged_metrics
                     })
 
             input_tokens = sum(usage_metrics.get("prompt_tokens", []))
@@ -89,9 +97,10 @@ class LLMInteractionLogger:
                 cumulative_input_tokens=self.total_input_tokens,
                 cumulative_output_tokens=self.total_output_tokens,
             )
+
             response_log = LLMResponseLog(
                 model_id=model_id,
-                final_content=content.model_dump() if isinstance(content, BaseModel) else content,
+                final_content=content.model_dump_json(indent=2) if content else None,
                 token_usage=token_log,
                 full_message_history=messages
             )

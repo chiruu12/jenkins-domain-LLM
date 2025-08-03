@@ -24,6 +24,7 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+
 async def main():
     console.print(Panel("🚀 [bold blue]Welcome to the Jenkins AI Diagnosis Wizard[/bold blue] 🚀", expand=False))
 
@@ -34,13 +35,18 @@ async def main():
             break
         console.print(f"[bold red]Error:[/bold red] File not found at '{log_file_str}'. Please try again.")
 
-    workspace_str = Prompt.ask("[bold yellow]Enter path to the build workspace (optional, press Enter to skip)[/bold yellow]", default=None)
+    workspace_str = Prompt.ask(
+        "[bold yellow]Enter path to the build workspace (optional, press Enter to skip)[/bold yellow]", default=None
+    )
     workspace = Path(workspace_str) if workspace_str else None
     if workspace and (not workspace.exists() or not workspace.is_dir()):
         console.print(f"[bold red]Error:[/bold red] Workspace directory not found at '{workspace_str}'.")
         raise typer.Exit(code=1)
 
-    enable_correction = Confirm.ask("[bold yellow]Enable critic agent for self-correction? (Recommended)[/bold yellow]", default=True)
+    enable_correction = Confirm.ask(
+        "[bold yellow]Enable critic agent for self-correction? (Recommended)[/bold yellow]",
+        default=True
+    )
 
     run_timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     run_dir = config.RUNS_DIR / run_timestamp
@@ -55,8 +61,9 @@ async def main():
     config.LOGS_DIR.mkdir(exist_ok=True)
     setup_application_logger(config.LOGS_DIR)
     llm_logger = LLMInteractionLogger(config.LOGS_DIR)
+
     rag_manager = CoreLightRAGManager()
-    kb_tool = KnowledgeBaseTools(core_manager=rag_manager)
+    kb_tool = KnowledgeBaseTools(prompt_dir=config.PROMPTS_DIR, core_manager=rag_manager)
 
     try:
         await rag_manager.initialize()
@@ -76,7 +83,7 @@ async def main():
         console.print(Panel("✅ [bold green]Diagnosis Complete[/bold green]", expand=False))
 
         report_data = json.loads(final_report_json)
-        report_md = f"### 🕵️ Root Cause\n{report_data.get('root_cause', 'N/A')}\n\n###(Evidence)\n"
+        report_md = f"### 🕵️ Root Cause\n{report_data.get('root_cause', 'N/A')}\n\n### Evidence\n"
         for title, evidence in report_data.get('evidence', {}).items():
             report_md += f"**{title}:**\n```\n{evidence}\n```\n"
         report_md += "\n### 💡 Suggested Fix\n"
@@ -84,7 +91,12 @@ async def main():
             report_md += f"{i}. {step}\n"
         report_md += f"\n---\n*Confidence: **{report_data.get('confidence', 'N/A')}***"
 
-        console.print(Panel(Markdown(report_md), title="[bold]Diagnosis Report[/bold]", border_style="cyan"))
+        console.print(Panel(
+            Markdown(report_md),
+            title="[bold]Diagnosis Report[/bold]",
+            border_style="cyan"
+        ))
+
         summary_panel = Panel(
             f"[bold yellow]LLM Interaction Summary:[/bold yellow]\n{llm_logger.get_summary()}",
             title="Usage Statistics", border_style="yellow"
@@ -99,9 +111,11 @@ async def main():
             await rag_manager.finalize()
             console.print("[dim]Knowledge Base finalized.[/dim]")
 
+
 @app.callback()
 def callback():
     pass
+
 
 if __name__ == "__main__":
     try:

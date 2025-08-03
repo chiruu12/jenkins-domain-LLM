@@ -1,13 +1,18 @@
 import os
 import logging
 from pathlib import Path
-from agno.tools import Toolkit
+from .base_tool import BaseTool
 
 logger = logging.getLogger(__name__)
 
-class JenkinsWorkspaceTools(Toolkit):
-    def __init__(self, base_directory_path: str):
-        super().__init__(name="jenkins_workspace_tools")
+class JenkinsWorkspaceTools(BaseTool):
+    """
+    A toolkit for managing Jenkins workspace files, allowing reading and listing files in a specified directory.
+    Always use list_files_in_workspace to get a directory listing, and only then use read_file_from_workspace to read file contents.
+    """
+    def __init__(self, base_directory_path: str, prompt_dir: str = "prompts"):
+        """ Initializes the JenkinsWorkspaceTools with a base directory path."""
+        super().__init__(name="jenkins_workspace_tools", prompt_dir=Path(prompt_dir).resolve() )
         self._base_path = Path.cwd()
         self.base_path = base_directory_path
         self.register(self.read_file_from_workspace)
@@ -29,7 +34,9 @@ class JenkinsWorkspaceTools(Toolkit):
             logger.error(f"Failed to set base path to '{value}': {e}", exc_info=True)
             raise ValueError(f"Base directory could not be resolved or created: {value}")
 
+
     def read_file_from_workspace(self, file_path: str) -> str:
+        """This tool is used to read a file from the Jenkins workspace directory."""
         logger.info(f"Attempting to read file from workspace: '{file_path}'")
         try:
             target_path = self.base_path.joinpath(file_path).resolve()
@@ -50,6 +57,7 @@ class JenkinsWorkspaceTools(Toolkit):
             return f"An unexpected error occurred while reading '{file_path}': {e}"
 
     def list_files_in_workspace(self, subdirectory: str = None) -> str:
+        """This tool is used to list files in the Jenkins workspace directory."""
         try:
             start_path = self.base_path
             if subdirectory:

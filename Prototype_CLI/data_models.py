@@ -91,5 +91,3 @@ class LLMErrorLog(BaseModel):
     model_id: str
     error_message: str
     raw_response: Optional[str] = None
-
-

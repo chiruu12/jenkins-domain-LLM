@@ -3,7 +3,8 @@ import os
 from typing import Optional, List, Dict, Any
 import numpy as np
 import asyncio
-from agno.tools import Toolkit
+from pathlib import Path
+from .base_tool import BaseTool
 from pydantic import BaseModel, Field, DirectoryPath
 from openai import AsyncOpenAI
 from sentence_transformers import SentenceTransformer
@@ -118,10 +119,11 @@ class CoreLightRAGManager:
         return response if isinstance(response, str) else str(response)
 
 
-class KnowledgeBaseTools(Toolkit):
-    def __init__(self, core_manager: Optional[CoreLightRAGManager] = None):
-        super().__init__(name="knowledge_base_tools")
+class KnowledgeBaseTools(BaseTool):
+    def __init__(self, core_manager: Optional[CoreLightRAGManager] = None, prompt_dir: Optional[str] = "prompts"):
+        super().__init__(name="knowledge_base_tools", prompt_dir=Path(prompt_dir).resolve())
         self.core_manager = core_manager
+
         if LIGHTRAG_AVAILABLE and self.core_manager and self.core_manager.rag_instance:
             self.register(self.query_knowledge_base)
         else:
@@ -137,4 +139,6 @@ class KnowledgeBaseTools(Toolkit):
             return f"Error during knowledge base query: {e}"
 
     def dummy_query(self, query: str) -> str:
+        logger.warning(f"Knowledge Base tool is not configured or available agent's query was: {query}.")
         return "Knowledge Base is not configured or available."
+

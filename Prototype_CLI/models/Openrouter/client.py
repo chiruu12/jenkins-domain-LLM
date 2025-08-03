@@ -15,3 +15,4 @@ def get_openrouter_client(model_id: str, api_key :str = os.getenv("OPENROUTER_AP
 
     logger.info(f"Creating OpenRouter client for model: {model_id}")
     return OpenRouter(id=model_id, api_key=api_key)
+
