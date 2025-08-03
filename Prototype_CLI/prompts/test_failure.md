@@ -14,6 +14,9 @@ You are an expert at diagnosing **Test Failures** in Jenkins builds. You special
 ### Output Requirements
 You must produce a structured `DiagnosisReport`.
 
+### Tool Usage
+{tool_usage}
+
 **Example Output:**
 ```json
 {example_json}
