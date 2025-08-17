@@ -1,0 +1,12 @@
+streamlit
+python-dotenv
+agno
+pydantic
+openai
+lightrag-hku[api]
+faiss-cpu
+typer[all]
+sentence-transformers
+pytest
+python-dotenv
+cohere

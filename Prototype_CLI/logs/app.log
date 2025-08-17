@@ -1,0 +1,75 @@
+2025-07-30 20:31:58 - root - INFO - Application logger initialized. Logging to logs\app.log
+2025-07-30 20:31:58 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-07-30 20:31:58 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-07-30 20:32:04 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2025-07-30 20:32:04 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2025-07-30 20:32:04 - faiss - INFO - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-07-30 20:32:04 - pipeline - INFO - --- DIAGNOSIS PIPELINE START ---
+2025-07-30 20:32:04 - pipeline - INFO - STEP 1: Log Sanitization Complete.
+2025-07-30 20:32:04 - models.Openrouter.client - INFO - Creating OpenRouter client for model: openai/gpt-4o-mini
+2025-07-30 20:32:04 - pipeline - INFO - STEP 2: Routing failure with openai/gpt-4o-mini...
+2025-07-30 20:32:10 - pipeline - INFO - STEP 2: Routing Complete. Decision: CONFIGURATION_ERROR
+2025-07-30 20:32:10 - pipeline - INFO - STEP 3: Preparing Specialist Agent and Tools...
+2025-07-30 20:32:10 - tools.jenkins_workspace - INFO - JenkinsWorkspaceTools initialized for directory: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\workspace'
+2025-07-30 20:32:10 - tools.log_access - INFO - Full log content (3164 chars) has been set in LogAccessTools.
+2025-07-30 20:32:10 - pipeline - INFO - STEP 3: Specialist Agent 'Diagnoses CONFIGURATION_ERROR failures.' selected.
+2025-07-30 20:32:10 - pipeline - INFO - STEP 4: Self-Correction Loop Initialized.
+2025-07-30 20:32:10 - pipeline - INFO - --- LOOP ATTEMPT 1/2 ---
+2025-07-30 20:32:14 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'Jenkinsfile'
+2025-07-30 20:32:14 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'pom.xml'
+2025-07-30 20:32:14 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-31-58\Jenkinsfile'
+2025-07-30 20:32:14 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-31-58\pom.xml'
+2025-07-30 20:32:18 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:32:18 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:32:20 - tools.log_access - INFO - Agent requested the full log content.
+2025-07-30 20:32:22 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:32:22 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:32:28 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'target/date'
+2025-07-30 20:32:28 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'target'
+2025-07-30 20:32:28 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-31-58\target\date'
+2025-07-30 20:32:28 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-31-58\target'
+2025-07-30 20:32:30 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log'
+2025-07-30 20:32:30 - tools.jenkins_workspace - INFO - Successfully read 8600 characters from 'log'
+2025-07-30 20:32:32 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log-index'
+2025-07-30 20:32:32 - tools.jenkins_workspace - INFO - Successfully read 60 characters from 'log-index'
+2025-07-30 20:32:35 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log-index'
+2025-07-30 20:32:35 - tools.jenkins_workspace - INFO - Successfully read 60 characters from 'log-index'
+2025-07-30 20:32:37 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log'
+2025-07-30 20:32:37 - tools.jenkins_workspace - INFO - Successfully read 8600 characters from 'log'
+2025-07-30 20:32:39 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log'
+2025-07-30 20:32:39 - tools.jenkins_workspace - INFO - Successfully read 8600 characters from 'log'
+2025-07-30 20:32:42 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'log-index'
+2025-07-30 20:32:42 - tools.jenkins_workspace - INFO - Successfully read 60 characters from 'log-index'
+2025-07-30 20:32:44 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:32:44 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:32:47 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:32:47 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:32:50 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:32:50 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:39:34 - root - INFO - Application logger initialized. Logging to logs\app.log
+2025-07-30 20:39:34 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-07-30 20:39:34 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-07-30 20:39:41 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2025-07-30 20:39:41 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2025-07-30 20:39:41 - faiss - INFO - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+2025-07-30 20:39:41 - pipeline - INFO - --- DIAGNOSIS PIPELINE START ---
+2025-07-30 20:39:41 - pipeline - INFO - STEP 1: Log Sanitization Complete.
+2025-07-30 20:39:41 - models.Openrouter.client - INFO - Creating OpenRouter client for model: openai/gpt-4.1-mini-2025-04-14
+2025-07-30 20:39:41 - pipeline - INFO - STEP 2: Routing failure with openai/gpt-4.1-mini-2025-04-14...
+2025-07-30 20:39:45 - pipeline - INFO - STEP 2: Routing Complete. Decision: CONFIGURATION_ERROR
+2025-07-30 20:39:45 - pipeline - INFO - STEP 3: Preparing Specialist Agent and Tools...
+2025-07-30 20:39:45 - tools.jenkins_workspace - INFO - JenkinsWorkspaceTools initialized for directory: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\workspace'
+2025-07-30 20:39:45 - tools.log_access - INFO - Full log content (3164 chars) has been set in LogAccessTools.
+2025-07-30 20:39:45 - pipeline - INFO - STEP 3: Specialist Agent 'Diagnoses CONFIGURATION_ERROR failures.' selected.
+2025-07-30 20:39:45 - pipeline - INFO - STEP 4: Self-Correction Loop Initialized.
+2025-07-30 20:39:45 - pipeline - INFO - --- LOOP ATTEMPT 1/2 ---
+2025-07-30 20:39:47 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'Jenkinsfile'
+2025-07-30 20:39:47 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'pom.xml'
+2025-07-30 20:39:47 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-39-34\Jenkinsfile'
+2025-07-30 20:39:47 - tools.jenkins_workspace - WARNING - File not found at resolved path: 'C:\Users\CHIRAG\PycharmProjects\jenkins-domain-LLM\Prototype_CLI\runs\2025-07-30_20-39-34\pom.xml'
+2025-07-30 20:39:50 - tools.jenkins_workspace - INFO - Attempting to read file from workspace: 'build.xml'
+2025-07-30 20:39:50 - tools.jenkins_workspace - INFO - Successfully read 25514 characters from 'build.xml'
+2025-07-30 20:40:00 - pipeline - INFO - DRAFT GENERATED (Reason: The console log shows the 'target' directory is created and used early in the build, but the cleanWs step deletes the workspace including 'target', so the subsequent listing of 'target' fails with 'No such file or directory'. This clearly indicates misordering of workspace cleaning and file usage in the pipeline configuration, a standard CI configuration error.)
+2025-07-30 20:40:05 - pipeline - INFO - CRITIC REVIEW: Approved=True, Feedback='Approved'
+2025-07-30 20:40:05 - pipeline - INFO - --- LOOP END: Report Approved ---
+2025-07-30 20:40:05 - pipeline - INFO - --- DIAGNOSIS PIPELINE END ---
