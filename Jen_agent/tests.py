@@ -87,6 +87,12 @@ async def test_lmstudio_provider():
         response = await agent.arun("Who are you?")
         assert response and len(response.content) > 1
         print("[SUCCESS] Agent.arun() returned a valid response.")
+
+        embed_func = provider.get_embedding_function()
+        embeddings = await embed_func(["local embedding test"])
+        assert isinstance(embeddings, np.ndarray) and embeddings.shape[0] == 1
+        print("[SUCCESS] get_embedding_function returned valid embeddings.")
+
     except Exception as e:
         print(f"[FAILED] LMStudioProvider test failed: {e}")
 

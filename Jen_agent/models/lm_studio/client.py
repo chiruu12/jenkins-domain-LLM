@@ -16,12 +16,12 @@ class LMStudioProvider(BaseProvider):
     def __init__(self, base_url: Optional[str] = None):
         self.base_url = base_url or os.environ.get("LMSTUDIO_BASE_URL")
         if not self.base_url:
-            raise ValueError("LMStudioProvider requires a base_url (e.g., 'http://localhost:1234/v1').")
+            raise ValueError("LMStudioProvider requires a base_url (e.g., 'http://localhost:1234/').")
 
         self.client = AsyncOpenAI(base_url=self.base_url, api_key="not-needed")
         logger.info(f"Initialized LMStudio client for base_url: {self.base_url}")
 
-    def get_chat_model(self, model_id: Optional[str] = "qwen/qwen3-4b-thinking-2507") -> LMStudio:
+    def get_chat_model(self, model_id: Optional[str] = "qwen/qwen3-4b-thinking-2507") -> Model:
         return LMStudio(id=model_id, base_url=self.base_url)
 
     def get_embedding_function(
