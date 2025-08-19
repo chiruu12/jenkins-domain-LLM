@@ -5,7 +5,7 @@ pydantic
 openai
 lightrag-hku[api]
 faiss-cpu
-typer[all]
+typer
 sentence-transformers
 pytest
 python-dotenv

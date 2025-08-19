@@ -38,7 +38,7 @@ CRITIQUE_EXAMPLE = CritiqueReport(
 ).model_dump_json(indent=2)
 
 QUICK_SUMMARY_EXAMPLE = QuickSummaryReport(
-    summary="The build likely failed due to a test assertion error in the `com.mycompany.app.AppTest` class.",
+    summary="The build likely failed due to a test assertion error in the  class.",
     confidence="medium"
 ).model_dump_json(indent=2)
 
@@ -57,7 +57,9 @@ LEARNING_EXAMPLE = LearningReport(
 
 QUICK_SUMMARY_CRITIQUE_EXAMPLE = CritiqueReport(
     is_approved=False,
-    critique="The report is not a brief summary. It includes a multi-line evidence block and a suggested fix, which violates the core requirement of this mode. The output should be only a one or two-sentence summary.",
+    critique="The report is not a brief summary. It includes a multi-line evidence block and a suggested fix, "
+             "which violates the core requirement of this mode. The output should be only a one or two-sentence "
+             "summary.",
     confidence="high",
     reasoning="The agent failed to follow the output format constraints for Quick Summary mode by providing excessive detail."
 ).model_dump_json(indent=2)
