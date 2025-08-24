@@ -67,7 +67,7 @@ class GoogleProvider(BaseProvider):
         logger.info(f"Creating Google embedding function for model: {model_id}")
 
         async def embed_texts(texts: List[str]) -> np.ndarray:
-            response = self.client.models.embed_content(
+            response = await self.client.aio.models.embed_content(
                 model=model_id,
                 contents=texts,
                 config=EmbedContentConfig(task_type=task_type),
@@ -94,7 +94,7 @@ class GoogleProvider(BaseProvider):
                 combined_prompt += f"{msg.get('role', 'user')}: {msg.get('content', '')}\n"
             combined_prompt += f"user: {prompt}"
 
-            response = self.client.models.generate_content(
+            response = await self.client.aio.models.generate_content(
                 model=model_id,
                 contents=[combined_prompt],
                 config=GenerateContentConfig(max_output_tokens=500, temperature=0.1),

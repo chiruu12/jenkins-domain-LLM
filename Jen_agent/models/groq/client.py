@@ -2,7 +2,7 @@ import os
 import logging
 from typing import List, Callable, Awaitable, Optional, Dict, Any
 from agno.models.base import Model
-
+from models.base import BaseProvider
 try:
     from agno.models.groq import Groq
     from groq import AsyncGroq
@@ -11,7 +11,7 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-class GroqProvider:
+class GroqProvider(BaseProvider):
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("GROQ_API_KEY")
         if not self.api_key:
