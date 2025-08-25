@@ -8,6 +8,7 @@ from models.base import BaseProvider
 try:
     from agno.models.google import Gemini
     from google import genai
+    from google.genai import Client as GeminiClient
     from google.genai.types import EmbedContentConfig,GenerateContentConfig
 except ImportError:
     raise ImportError("`google-genai` not installed. Please install it using `pip install google-genai`")
@@ -37,7 +38,7 @@ class GoogleProvider(BaseProvider):
             self.project_id = None
             self.location = None
 
-        self.client = genai.Client(
+        self.client: GeminiClient = genai.Client(
             api_key=self.api_key,
             vertexai=self.vertexai,
             project=self.project_id,
@@ -54,9 +55,10 @@ class GoogleProvider(BaseProvider):
         return Gemini(
             id=model_id,
             api_key=self.api_key,
+            client=self.client,
             project_id=self.project_id,
             location=self.location,
-            vertexai=self.vertexai
+            vertexai=self.vertexai,
         )
 
     def get_embedding_function(

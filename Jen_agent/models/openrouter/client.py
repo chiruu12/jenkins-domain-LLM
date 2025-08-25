@@ -18,19 +18,20 @@ class OpenRouterProvider(BaseProvider):
         if not self.api_key:
             raise ValueError("OpenRouterProvider requires an API key.")
 
-        self.client = AsyncOpenAI(
+        self.async_client = AsyncOpenAI(
             base_url="https://openrouter.ai/api/v1",
             api_key=self.api_key
         )
         logger.info("Initialized OpenRouter client.")
 
     def get_chat_model(self, model_id: Optional[str] = "openai/gpt-5-mini") -> Model:
-        return OpenRouter(id=model_id, api_key=self.api_key)
+        #TODO: Add a PR in Agno's repo! As they only accept the sync client for openailike class whereas in openai's
+        # repo they accept both async and sync I have already contacted the maintainers of the repo regarding this issue.
+        return OpenRouter(id=model_id, api_key=self.api_key, http_client=self.async_client)
 
     def get_embedding_function(
         self,
-        model_id: Optional[str] = None,
-        task_type: str = "RETRIEVAL_DOCUMENT",
+        **kwargs
     ) -> Callable[[List[str]], Awaitable[Any]]:
         raise NotImplementedError("OpenRouter does not provide an embedding function.")
 
@@ -51,7 +52,7 @@ class OpenRouterProvider(BaseProvider):
             messages.extend(history_messages)
             messages.append({"role": "user", "content": prompt})
 
-            response = await self.client.chat.completions.create(
+            response = await self.async_client.chat.completions.create(
                 model=model_id,
                 messages=messages,
                 **kwargs

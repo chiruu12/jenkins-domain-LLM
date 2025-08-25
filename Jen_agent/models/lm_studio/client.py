@@ -18,11 +18,11 @@ class LMStudioProvider(BaseProvider):
         if not self.base_url:
             raise ValueError("LMStudioProvider requires a base_url (e.g., 'http://localhost:1234/').")
 
-        self.client = AsyncOpenAI(base_url=self.base_url, api_key="not-needed")
+        self.async_client = AsyncOpenAI(base_url=self.base_url, api_key="not-needed")
         logger.info(f"Initialized LMStudio client for base_url: {self.base_url}")
 
     def get_chat_model(self, model_id: Optional[str] = "qwen/qwen3-4b-thinking-2507") -> Model:
-        return LMStudio(id=model_id, base_url=self.base_url)
+        return LMStudio(id=model_id, base_url=self.base_url, http_client=self.async_client)
 
     def get_embedding_function(
         self,
@@ -30,7 +30,7 @@ class LMStudioProvider(BaseProvider):
         task_type: str = "RETRIEVAL_DOCUMENT",
     ) -> Callable[[List[str]], Awaitable[np.ndarray]]:
         async def embed_texts(texts: List[str]) -> np.ndarray:
-            response = await self.client.embeddings.create(input=texts, model=model_id)
+            response = await self.async_client.embeddings.create(input=texts, model=model_id)
             embeddings = [item.embedding for item in response.data]
             return np.array(embeddings)
 
@@ -53,7 +53,7 @@ class LMStudioProvider(BaseProvider):
             messages.extend(history_messages)
             messages.append({"role": "user", "content": prompt})
 
-            response = await self.client.chat.completions.create(
+            response = await self.async_client.chat.completions.create(
                 model=model_id,
                 messages=messages,
                 **kwargs
