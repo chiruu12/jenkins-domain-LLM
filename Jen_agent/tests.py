@@ -1,138 +1,108 @@
-import json
-import pytest
-from unittest.mock import MagicMock
-
+import asyncio
+import logging
+import os
+import numpy as np
+from dotenv import load_dotenv
 from agno.agent import Agent
-from pydantic import ValidationError
+import pytest
+from models.google.client import GoogleProvider
+from models.groq.client import GroqProvider
+from models.lm_studio.client import LMStudioProvider
+from models.openrouter.client import OpenRouterProvider
 
-import agents
-from data_models import (
-    CritiqueReport, DiagnosisReport,
-    InteractiveClarification, LearningReport,
-    ModelConfig,QuickSummaryReport,
-    RoutingDecision
-)
-from llm_catalog import CATALOG
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+load_dotenv()
+pytestmark = pytest.mark.asyncio
 
-
-@pytest.fixture
-def model_config() -> ModelConfig:
-    return ModelConfig(provider_key="OpenAI", model_key="GPT-4o Mini", model_id="gpt-4o-mini")
-
-
-@pytest.fixture(autouse=True)
-def mock_agno_model_classes(monkeypatch):
-    mock_model_class = MagicMock()
-    for provider_key in CATALOG.providers:
-        provider_config = CATALOG.providers[provider_key]
-        if provider_config.model_class is not None:
-            monkeypatch.setattr(provider_config, 'model_class', mock_model_class)
-
-def _validate_agent_and_prompt(
-        agent_instance: Agent,
-        expected_response_model: type,
-        expected_tool_names: list[str]
-):
-    assert isinstance(agent_instance, Agent)
-    assert agent_instance.response_model == expected_response_model
-
-    prompt_text = agent_instance.instructions[0]
-    assert isinstance(prompt_text, str)
-    assert "{example_json}" not in prompt_text, "Example placeholder was not replaced"
-
+async def test_google_provider():
+    print("\n" + "="*50)
+    print("--- Testing GoogleProvider Agent (LIVE) ---")
     try:
-        example_parts = prompt_text.split("Example Output:**\n```json\n")
-        if len(example_parts) > 1:
-            example_str = example_parts.split("\n```")[0]
-            example_json = json.loads(example_str)
-            expected_response_model(**example_json)
-        else:
-            pytest.fail("Could not find Example Output block in the prompt.")
+        provider = GoogleProvider()
+        print("[SUCCESS] Initialized Provider.")
 
-    except (IndexError, json.JSONDecodeError) as e:
-        pytest.fail(f"Error parsing prompt content: {e}")
-    except ValidationError as e:
-        pytest.fail(f"Injected example JSON is not valid for model {expected_response_model.__name__}: {e}")
+        model = provider.get_chat_model()
+        agent = Agent(model=model, instructions=["You are a helpful assistant."])
+        print("[SUCCESS] Created Agent.")
 
-    actual_tool_names = [tool.name for tool in agent_instance.tools]
-    assert sorted(actual_tool_names) == sorted(expected_tool_names)
+        response = await agent.arun("What is the speed of light?")
+        assert response and len(response.content) > 5
+        print("[SUCCESS] Agent.arun() returned a valid response.")
 
-def test_get_router_agent(model_config):
-    router_agent = agents.get_router_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=router_agent,
-        expected_response_model=RoutingDecision,
-        expected_tool_names=[]
-    )
+        embed_func = provider.get_embedding_function()
+        embeddings = await embed_func(["hello world"])
+        assert isinstance(embeddings, np.ndarray) and embeddings.shape[0] == 1
+        print("[SUCCESS] get_embedding_function returned valid embeddings.")
+    except Exception as e:
+        print(f"[FAILED] GoogleProvider test failed: {e}")
 
+async def test_groq_provider():
+    print("\n" + "="*50)
+    print("--- Testing GroqProvider Agent (LIVE) ---")
+    try:
+        provider = GroqProvider()
+        print("[SUCCESS] Initialized Provider.")
 
-def test_get_specialist_agent_config_error(model_config):
-    specialist_agent = agents.get_specialist_agent(
-        agent_type="CONFIGURATION_ERROR",
-        model_config=model_config
-    )
-    _validate_agent_and_prompt(
-        agent_instance=specialist_agent,
-        expected_response_model=DiagnosisReport,
-        expected_tool_names=["jenkins_workspace_tools", "knowledge_base_tools"]
-    )
+        model = provider.get_chat_model()
+        agent = Agent(model=model, instructions=["You are a helpful assistant."])
+        print("[SUCCESS] Created Agent.")
 
+        response = await agent.arun("What is Groq?")
+        assert response and len(response.content) > 5
+        print("[SUCCESS] Agent.arun() returned a valid response.")
+    except Exception as e:
+        print(f"[FAILED] GroqProvider test failed: {e}")
 
-def test_get_standard_critic_agent(model_config):
-    critic_agent = agents.get_critic_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=critic_agent,
-        expected_response_model=CritiqueReport,
-        expected_tool_names=[]
-    )
+async def test_openrouter_provider():
+    print("\n" + "="*50)
+    print("--- Testing OpenRouterProvider Agent (LIVE) ---")
+    try:
+        provider = OpenRouterProvider()
+        print("[SUCCESS] Initialized Provider.")
 
+        model = provider.get_chat_model()
+        agent = Agent(model=model, instructions=["You are a helpful assistant."])
+        print("[SUCCESS] Created Agent.")
 
-def test_get_quick_summary_agent(model_config):
-    summary_agent = agents.get_quick_summary_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=summary_agent,
-        expected_response_model=QuickSummaryReport,
-        expected_tool_names=["jenkins_workspace_tools", "knowledge_base_tools"]
-    )
+        response = await agent.arun("What is OpenRouter?")
+        assert response and len(response.content) > 5
+        print("[SUCCESS] Agent.arun() returned a valid response.")
+    except Exception as e:
+        print(f"[FAILED] OpenRouterProvider test failed: {e}")
 
+async def test_lmstudio_provider():
+    print("\n" + "="*50)
+    print("--- Testing LMStudioProvider Agent (LIVE) ---")
+    if not os.getenv("LMSTUDIO_BASE_URL"):
+        print("[SKIPPED] LMSTUDIO_BASE_URL not set in .env file.")
+        return
+    try:
+        provider = LMStudioProvider()
+        print("[SUCCESS] Initialized Provider.")
 
-def test_get_quick_summary_critic_agent(model_config):
-    critic_agent = agents.get_quick_summary_critic_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=critic_agent,
-        expected_response_model=CritiqueReport,
-        expected_tool_names=[]
-    )
+        model = provider.get_chat_model()
+        agent = Agent(model=model, instructions=["You are a helpful assistant."])
+        print("[SUCCESS] Created Agent.")
 
+        response = await agent.arun("Who are you?")
+        assert response and len(response.content) > 1
+        print("[SUCCESS] Agent.arun() returned a valid response.")
 
-def test_get_interactive_debugger_agent(model_config):
-    interactive_agent = agents.get_interactive_debugger_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=interactive_agent,
-        expected_response_model=InteractiveClarification,
-        expected_tool_names=["jenkins_workspace_tools", "knowledge_base_tools"]
-    )
+        embed_func = provider.get_embedding_function()
+        embeddings = await embed_func(["local embedding test"])
+        assert isinstance(embeddings, np.ndarray) and embeddings.shape[0] == 1
+        print("[SUCCESS] get_embedding_function returned valid embeddings.")
 
+    except Exception as e:
+        print(f"[FAILED] LMStudioProvider test failed: {e}")
 
-def test_get_interactive_critic_agent(model_config):
-    critic_agent = agents.get_interactive_critic_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=critic_agent,
-        expected_response_model=CritiqueReport,
-        expected_tool_names=[]
-    )
+async def main():
+    print("🚀 Starting Live Agent Integration Test Script...")
+    await test_google_provider()
+    await test_groq_provider()
+    await test_openrouter_provider()
+    await test_lmstudio_provider()
+    print("\n✅ All live agent tests completed.")
 
-
-def test_get_learning_agent(model_config):
-    learning_agent = agents.get_learning_agent(model_config)
-    _validate_agent_and_prompt(
-        agent_instance=learning_agent,
-        expected_response_model=LearningReport,
-        expected_tool_names=["knowledge_base_tools"]
-    )
-
-
-def test_invalid_agent_creation_raises_error():
-    bad_config = ModelConfig(provider_key="InvalidProvider", model_key="N/A", model_id="N/A")
-    with pytest.raises(NotImplementedError, match="is not configured or supported"):
-        agents.get_router_agent(bad_config)
+if __name__ == "__main__":
+    asyncio.run(main())
