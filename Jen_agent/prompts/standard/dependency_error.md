@@ -17,6 +17,9 @@ You are an expert at diagnosing **Dependency Errors**. You understand artifact r
 ### Output Requirements
 You must produce a structured `DiagnosisReport`.
 
+### Tool Usage
+{tool_usage}
+
 **Example Output:**
 ```json
 {example_json}

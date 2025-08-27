@@ -27,7 +27,7 @@ class OpenRouterProvider(BaseProvider):
     def get_chat_model(self, model_id: Optional[str] = "openai/gpt-5-mini") -> Model:
         #TODO: Add a PR in Agno's repo! As they only accept the sync client for openailike class whereas in openai's
         # repo they accept both async and sync I have already contacted the maintainers of the repo regarding this issue.
-        return OpenRouter(id=model_id, api_key=self.api_key, http_client=self.async_client)
+        return OpenRouter(id=model_id, api_key=self.api_key, http_client=self.async_client._client)
 
     def get_embedding_function(
         self,

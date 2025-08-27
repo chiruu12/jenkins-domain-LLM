@@ -22,7 +22,7 @@ class LMStudioProvider(BaseProvider):
         logger.info(f"Initialized LMStudio client for base_url: {self.base_url}")
 
     def get_chat_model(self, model_id: Optional[str] = "qwen/qwen3-4b-thinking-2507") -> Model:
-        return LMStudio(id=model_id, base_url=self.base_url, http_client=self.async_client)
+        return LMStudio(id=model_id, base_url=self.base_url, http_client=self.async_client._client)
 
     def get_embedding_function(
         self,

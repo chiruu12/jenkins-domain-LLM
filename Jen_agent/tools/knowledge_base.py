@@ -1,145 +1,98 @@
 import logging
-import os
-from typing import Optional, List, Dict, Any
-import numpy as np
-import asyncio
+from typing import Callable, Awaitable, Optional, List
 from pathlib import Path
-from .base_tool import BaseTool
-from pydantic import BaseModel, Field, DirectoryPath
-from openai import AsyncOpenAI
-from sentence_transformers import SentenceTransformer
-from dotenv import load_dotenv
+import numpy as np
+from tools.base_tool import BaseTool
 from lightrag import LightRAG, QueryParam
 from lightrag.utils import EmbeddingFunc
 from lightrag.kg.shared_storage import initialize_pipeline_status
-from lightrag.rerank import cohere_rerank
-LIGHTRAG_AVAILABLE = True
-
-load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-class LightRAGConfig(BaseModel):
-    working_dir: DirectoryPath = Field(default="./lightrag_workspace")
-    openrouter_api_key: str = Field(default_factory=lambda: os.getenv("OPENROUTER_API_KEY"))
-    cohere_api_key: str = Field(default_factory=lambda: os.getenv("COHERE_API_KEY"))
-    llm_model_id: str = Field(default="openai/gpt-4o-mini")
-    embedding_model_id: str = Field(default="all-MiniLM-L6-v2")
-    reranker_model_id: str = Field(default="rerank-english-v3.0")
-    default_top_k: int = Field(default=3)
-
-    class Config:
-        env_file = '.env'
-        extra = 'ignore'
 
 class CoreLightRAGManager:
-    def __init__(self, config: Optional[LightRAGConfig] = None):
-        self.config = config or LightRAGConfig()
+    """
+    Manages the lifecycle and configuration of the core LightRAG instance.
+    This class handles the complex asynchronous initialization and provides a clean
+    internal interface for storing data in and querying the vector database.
+    """
+    def __init__(
+            self,
+            working_dir: str,
+            embedding_func: Callable[[List[str]], Awaitable[np.ndarray]],
+            llm_func: Callable[..., Awaitable[str]],
+            reranker_func: Optional[Callable[..., Awaitable[list]]] = None
+    ):
+        self.working_dir = Path(working_dir)
+        self.embedding_func = embedding_func
+        self.llm_func = llm_func
+        self.reranker_func = reranker_func
+
         self.rag_instance: Optional[LightRAG] = None
         self.is_initialized: bool = False
 
-        if not LIGHTRAG_AVAILABLE:
-            raise ImportError("Required libraries for LightRAG are not installed.")
+    async def initialize(self):
+        if self.is_initialized:
+            return
 
-        openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-        if not openrouter_api_key:
-            raise ValueError("OPENROUTER_API_KEY not found.")
+        logger.info("Initializing RAG knowledge base...")
+        self.working_dir.mkdir(parents=True, exist_ok=True)
 
-        cohere_api_key = os.getenv("COHERE_API_KEY")
-        if not cohere_api_key:
-            raise ValueError("COHERE_API_KEY not found.")
-
-        sentence_transformer_model = SentenceTransformer(self.config.embedding_model_id)
-        embedding_dimension = sentence_transformer_model.get_sentence_embedding_dimension()
-
-        async def embedding_func(texts: List[str]) -> np.ndarray:
-            return await asyncio.to_thread(sentence_transformer_model.encode, texts, convert_to_numpy=True)
-
-        async_openai_client = AsyncOpenAI(
-            api_key=openrouter_api_key,
-            base_url="https://openrouter.ai/api/v1",
-        )
-
-        async def llm_func(prompt: str, system_prompt: Optional[str] = None, **kwargs) -> str:
-
-            messages: List[Dict[str, Any]] = [
-                {"role": "system", "content": system_prompt or "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ]
-
-            response = await async_openai_client.chat.completions.create(
-                model=self.config.llm_model_id,
-                messages=messages,
-            )
-            return response.choices[0].message.content or ""
-
-        async def my_rerank_func(query: str, documents: list, top_n: int = None, **kwargs):
-            return await cohere_rerank(
-                query=query,
-                documents=documents,
-                model=self.config.reranker_model_id,
-                api_key=self.config.cohere_api_key,
-                top_n=top_n or 10
-            )
+        try:
+            logger.debug("Determining embedding dimension...")
+            test_embedding = await self.embedding_func(["test"])
+            embedding_dim = test_embedding.shape[1]
+            logger.debug(f"Embedding dimension is {embedding_dim}.")
+        except Exception as e:
+            logger.error(f"Failed to get embedding dimension: {e}", exc_info=True)
+            raise ValueError("Could not determine embedding dimension from the provided function.") from e
 
         self.rag_instance = LightRAG(
-            working_dir = str(self.config.working_dir),
-            embedding_func = EmbeddingFunc(embedding_dim=embedding_dimension, func=embedding_func, max_token_size=512),
-            llm_model_func = llm_func,
-            vector_storage = "FaissVectorDBStorage",
-            rerank_model_func=my_rerank_func,
+            working_dir=str(self.working_dir),
+            embedding_func=EmbeddingFunc(embedding_dim=embedding_dim, func=self.embedding_func),
+            llm_model_func=self.llm_func,
+            rerank_model_func=self.reranker_func if self.reranker_func else None,
+            vector_storage="FaissVectorDBStorage",
         )
 
-    async def initialize(self):
-        if self.is_initialized or not self.rag_instance: return
-        try:
-            await self.rag_instance.initialize_storages()
-            if LIGHTRAG_AVAILABLE:
-                await initialize_pipeline_status()
-            self.is_initialized = True
-        except Exception as e:
-            logger.exception(f"Exception during LightRAG initialization: {e}")
-            self.is_initialized = False
-
-    async def finalize(self):
-        if not self.is_initialized or not self.rag_instance: return
-        await self.rag_instance.finalize_storages()
-        self.is_initialized = False
+        await self.rag_instance.initialize_storages()
+        await initialize_pipeline_status()
+        self.is_initialized = True
+        logger.info("RAG knowledge base initialized successfully.")
 
     async def store_text(self, text_content: str, document_id: Optional[str] = None):
-        if not self.is_initialized or not self.rag_instance:
-            raise RuntimeError("CoreLightRAGManager is not initialized.")
+        if not self.is_initialized or self.rag_instance is None:
+            raise RuntimeError("RAG Manager is not initialized. Call initialize() first.")
         await self.rag_instance.ainsert(input=text_content, ids=document_id)
 
-    async def query(self, query_text: str) -> str:
-        if not self.is_initialized or not self.rag_instance:
-            raise RuntimeError("CoreLightRAGManager is not initialized.")
-        #TODO enable_rerank = use_rerank
-        param = QueryParam(mode="mix", top_k=self.config.default_top_k)
+    async def query(self, query_text: str, use_rerank: bool = False) -> str:
+        if not self.is_initialized or self.rag_instance is None:
+            raise RuntimeError("RAG Manager is not initialized. Call initialize() first.")
+
+        enable_rerank_flag = use_rerank and self.reranker_func is not None
+        if use_rerank and self.reranker_func is None:
+            logger.warning("Reranking was requested but no reranker function is configured.")
+
+        param = QueryParam(mode="mix", top_k=3, enable_rerank=enable_rerank_flag)
         response = await self.rag_instance.aquery(query_text, param=param)
-        return response if isinstance(response, str) else str(response)
+        return str(response)
 
 
 class KnowledgeBaseTools(BaseTool):
-    def __init__(self, core_manager: Optional[CoreLightRAGManager] = None, prompt_dir: Optional[str] = "prompts"):
-        super().__init__(name="knowledge_base_tools", prompt_dir=Path(prompt_dir).resolve())
+    """
+    A tool to query an internal knowledge base for information about Jenkins plugins,
+    solutions, and general Jenkins documentation. Use this to find solutions to similar
+    problems or to understand concepts mentioned in the logs.
+    """
+    def __init__(self, core_manager: CoreLightRAGManager):
+        super().__init__(name="knowledge_base_tools")
         self.core_manager = core_manager
+        self.register(self.query_knowledge_base)
 
-        if LIGHTRAG_AVAILABLE and self.core_manager and self.core_manager.rag_instance:
-            self.register(self.query_knowledge_base)
-        else:
-            self.register(self.dummy_query)
-
-    async def query_knowledge_base(self, query: str) -> str:
-        if not self.core_manager or not self.core_manager.is_initialized:
-            return "Error: Knowledge Base tool is not available or initialized."
+    async def query_knowledge_base(self, query: str, use_reranker: bool = True) -> str:
+        logger.info(f"Agent is querying the knowledge base with: '{query}'")
         try:
-            return await self.core_manager.query(query)
+            return await self.core_manager.query(query, use_rerank=use_reranker)
         except Exception as e:
-            logger.exception(f"Error during knowledge base query: {e}")
-            return f"Error during knowledge base query: {e}"
-
-    def dummy_query(self, query: str) -> str:
-        logger.warning(f"Knowledge Base tool is not configured or available agent's query was: {query}.")
-        return "Knowledge Base is not configured or available."
-
+            logger.error(f"Error during knowledge base query: {e}", exc_info=True)
+            return f"Error: An unexpected error occurred while querying the knowledge base."

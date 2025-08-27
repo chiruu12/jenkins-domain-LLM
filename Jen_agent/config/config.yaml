@@ -1,0 +1,127 @@
+providers:
+  google:
+    module: "models.google.client"
+    class_name: "GoogleProvider"
+    init_args:
+      api_key: "GOOGLE_API_KEY"
+      project_id: "GOOGLE_PROJECT_ID"
+      location: "GOOGLE_PROJECT_LOCATION"
+
+  groq:
+    module: "models.groq.client"
+    class_name: "GroqProvider"
+    init_args:
+      api_key: "GROQ_API_KEY"
+
+  openrouter:
+    module: "models.openrouter.client"
+    class_name: "OpenRouterProvider"
+    init_args:
+      api_key: "OPENROUTER_API_KEY"
+
+  lmstudio:
+    module: "models.lmstudio.client"
+    class_name: "LMStudioProvider"
+    init_args:
+      base_url: "LMSTUDIO_BASE_URL"
+
+application:
+  prompts_dir: "prompts"
+
+rag_settings:
+  working_dir: "./rag_workspace"
+  embedding_provider: "google"
+  embedding_model: "gemini-embedding-001"
+  llm_provider: "google"
+  llm_model: "gemini-2.5-flash"
+
+tools:
+  log_access_tools:
+    module: "tools.log_access"
+    class_name: "LogAccessTools"
+  jenkins_workspace_tools:
+    module: "tools.jenkins_workspace"
+    class_name: "JenkinsWorkspaceTools"
+  knowledge_base_tools:
+    module: "tools.knowledge_base"
+    class_name: "KnowledgeBaseTools"
+    
+defaults:
+  provider: "google"
+  chat_model: "gemini-2.5-flash"
+  embedding_model: "gemini-embedding-001"
+
+agents:
+  # Standard Diagnosis Agents
+  router:
+    prompt_path: "standard/router"
+    response_model: "RoutingDecision"
+    example: "ROUTING_EXAMPLE"
+    tools: []
+
+  critic:
+    prompt_path: "standard/critic"
+    response_model: "CritiqueReport"
+    example: "CRITIQUE_EXAMPLE"
+    tools: []
+
+  specialist_configuration_error:
+    prompt_path: "standard/config_error"
+    response_model: "DiagnosisReport"
+    example: "DIAGNOSIS_EXAMPLE"
+    tools: ["log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools"]
+
+  specialist_test_failure:
+    prompt_path: "standard/test_failure"
+    response_model: "DiagnosisReport"
+    example: "DIAGNOSIS_EXAMPLE"
+    tools: ["log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools"]
+
+  specialist_dependency_error:
+    prompt_path: "standard/dependency_error"
+    response_model: "DiagnosisReport"
+    example: "DIAGNOSIS_EXAMPLE"
+    tools: ["log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools"]
+
+  specialist_infra_failure:
+    prompt_path: "standard/infra_failure"
+    response_model: "DiagnosisReport"
+    example: "DIAGNOSIS_EXAMPLE"
+    tools: ["log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools"]
+
+  specialist_unknown:
+    prompt_path: "standard/default"
+    response_model: "DiagnosisReport"
+    example: "DIAGNOSIS_EXAMPLE"
+    tools: ["log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools"]
+
+    # Quick Summary Agents
+    quick_summary_main:
+      prompt_path: "quick_summary/main"
+      response_model: "QuickSummaryReport"
+      example: "QUICK_SUMMARY_EXAMPLE"
+      tools: [ "log_access_tools", "jenkins_workspace_tools" ]
+    quick_summary_critic:
+      prompt_path: "quick_summary/critic"
+      response_model: "CritiqueReport"
+      example: "QUICK_SUMMARY_CRITIQUE_EXAMPLE"
+      tools: [ ]
+
+    # Interactive Debugging Agents
+    interactive_main:
+      prompt_path: "interactive/main"
+      response_model: "InteractiveClarification"
+      example: "INTERACTIVE_EXAMPLE"
+      tools: [ "log_access_tools", "jenkins_workspace_tools", "knowledge_base_tools" ]
+      interactive_critic:
+        prompt_path: "interactive/critic"
+        response_model: "CritiqueReport"
+        example: "INTERACTIVE_CRITIQUE_EXAMPLE"
+        tools: [ ]
+
+      # Learning Agent
+      learning_main:
+        prompt_path: "learning/main"
+        response_model: "LearningReport"
+        example: "LEARNING_EXAMPLE"
+        tools: [ "knowledge_base_tools" ]

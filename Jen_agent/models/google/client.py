@@ -63,7 +63,7 @@ class GoogleProvider(BaseProvider):
 
     def get_embedding_function(
         self,
-        model_id: Optional[str] = "text-embedding-004",
+        model_id: Optional[str] = "gemini-embedding-001",
         task_type: str = "RETRIEVAL_DOCUMENT",
     ) -> Callable[[List[str]], Awaitable[np.ndarray]]:
         logger.info(f"Creating Google embedding function for model: {model_id}")
@@ -98,11 +98,11 @@ class GoogleProvider(BaseProvider):
 
             response = await self.client.aio.models.generate_content(
                 model=model_id,
-                contents=[combined_prompt],
-                config=GenerateContentConfig(max_output_tokens=500, temperature=0.1),
+                contents=combined_prompt,
+                config=GenerateContentConfig(max_output_tokens=8192, temperature=0.1),
             )
 
-            return response.text
+            return response.text if response.text is not None else ""
 
         return llm_model_func
 
