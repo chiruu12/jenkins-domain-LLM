@@ -15,6 +15,9 @@ Analyze the provided log snippets and classify the failure into a single categor
 Your only output must be the structured response object. Do not add any conversational text, preambles, or explanations.
 In your response, you MUST populate the relevant_log_snippets field with the 5-10 most critical log lines that justify your classification.
 
+### Tool Usage
+{tool_usage}
+
 **Example Output:**
 ```json
 {example_json}

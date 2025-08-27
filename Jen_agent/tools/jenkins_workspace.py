@@ -2,91 +2,98 @@ import os
 import logging
 from pathlib import Path
 from .base_tool import BaseTool
+from sanitizer import ContentSanitizer, CredentialMapper
 
 logger = logging.getLogger(__name__)
 
+
 class JenkinsWorkspaceTools(BaseTool):
     """
-    A toolkit for managing Jenkins workspace files, allowing reading and listing files in a specified directory.
-    Always use list_files_in_workspace to get a directory listing, and only then use read_file_from_workspace to read file contents.
+    A secure tool for listing and reading files within a sandboxed Jenkins build workspace.
+    Path traversal outside the workspace is strictly forbidden. All file content is automatically
+    sanitized to remove credentials and secrets before being returned.
     """
-    def __init__(self, base_directory_path: str, prompt_dir: str = "prompts"):
-        """ Initializes the JenkinsWorkspaceTools with a base directory path."""
-        super().__init__(name="jenkins_workspace_tools", prompt_dir=Path(prompt_dir).resolve() )
-        self._base_path = Path.cwd()
-        self.base_path = base_directory_path
-        self.register(self.read_file_from_workspace)
+
+    def __init__(
+            self,
+            base_directory_path: str,
+            sanitizer: ContentSanitizer,
+            mapper: CredentialMapper
+    ):
+        super().__init__(name="jenkins_workspace_tools")
+
+        self.base_path = Path(base_directory_path).resolve()
+        if not self.base_path.is_dir():
+            raise FileNotFoundError(f"The specified base workspace directory does not exist: {self.base_path}")
+
+        self.sanitizer = sanitizer
+        self.mapper = mapper
+
         self.register(self.list_files_in_workspace)
+        self.register(self.read_file_from_workspace)
         logger.info(f"JenkinsWorkspaceTools initialized for directory: '{self.base_path}'")
 
-    @property
-    def base_path(self) -> Path:
-        return self._base_path
-
-    @base_path.setter
-    def base_path(self, value: str):
+    def _is_path_safe(self, path_to_check: Path) -> bool:
+        """
+        Verifies that the resolved path is within the designated base workspace directory.
+        """
         try:
-            resolved_path = Path(value).resolve()
-            if not resolved_path.is_dir():
-                resolved_path.mkdir(parents=True, exist_ok=True)
-            self._base_path = resolved_path
-        except Exception as e:
-            logger.error(f"Failed to set base path to '{value}': {e}", exc_info=True)
-            raise ValueError(f"Base directory could not be resolved or created: {value}")
+            path_to_check.resolve().is_relative_to(self.base_path)
+            return True
+        except ValueError:
+            return False
 
+    def list_files_in_workspace(self, subdirectory: str = ".") -> str:
+        """
+        Lists all files and directories within the build workspace, starting from a given subdirectory.
+        Defaults to listing the entire workspace.
+        """
+        target_dir = self.base_path.joinpath(subdirectory)
+
+        if not self._is_path_safe(target_dir):
+            logger.warning(f"SECURITY: Agent attempted path traversal to '{subdirectory}'. Access denied.")
+            return "Error: Access denied. Path traversal is not permitted."
+
+        if not target_dir.is_dir():
+            return f"Error: Directory '{subdirectory}' not found within the workspace."
+
+        tree_lines = []
+        for root, _, files in os.walk(target_dir):
+            root_path = Path(root)
+            level = len(root_path.relative_to(target_dir).parts)
+            indent = "    " * level
+            tree_lines.append(f"{indent}📁 {root_path.relative_to(self.base_path)}/")
+
+            sub_indent = "    " * (level + 1)
+            for f in sorted(files):
+                tree_lines.append(f"{sub_indent}📄 {f}")
+
+        if not tree_lines:
+            return "Directory is empty."
+
+        return "\n".join(tree_lines)
 
     def read_file_from_workspace(self, file_path: str) -> str:
-        """This tool is used to read a file from the Jenkins workspace directory."""
-        logger.info(f"Attempting to read file from workspace: '{file_path}'")
+        """
+        Reads and returns the sanitized content of a single file from the workspace.
+        """
+        target_file = self.base_path.joinpath(file_path)
+
+        if not self._is_path_safe(target_file):
+            logger.warning(f"SECURITY: Agent attempted path traversal to read '{file_path}'. Access denied.")
+            return "Error: Access denied. Path traversal is not permitted."
+
+        if not target_file.is_file():
+            return f"Error: File not found at '{file_path}'."
+
         try:
-            target_path = self.base_path.joinpath(file_path).resolve()
+            logger.info(f"Reading file: {target_file}")
+            raw_content = target_file.read_text(encoding="utf-8", errors="ignore")
 
-            if self.base_path not in target_path.parents and target_path != self.base_path:
-                logger.warning(f"Path traversal detected for file: '{file_path}'")
-                return "Error: Path traversal detected. Access denied."
+            logger.info(f"Sanitizing {len(raw_content)} characters from '{file_path}'...")
+            sanitized_content = self.sanitizer.sanitize(raw_content, self.mapper)
 
-            if not target_path.is_file():
-                logger.warning(f"File not found at resolved path: '{target_path}'")
-                return f"Error: File not found at '{file_path}'."
-
-            content = target_path.read_text(encoding="utf-8", errors="ignore")
-            logger.info(f"Successfully read {len(content)} characters from '{file_path}'")
-            return content
+            return sanitized_content
         except Exception as e:
-            logger.error(f"Unexpected error while reading '{file_path}': {e}", exc_info=True)
-            return f"An unexpected error occurred while reading '{file_path}': {e}"
-
-    def list_files_in_workspace(self, subdirectory: str = None) -> str:
-        """This tool is used to list files in the Jenkins workspace directory."""
-        try:
-            start_path = self.base_path
-            if subdirectory:
-                start_path = (self.base_path / subdirectory).resolve()
-
-            if self.base_path not in start_path.parents and start_path != self.base_path:
-                return "Error: Path traversal detected. Access denied."
-
-            if not start_path.is_dir():
-                return f"Error: Directory '{subdirectory or '.'}' not found."
-
-            tree_lines = []
-            for root, dirs, files in os.walk(start_path):
-                level = Path(root).relative_to(start_path).parts
-                indent = "    " * len(level)
-
-                dir_display_path = Path(root).relative_to(self.base_path)
-                tree_lines.append(f"{indent}📁 {dir_display_path}/")
-
-                sub_indent = "    " * (len(level) + 1)
-                for f in sorted(files):
-                    file_display_path = dir_display_path / f
-                    tree_lines.append(f"{sub_indent}📄 {file_display_path}")
-
-            if len(tree_lines) > 100:
-                tree_lines = tree_lines[:100]
-                tree_lines.append("\n[... Output truncated due to excessive file count ...]")
-
-            return "\n".join(tree_lines) if tree_lines else "Directory is empty."
-        except Exception as e:
-            logger.error(f"Error listing files in '{subdirectory or '.'}': {e}", exc_info=True)
-            return f"An unexpected error occurred while listing files: {e}"
+            logger.error(f"Error reading file '{file_path}': {e}", exc_info=True)
+            return f"Error: An unexpected error occurred while reading the file: {e}"

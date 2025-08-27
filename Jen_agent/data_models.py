@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Literal, Optional, Type
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -9,26 +9,6 @@ class OperatingMode(str, Enum):
     QUICK_SUMMARY = "Quick Summary"
     INTERACTIVE = "Interactive Debugging"
     LEARNING = "Learning Mode"
-
-class ProviderConfig(BaseModel):
-    model_class: Optional[Type[Any]]
-    default_model: str
-    requires_args: List[str] = Field(default_factory=list)
-
-class ModelConfig(BaseModel):
-    provider_key: str
-    model_key: str
-    model_id: str
-
-class LLMCatalog(BaseModel):
-    providers: Dict[str, ProviderConfig]
-    mappings: Dict[str, Dict[str, str]]
-
-    def get_provider_names(self) -> List[str]:
-        return list(self.providers.keys())
-
-    def get_model_keys_for_provider(self, provider_key: str) -> List[str]:
-        return list(self.mappings.get(provider_key, {}).keys())
 
 
 class RoutingDecision(BaseModel):
@@ -64,3 +44,30 @@ class LearningReport(BaseModel):
     concept_explanation: str = Field(description="A detailed explanation of the requested Jenkins concept, written for a beginner.")
     documentation_links: List[str] = Field(description="A list of relevant URLs to official Jenkins documentation or related resources.")
 
+class TokenUsageLog(BaseModel):
+    """Structured model for token usage in a single LLM call."""
+    call_input_tokens: int
+    call_output_tokens: int
+    cumulative_input_tokens: int
+    cumulative_output_tokens: int
+
+class LLMRequestLog(BaseModel):
+    """Structured log for a request sent to an LLM."""
+    type: Literal["request"] = "request"
+    model_id: str
+    tools: Optional[List[str]] = None
+    messages: List[Dict[str, Any]]
+
+class LLMResponseLog(BaseModel):
+    type: Literal["response"] = "response"
+    model_id: str
+    final_content: Optional[Any]
+    token_usage: TokenUsageLog
+    full_message_history: Optional[List[Dict[str, Any]]] = None
+
+class LLMErrorLog(BaseModel):
+    """Structured log for an error during an LLM interaction."""
+    type: Literal["error"] = "error"
+    model_id: str
+    error_message: str
+    raw_response: Optional[str] = None

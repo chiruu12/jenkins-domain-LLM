@@ -13,6 +13,9 @@ You must **reject** a report if it contains one of these critical mistakes:
 ### Output Requirements
 You must produce a structured `CritiqueReport`. If you reject a report, your `critique` must be a helpful suggestion for what specific information to add or clarify.
 
+### Tool Usage
+{tool_usage}
+
 **Example Output:**
 ```json
 {example_json}
