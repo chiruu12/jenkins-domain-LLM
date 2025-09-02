@@ -1,186 +1,105 @@
-import json
-from typing import Any, List, Optional, Type, Dict
-from pydantic import BaseModel
-
-import config
-import prompt_examples
-from agno.agent import Agent
-from agno.tools import Toolkit
-from agno.models.base import Model
-from functools import lru_cache
 import logging
-from data_models import (
-    CritiqueReport, DiagnosisReport,
-    InteractiveClarification, LearningReport,
-    ModelConfig, QuickSummaryReport,
-    RoutingDecision
-)
-from llm_catalog import CATALOG
-from tools import JenkinsWorkspaceTools, KnowledgeBaseTools
+from typing import List, Dict
+from pydantic import BaseModel
+from pathlib import Path
+from agno.agent import Agent
+from agno.models.base import Model
+
+import data_models
+import prompt_examples
+from tools.base_tool import BaseTool
+from settings import settings
 
 logger = logging.getLogger(__name__)
 
-_model_instances: Dict[str, Model] = {}
 
-@lru_cache(maxsize=4)
-def _load_and_format_prompt(prompt_path: str, response_model: Type[BaseModel], example: str) -> str:
-    """Loads a prompt template and injects the JSON schema and an example."""
-    full_path = config.PROMPTS_DIR / f"{prompt_path}.md"
-    if not full_path.exists():
-        raise FileNotFoundError(f"Prompt file not found: {full_path}")
+class AgentFactory:
+    """
+    A factory class responsible for assembling and caching all agents.
+    """
 
-    template = full_path.read_text()
-    return template.format(example_json=example)
+    def __init__(self, configured_tools: Dict[str, BaseTool]):
+        self.configured_tools = configured_tools
+        self._agent_cache: Dict[str, Agent] = {}
 
+    def _create_agent(
+            self,
+            agent_name: str,
+            model: Model,
+            agent_tools: List[BaseTool]
+    ) -> Agent:
+        """
+        Internal method to build and cache an agent instance from its final components.
+        """
+        cache_key = f"{agent_name}_{model.name}_{model.id}"
+        if cache_key in self._agent_cache:
+            return self._agent_cache[cache_key]
 
-def _create_agent(
-        prompt_path: str,
-        description: str,
-        response_model: Type[BaseModel],
-        example: str,
-        model_config: ModelConfig,
-        base_tools: List[Toolkit],
-        custom_tools: Optional[List[Toolkit]] = None,
-        **model_kwargs: Any,
-) -> Agent:
-    model_cache_key = f"{model_config.provider_key}:{model_config.model_id}"
+        agent_config = settings.get_agent_config(agent_name)
 
-    if model_cache_key not in _model_instances:
-        logger.info(f"Cache MISS for model '{model_cache_key}'. Creating new client instance.")
-        provider_config = CATALOG.providers.get(model_config.provider_key)
-        if not provider_config or not provider_config.model_class:
-            raise NotImplementedError(
-                f"Provider '{model_config.provider_key}' is not configured or supported in the catalog."
-            )
+        response_model = getattr(data_models, agent_config.response_model)
+        example_str = getattr(prompt_examples, agent_config.example)
 
-        model_instance = provider_config.model_class(id=model_config.model_id, **model_kwargs)
-        _model_instances[model_cache_key] = model_instance
-    else:
-        logger.info(f"Using Cached model '{model_cache_key}'.")
-        model_instance = _model_instances[model_cache_key]
+        prompts_dir = Path(settings.application.prompts_dir)
+        prompt_path = prompts_dir / f"{agent_config.prompt_path}.md"
+        template = prompt_path.read_text(encoding="utf-8")
 
-    final_tools = base_tools + (custom_tools or [])
+        tool_prompts = [t.prompt for t in agent_tools if t.prompt]
+        if tool_prompts:
+            prompt = template.replace("{tool_usage}", "\n---\n".join(tool_prompts))
+        else:
+            prompt = template.replace("### Tool Usage\n\n{tool_usage}", "")
 
-    formatted_prompt = _load_and_format_prompt(prompt_path, example)
+        final_prompt = prompt.format(example_json=example_str)
 
-    return Agent(
-        model=model_instance,
-        response_model=response_model,
-        tools=final_tools,
-        instructions=[formatted_prompt],
-        description=description,
-    )
+        agent = Agent(
+            model=model,
+            response_model=response_model,
+            tools=agent_tools,
+            instructions=[final_prompt],
+        )
 
+        self._agent_cache[cache_key] = agent
+        logger.info(f"Created and cached new agent: {agent_name} with model {model.id}")
+        return agent
 
-def get_common_tools() -> List[Toolkit]:
-    """Returns a list of tools common to most diagnostic agents."""
-    return [JenkinsWorkspaceTools(base_directory_path=config.WORKSPACE_BASE_DIR), KnowledgeBaseTools()]
+    def _get_tools_for_agent(self, agent_name: str) -> List[BaseTool]:
+        """Helper to resolve tool names from config to tool objects."""
+        agent_config = settings.get_agent_config(agent_name)
+        return [self.configured_tools[name] for name in agent_config.tools]
 
-def get_router_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates the agent that classifies the failure type."""
-    return _create_agent(
-        prompt_path="standard/router",
-        description="Classifies the failure type.",
-        response_model=RoutingDecision,
-        example=prompt_examples.ROUTING_EXAMPLE,
-        model_config=model_config,
-        base_tools=[],
-        **kwargs
-    )
+    def get_router_agent(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("router")
+        return self._create_agent(agent_name="router", model=model, agent_tools=tools)
 
+    def get_critic_agent(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("critic")
+        return self._create_agent(agent_name="critic", model=model, agent_tools=tools)
 
-def get_specialist_agent(agent_type: str, model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates a specialist agent based on the failure category."""
-    prompt_map = {
-        "CONFIGURATION_ERROR": "config_error", "TEST_FAILURE": "test_failure",
-        "DEPENDENCY_ERROR": "dependency_error", "INFRA_FAILURE": "infra_failure", "UNKNOWN": "default",
-    }
-    prompt_name = prompt_map.get(agent_type, "default")
+    def get_specialist_agent(self, failure_category: str, model: Model) -> Agent:
+        agent_name = f"specialist_{failure_category.lower()}"
+        if agent_name not in settings.agents:
+            agent_name = "specialist_unknown"
 
-    return _create_agent(
-        prompt_path=f"standard/{prompt_name}",
-        description=f"Diagnoses {agent_type}",
-        response_model=DiagnosisReport,
-        example=prompt_examples.DIAGNOSIS_EXAMPLE,
-        model_config=model_config,
-        base_tools=get_common_tools(),
-        **kwargs
-    )
+        tools = self._get_tools_for_agent(agent_name)
+        return self._create_agent(agent_name=agent_name, model=model, agent_tools=tools)
 
+    def get_quick_summary_agent(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("quick_summary_main")
+        return self._create_agent(agent_name="quick_summary_main", model=model, agent_tools=tools)
 
-def get_critic_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates the agent that reviews and critiques diagnoses."""
-    return _create_agent(
-        prompt_path="standard/critic",
-        description="Reviews diagnosis reports for quality.",
-        response_model=CritiqueReport,
-        example=prompt_examples.CRITIQUE_EXAMPLE,
-        model_config=model_config,
-        base_tools=[],
-        **kwargs
-    )
+    def get_quick_summary_critic(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("quick_summary_critic")
+        return self._create_agent(agent_name="quick_summary_critic", model=model, agent_tools=tools)
 
-def get_quick_summary_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates an agent that provides a brief summary of the failure."""
-    return _create_agent(
-        prompt_path="quick_summary/main",
-        description="Provides a brief root cause summary.",
-        response_model=QuickSummaryReport,
-        example=prompt_examples.QUICK_SUMMARY_EXAMPLE,
-        model_config=model_config,
-        base_tools=get_common_tools(),
-        **kwargs
-    )
+    def get_interactive_agent(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("interactive_main")
+        return self._create_agent(agent_name="interactive_main", model=model, agent_tools=tools)
 
+    def get_interactive_critic(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("interactive_critic")
+        return self._create_agent(agent_name="interactive_critic", model=model, agent_tools=tools)
 
-def get_interactive_debugger_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates an agent that asks clarifying questions."""
-    return _create_agent(
-        prompt_path="interactive/main",
-        description="Asks clarifying questions for debugging.",
-        response_model=InteractiveClarification,
-        example=prompt_examples.INTERACTIVE_EXAMPLE,
-        model_config=model_config,
-        base_tools=get_common_tools(),
-        **kwargs
-    )
-
-
-def get_learning_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates an agent that explains Jenkins concepts."""
-    return _create_agent(
-        prompt_path="learning/main",
-        description="Explains Jenkins concepts.",
-        response_model=LearningReport,
-        example=prompt_examples.LEARNING_EXAMPLE,
-        model_config=model_config,
-        base_tools=[KnowledgeBaseTools()],
-        **kwargs
-    )
-
-
-def get_quick_summary_critic_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates a critic agent for reviewing QuickSummaryReport objects."""
-    return _create_agent(
-        prompt_path="quick_summary/critic",
-        description="Reviews a QuickSummaryReport for brevity and format.",
-        response_model=CritiqueReport,
-        example=prompt_examples.QUICK_SUMMARY_CRITIQUE_EXAMPLE,
-        model_config=model_config,
-        base_tools=[],
-        **kwargs
-    )
-
-
-def get_interactive_critic_agent(model_config: ModelConfig, **kwargs) -> Agent:
-    """Creates a critic agent for reviewing InteractiveClarification objects."""
-    return _create_agent(
-        prompt_path="interactive/critic",
-        description="Reviews an InteractiveClarification to ensure it asks a valid question.",
-        response_model=CritiqueReport,
-        example=prompt_examples.INTERACTIVE_CRITIQUE_EXAMPLE,
-        model_config=model_config,
-        base_tools=[],
-        **kwargs
-    )
-
+    def get_learning_agent(self, model: Model) -> Agent:
+        tools = self._get_tools_for_agent("learning_main")
+        return self._create_agent(agent_name="learning_main", model=model, agent_tools=tools)
