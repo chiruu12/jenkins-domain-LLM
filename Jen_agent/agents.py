@@ -1,17 +1,76 @@
 import logging
 from typing import List, Dict
-from pydantic import BaseModel
 from pathlib import Path
-from agno.agent import Agent
-from agno.models.base import Model
-
 import data_models
 import prompt_examples
 from tools.base_tool import BaseTool
 from settings import settings
+from agno.agent import Agent
+from agno.models.base import Model
+from data_models import DiagnosisReport, CritiqueReport, QuickSummaryReport, InteractiveClarification
 
 logger = logging.getLogger(__name__)
 
+class ChainedAgent:
+    def __init__(self, main_agent: 'BaseAgent', critic_agent: 'BaseAgent'):
+        self.main_agent = main_agent
+        self.critic_agent = critic_agent
+        self.model = main_agent.model
+
+    async def arun(self, message: str, llm_logger) -> str:
+        last_report = None
+        max_retries = 2
+        for attempt in range(max_retries):
+            logger.info(f"Chained execution: Main agent attempt {attempt + 1}/{max_retries}...")
+            draft_response = await self.main_agent.arun(message=message)
+            llm_logger.log_response(draft_response)
+
+            if not isinstance(draft_response.content, (DiagnosisReport, QuickSummaryReport, InteractiveClarification)):
+                logger.error("Main agent failed to produce a valid Pydantic object. Retrying with feedback.")
+                feedback = "\n\nCRITICAL FEEDBACK: Your previous response was not in the correct format. You MUST respond with a valid JSON object."
+                message += feedback
+                continue
+
+            last_report = draft_response.content
+
+            logger.info(f"Chained execution: Critic agent is reviewing...")
+            critique_prompt = f"Please review this report:\n\n{last_report.model_dump_json()}"
+            critique_response = await self.critic_agent.arun(message=critique_prompt)
+            llm_logger.log_response(critique_response)
+
+            if not isinstance(critique_response.content, CritiqueReport):
+                logger.warning("Critic failed to produce a valid critique. Approving last report.")
+                break
+
+            critique = critique_response.content
+            logger.info(f"Critic review: Approved={critique.is_approved}, Feedback='{critique.critique}'")
+
+            if critique.is_approved:
+                break
+            else:
+                feedback = f"\n\nA previous attempt was critiqued: '{critique.critique}'. Address this and generate an improved report."
+                message += feedback
+
+        return last_report.model_dump_json(indent=2) if last_report else "{}"
+
+
+class BaseAgent(Agent):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        logger.info(f"Initialized agent with ID: {self.agent_id} for model: {self.model.id}")
+
+    def __add__(self, other_agent: 'BaseAgent') -> ChainedAgent:
+        if not isinstance(other_agent, BaseAgent):
+            raise TypeError("Can only chain BaseAgent instances.")
+        logger.info(f"Chaining agent {self.agent_id} (main) with {other_agent.agent_id} (critic).")
+        return ChainedAgent(main_agent=self, critic_agent=other_agent)
+
+    async def arun(self, *args, **kwargs):
+        try:
+            return await super().arun(*args, **kwargs)
+        except Exception as e:
+            logger.error(f"Agent {self.agent_id} encountered an unhandled exception during arun: {e}", exc_info=True)
+            return '{"error": "Agent execution failed unexpectedly. Check application logs for details."}'
 
 class AgentFactory:
     """
@@ -20,14 +79,14 @@ class AgentFactory:
 
     def __init__(self, configured_tools: Dict[str, BaseTool]):
         self.configured_tools = configured_tools
-        self._agent_cache: Dict[str, Agent] = {}
+        self._agent_cache: Dict[str, BaseAgent] = {}
 
     def _create_agent(
             self,
             agent_name: str,
             model: Model,
             agent_tools: List[BaseTool]
-    ) -> Agent:
+    ) -> BaseAgent:
         """
         Internal method to build and cache an agent instance from its final components.
         """
@@ -45,14 +104,17 @@ class AgentFactory:
         template = prompt_path.read_text(encoding="utf-8")
 
         tool_prompts = [t.prompt for t in agent_tools if t.prompt]
-        if tool_prompts:
-            prompt = template.replace("{tool_usage}", "\n---\n".join(tool_prompts))
-        else:
-            prompt = template.replace("### Tool Usage\n\n{tool_usage}", "")
+        tool_usage_str = "\n---\n".join(tool_prompts) if tool_prompts else ""
 
-        final_prompt = prompt.format(example_json=example_str)
+        if not tool_usage_str:
+            template = template.replace("### Tool Usage", "")
 
-        agent = Agent(
+        final_prompt = template.format(
+            example_json=example_str,
+            tool_usage=tool_usage_str
+        )
+
+        agent = BaseAgent(
             model=model,
             response_model=response_model,
             tools=agent_tools,
@@ -60,7 +122,6 @@ class AgentFactory:
         )
 
         self._agent_cache[cache_key] = agent
-        logger.info(f"Created and cached new agent: {agent_name} with model {model.id}")
         return agent
 
     def _get_tools_for_agent(self, agent_name: str) -> List[BaseTool]:

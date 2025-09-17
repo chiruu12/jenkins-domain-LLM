@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List
 
 from pydantic import BaseModel
-from rich.logging import RichHandler
 from agno.agent import RunResponse
 
 from data_models import (
@@ -13,41 +12,51 @@ from data_models import (
 logger = logging.getLogger(__name__)
 
 
-def setup_application_logger(log_dir: Path, level: int = logging.INFO) -> None:
+def setup_application_logger(log_dir: Path, run_id: str, level: int = logging.INFO) -> None:
     log_dir.mkdir(exist_ok=True)
-    log_file = log_dir / "app.log"
-    root_logger = logging.getLogger()
-    if root_logger.hasHandlers():
-        root_logger.handlers.clear()
-    root_logger.setLevel(level)
+    log_file = log_dir / f"{run_id}.log"
+
+    app_logger = logging.getLogger("JenkinsAgentApp")
+    if app_logger.hasHandlers():
+        app_logger.handlers.clear()
+
+    app_logger.setLevel(level)
+    app_logger.propagate = False
+
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"
     )
+
     file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
     file_handler.setLevel(level)
     file_handler.setFormatter(formatter)
-    root_logger.addHandler(file_handler)
-    console_handler = RichHandler(
-        rich_tracebacks=True, show_path=False, log_time_format="[%X]"
-    )
-    console_handler.setLevel(level)
-    root_logger.addHandler(console_handler)
-    logging.info(f"Application logger initialized. Logging to {log_file}")
+    app_logger.addHandler(file_handler)
 
+    lightrag_logger = logging.getLogger("lightrag")
+    if lightrag_logger.hasHandlers():
+        lightrag_logger.handlers.clear()
+    lightrag_logger.setLevel(level)
+    lightrag_logger.propagate = False
+    lightrag_logger.addHandler(file_handler)
 
 class LLMInteractionLogger:
-    def __init__(self, log_dir: Path):
+    def __init__(self, log_dir: Path, run_id: str):
         log_dir.mkdir(exist_ok=True)
-        log_file = log_dir / "llm_interactions.log"
+        log_file = log_dir / f"{run_id}.log"
+
         self._logger = logging.getLogger("LLMInteractionLogger")
         self._logger.setLevel(logging.DEBUG)
         self._logger.propagate = False
-        if not self._logger.hasHandlers():
-            handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
-            formatter = logging.Formatter('%(asctime)s\n%(message)s\n---', datefmt='%Y-%m-%d %H:%M:%S')
-            handler.setFormatter(formatter)
-            self._logger.addHandler(handler)
+
+        if self._logger.hasHandlers():
+            self._logger.handlers.clear()
+
+        handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+        formatter = logging.Formatter('%(asctime)s\n%(message)s\n---', datefmt='%Y-%m-%d %H:%M:%S')
+        handler.setFormatter(formatter)
+        self._logger.addHandler(handler)
+
         self.total_input_tokens: int = 0
         self.total_output_tokens: int = 0
 
@@ -85,8 +94,8 @@ class LLMInteractionLogger:
                         "metrics": logged_metrics
                     })
 
-            input_tokens = sum(usage_metrics.get("prompt_tokens", []))
-            output_tokens = sum(usage_metrics.get("completion_tokens", []))
+            input_tokens = sum(usage_metrics.get("input_tokens", []))
+            output_tokens = sum(usage_metrics.get("output_tokens", []))
 
             self.total_input_tokens += input_tokens
             self.total_output_tokens += output_tokens

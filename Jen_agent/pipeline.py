@@ -3,7 +3,7 @@ from typing import Dict, Type
 from data_models import OperatingMode
 from agents import AgentFactory
 from log_manager import LLMInteractionLogger
-
+from agno.models.base import Model
 from pipelines import (
     StandardPipeline,
     SummaryPipeline,
@@ -26,6 +26,7 @@ def create_pipeline(
         mode: OperatingMode,
         agent_factory: AgentFactory,
         llm_logger: LLMInteractionLogger,
+        model: Model,
 ) -> BasePipeline:
     """
     A factory function that creates and returns the appropriate pipeline instance.
@@ -34,6 +35,7 @@ def create_pipeline(
         mode: The OperatingMode enum that determines which pipeline to create.
         agent_factory: The initialized factory for creating agents.
         llm_logger: The logger for recording LLM interactions.
+        model: The initialized model.
 
     Returns:
         An initialized instance of a class that inherits from BasePipeline.
@@ -45,6 +47,6 @@ def create_pipeline(
         logger.error(f"No pipeline is configured for the operating mode: {mode.value}")
         raise ValueError(f"No pipeline configured for operating mode: {mode.value}")
 
-    pipeline = pipeline_class(agent_factory, llm_logger)
+    pipeline = pipeline_class(agent_factory, llm_logger, model)
 
     return pipeline

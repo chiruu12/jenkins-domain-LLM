@@ -22,12 +22,12 @@ class LMStudioProvider(BaseProvider):
         logger.info(f"Initialized LMStudio client for base_url: {self.base_url}")
 
     def get_chat_model(self, model_id: Optional[str] = "qwen/qwen3-4b-thinking-2507") -> Model:
-        return LMStudio(id=model_id, base_url=self.base_url, http_client=self.async_client._client)
+        return LMStudio(id=model_id, base_url=self.base_url)
 
     def get_embedding_function(
         self,
         model_id: Optional[str] = "text-embedding-qwen3-embedding-0.6b",
-        task_type: str = "RETRIEVAL_DOCUMENT",
+        task_type: Optional[str] = "RETRIEVAL_DOCUMENT",
     ) -> Callable[[List[str]], Awaitable[np.ndarray]]:
         async def embed_texts(texts: List[str]) -> np.ndarray:
             response = await self.async_client.embeddings.create(input=texts, model=model_id)
@@ -62,5 +62,10 @@ class LMStudioProvider(BaseProvider):
 
         return llm_model_func
 
-    def get_reranker_model(self) -> None:
+    def get_reranker_model(self, **kwargs) -> None:
         raise NotImplementedError("Reranker models are not sourced from LMStudio in this agent.")
+
+    async def close(self):
+        """Gracefully closes the underlying asynchronous HTTP client."""
+        if self.async_client:
+            await self.async_client.close()
