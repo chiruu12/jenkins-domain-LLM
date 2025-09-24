@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 import yaml
 from pydantic import BaseModel, Field
 
@@ -10,8 +10,9 @@ class DefaultsSettings(BaseModel):
     provider: str
     chat_model: str
     embedding_model: str
-    reranker_provider: str = None
-    reranker_model: str = None
+    use_reranker: bool
+    reranker_provider: Optional[str] = None
+    reranker_model: Optional[str] = None
 
 
 class ProviderSettings(BaseModel):
@@ -30,12 +31,16 @@ class RagSettings(BaseModel):
     embedding_model: str
     llm_provider: str
     llm_model: str
+    task_type: str
 
 
 class ToolSettings(BaseModel):
     module: str
     class_name: str
 
+class MCPSettings(ToolSettings):
+    server_url: str = "http://localhost:8000/sse"
+    internal_agent_prompt_path: str
 
 class AgentSettings(BaseModel):
     prompt_path: str
@@ -49,7 +54,7 @@ class Settings(BaseModel):
     providers: Dict[str, ProviderSettings]
     application: ApplicationSettings
     rag_settings: RagSettings
-    tools: Dict[str, ToolSettings]
+    tools: Dict[str, Union[MCPSettings, ToolSettings]]
     agents: Dict[str, AgentSettings]
 
     def get_agent_config(self, agent_name: str) -> AgentSettings:
@@ -58,7 +63,7 @@ class Settings(BaseModel):
             raise ValueError(f"Agent '{agent_name}' not found in configuration.")
         return agent_conf
 
-    def get_tool_config(self, tool_name: str) -> ToolSettings:
+    def get_tool_config(self, tool_name: str) -> Union[MCPSettings, ToolSettings]:
         tool_conf = self.tools.get(tool_name)
         if not tool_conf:
             raise ValueError(f"Tool '{tool_name}' not found in configuration.")

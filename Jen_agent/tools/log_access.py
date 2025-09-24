@@ -37,12 +37,12 @@ class LogAccessTools(BaseTool):
 
         return self._sanitized_log_content
 
-    def get_unfiltered_logs(self,reason) -> str:
+    def get_unfiltered_logs(self, reason: str) -> str:
         """
         Retrieves the original, raw, unfiltered log file, including all timestamps and ANSI codes.
         Use this ONLY if you suspect the sanitization process removed critical information.
         """
-        logger.info("Agent requested the raw, unfiltered log content.")
+        logger.info(f"Agent requested the raw, unfiltered log content. Reason: {reason}")
         if self._raw_log_content == "Raw log content has not been set.":
             logger.warning("Agent tried to access raw log before it was set.")
 

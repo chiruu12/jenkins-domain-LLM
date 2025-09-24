@@ -55,5 +55,10 @@ class GroqProvider(BaseProvider):
     def get_embedding_function(self, **kwargs) -> None:
         raise NotImplementedError("Groq does not provide embedding models.")
 
-    def get_reranker_model(self) -> None:
+    def get_reranker_model(self, **kwargs) -> None:
         raise NotImplementedError("Groq does not provide reranker models.")
+
+    async def close(self):
+        """Gracefully closes the underlying asynchronous HTTP client."""
+        if self.async_client:
+            await self.async_client.close()

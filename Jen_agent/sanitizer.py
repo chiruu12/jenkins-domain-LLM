@@ -1,6 +1,7 @@
 import re
 import logging
-from typing import Dict, List, Pattern, Tuple
+from typing import Dict, List, Pattern, Tuple, Any
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,25 @@ class CredentialMapper:
             text = text.replace(placeholder, original_value)
         return text
 
+    def rehydrate_model(self, data: Any) -> Any:
+        """
+        Recursively traverses a Pydantic model, dictionary, or list
+        and rehydrates any string values found.
+        """
+        if isinstance(data, dict):
+            return {k: self.rehydrate_model(v) for k, v in data.items()}
+        if isinstance(data, list):
+            return [self.rehydrate_model(item) for item in data]
+        if isinstance(data, str):
+            return self.rehydrate_text(data)
+        if isinstance(data, BaseModel):
+            # Convert model to dict, rehydrate the dict, then create a new model instance
+            model_dict = data.model_dump()
+            rehydrated_dict = self.rehydrate_model(model_dict)
+            return type(data)(**rehydrated_dict)
+
+        return data
+
 
 class ContentSanitizer:
     def __init__(self):
@@ -43,31 +63,20 @@ class ContentSanitizer:
         ]
 
         self.mapping_patterns: List[Tuple[str, Pattern]] = [
-            # Private Keys
             ("RSA_PRIVATE_KEY", re.compile(r'-----BEGIN RSA PRIVATE KEY-----(?:.|\n)+?-----END RSA PRIVATE KEY-----')),
             ("SSH_PRIVATE_KEY",
              re.compile(r'-----BEGIN OPENSSH PRIVATE KEY-----(?:.|\n)+?-----END OPENSSH PRIVATE KEY-----')),
-
-            # Jenkins & Log Formatting
             ("JENKINS_ANNOTATION", re.compile(r'\x1B\[8mha:////[a-zA-Z0-9+/=]+?\x1B\[0m')),
             ("ANSI_ESCAPE_CODE", re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')),
-
-            # JWT Tokens
             ("JWT_TOKEN", re.compile(r'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*')),
-
-            # Common Service Tokens
             ("GITHUB_TOKEN", re.compile(r'\bghp_[0-9a-zA-Z]{36}\b')),
             ("SLACK_TOKEN", re.compile(r'\bxox[baprs]-[0-9a-zA-Z-]+\b')),
             ("STRIPE_API_KEY", re.compile(r'\bsk_live_[0-9a-zA-Z]{24}\b')),
             ("TWILIO_API_KEY", re.compile(r'\bSK[0-9a-fA-F]{32}\b')),
-
-            # Cloud Provider Credentials
             ("GOOGLE_API_KEY", re.compile(r'\bAIza[0-9A-Za-z-_]{35}\b')),
             ("GOOGLE_OAUTH_TOKEN", re.compile(r'\bya29\.[0-9A-Za-z-_]+\b')),
             ("AWS_ACCESS_KEY_ID", re.compile(r'\bAKIA[0-9A-Z]{16}\b')),
             ("AWS_SECRET_ACCESS_KEY", re.compile(r'\b[0-9a-zA-Z/+]{40}\b')),
-
-            # Generic High-Entropy Strings & Secrets
             ("HEX_KEY_64", re.compile(r'\b[0-9a-fA-F]{64}\b')),
             ("HEX_KEY_40", re.compile(r'\b[0-9a-fA-F]{40}\b')),
             ("BASE64_KEY_32_PLUS", re.compile(r'\b[A-Za-z0-9+/=]{32,}\b')),

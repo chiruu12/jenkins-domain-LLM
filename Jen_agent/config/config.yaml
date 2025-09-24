@@ -25,6 +25,18 @@ providers:
     init_args:
       base_url: "LMSTUDIO_BASE_URL"
 
+  openai:
+    module: "models.clients.openai_client"
+    class_name: "OpenAIProvider"
+    init_args:
+      api_key: "OPENAI_API_KEY"
+
+    cohere:
+      module: "models.clients.cohere_client"
+      class_name: "CohereProvider"
+      init_args:
+        api_key: "COHERE_API_KEY"
+
 application:
   prompts_dir: "prompts"
 
@@ -34,6 +46,7 @@ rag_settings:
   embedding_model: "gemini-embedding-001"
   llm_provider: "google"
   llm_model: "gemini-2.5-flash"
+  task_type: "RETRIEVAL_DOCUMENT"
 
 tools:
   log_access_tools:
@@ -45,11 +58,22 @@ tools:
   knowledge_base_tools:
     module: "tools.knowledge_base"
     class_name: "KnowledgeBaseTools"
-    
+  jenkins_mcp_tool:
+    module: "tools.jenkins_mcp"
+    class_name: "JenkinsMCPTool"
+    # -- MCP Specific Settings --
+    server_url: "http://localhost:8000/sse"
+    internal_agent_prompt_path: "tools/jenkins_mcp_tool_internal_agent.md"
+
+
+
 defaults:
-  provider: "google"
-  chat_model: "gemini-2.5-flash"
+  provider: "openrouter"
+  chat_model: "openai/gpt-4.1-mini"
   embedding_model: "gemini-embedding-001"
+  use_reranker: false
+  reranker_provider: null
+  reranker_model: null
 
 agents:
   # Standard Diagnosis Agents

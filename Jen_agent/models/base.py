@@ -12,7 +12,7 @@ class BaseProvider(ABC):
     def get_embedding_function(
         self,
         model_id: Optional[str],
-        task_type: str,
+        task_type: Optional[str],
     ) -> Callable[[List[str]], Awaitable[np.ndarray]]:
         pass
 
@@ -21,5 +21,5 @@ class BaseProvider(ABC):
         pass
 
     @abstractmethod
-    def get_reranker_model(self) -> None:
+    def get_reranker_model(self,model_id: Optional[str] ) -> None:
         pass
