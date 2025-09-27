@@ -25,6 +25,17 @@ providers:
     init_args:
       base_url: "LMSTUDIO_BASE_URL"
 
+  fireworks:
+    module: "models.fireworks.client"
+    class_name: "FireworksProvider"
+    init_args:
+      base_url: "https://api.fireworks.ai/inference/v1"
+
+  mistral:
+    module: "models.mistral.client"
+    class_name: "MistralProvider"
+    init_args: {}
+
   openai:
     module: "models.clients.openai_client"
     class_name: "OpenAIProvider"
