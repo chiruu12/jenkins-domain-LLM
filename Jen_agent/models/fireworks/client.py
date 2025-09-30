@@ -74,4 +74,4 @@ class FireworksProvider(BaseProvider):
         return llm_model_func
 
     def get_reranker_model(self, model_id: Optional[str] = None) -> None:
-        raise NotImplementedError("Fireworks does not provide a reranker model.")
+        raise NotImplementedError("FireworksProvider does not provide a reranker model.")
