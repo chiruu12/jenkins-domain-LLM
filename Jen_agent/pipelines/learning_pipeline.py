@@ -11,7 +11,10 @@ class LearningPipeline(BasePipeline):
         if not isinstance(pipeline_input, InitialInteractiveInput):
             return {"error": "Learning pipeline requires InitialInteractiveInput."}
 
-        followup_input = FollowupInput(user_input=pipeline_input.user_input, **pipeline_input.model_dump())
+        followup_input = FollowupInput(
+            user_input=pipeline_input.user_input,
+            **pipeline_input.model_dump()
+        )
         return await self.run_followup(followup_input)
 
     async def run_followup(self, followup_input: FollowupInput) -> Any:

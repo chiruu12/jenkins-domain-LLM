@@ -16,9 +16,17 @@ from rich.prompt import Prompt, Confirm
 from agno.models.base import Model
 from agents import AgentFactory
 from data_models import (
-    OperatingMode, AgentExecutionRecord, SessionSettings, DiagnosisReport,
-    QuickSummaryReport, LearningReport, InteractiveClarification, CritiqueReport,
-    InitialLogInput, InitialInteractiveInput, FollowupInput
+    SessionSettings,
+    OperatingMode,
+    AgentExecutionRecord,
+    InitialLogInput,
+    InitialInteractiveInput,
+    FollowupInput,
+    QuickSummaryReport,
+    DiagnosisReport,
+    LearningReport,
+    CritiqueReport,
+    InteractiveClarification,
 )
 from log_manager import LLMInteractionLogger, setup_application_logger
 from memory import ConversationMemoryManager, SessionJsonLogger
@@ -112,22 +120,37 @@ class CLISession:
             if (is_dir and path.exists() and path.is_dir()) or \
                     (not is_dir and path.exists() and path.is_file()):
                 return path
-            console.print(f"[red]Error: {'Directory' if is_dir else 'File'} not found at '{path_str}'.[/red]")
+            console.print(
+                f"[red]Error: {'Directory' if is_dir else 'File'} not found at '{path_str}'.[/red]"
+            )
 
     async def _configure_session_settings(self):
-        console.print(Panel("This wizard will configure the settings for the CURRENT session.",
-                            title="[bold]Session Configuration[/bold]", style="yellow"))
-        self.session_settings.provider = await self._prompt_for_choice("Select Chat Provider",
-                                                                       list(settings.providers.keys()),
-                                                                       self.session_settings.provider)
-        self.session_settings.chat_model = await self._prompt_str("Enter Chat Model ID",
-                                                                  default=self.session_settings.chat_model)
-        if await self._prompt_bool("Enable and configure RAG reranker?", default=self.session_settings.use_reranker):
+        console.print(
+            Panel(
+                "This wizard will configure the settings for the CURRENT session.",
+                title="[bold]Session Configuration[/bold]", style="yellow"
+            )
+        )
+        self.session_settings.provider = await self._prompt_for_choice(
+            "Select Chat Provider",
+            list(settings.providers.keys()),
+            self.session_settings.provider
+        )
+        self.session_settings.chat_model = await self._prompt_str(
+            "Enter Chat Model ID",
+            default=self.session_settings.chat_model
+        )
+        if await self._prompt_bool(
+                "Enable and configure RAG reranker?",
+                default=self.session_settings.use_reranker
+        ):
             self.session_settings.use_reranker = True
             reranker_providers = list(settings.providers.keys()) + ["None"]
-            self.session_settings.reranker_provider = await self._prompt_for_choice("Select Reranker Provider",
-                                                                                    reranker_providers,
-                                                                                    self.session_settings.reranker_provider or "None")
+            self.session_settings.reranker_provider = await self._prompt_for_choice(
+                "Select Reranker Provider",
+                reranker_providers,
+                self.session_settings.reranker_provider or "None"
+            )
             if self.session_settings.reranker_provider != "None":
                 self.session_settings.reranker_model = await self._prompt_str("Enter Reranker Model ID")
             else:
@@ -137,7 +160,12 @@ class CLISession:
             self.session_settings.use_reranker = False
             self.session_settings.reranker_provider = None
             self.session_settings.reranker_model = None
-        console.print(Panel("Session settings have been updated.", style="green"))
+        console.print(
+            Panel(
+                "Session settings have been updated.",
+                style="green"
+            )
+        )
 
     async def _save_defaults_to_config(self):
         with open(CONFIG_PATH, 'r') as f:
@@ -145,7 +173,12 @@ class CLISession:
         config_data['defaults'] = self.session_settings.model_dump()
         with open(CONFIG_PATH, 'w') as f:
             yaml.dump(config_data, f, sort_keys=False)
-        console.print(Panel("Current session settings have been saved as the new global defaults.", style="green"))
+        console.print(
+            Panel(
+                "Current session settings have been saved as the new global defaults.",
+                style="green"
+            )
+        )
 
     async def initialize(self):
         with console.status("[bold green]Initializing backend services...[/bold green]"):
@@ -154,23 +187,38 @@ class CLISession:
                 model_id=settings.memory_settings.embedding_model,
                 task_type=settings.memory_settings.task_type
             )
-            self.conversation_memory = ConversationMemoryManager(embedding_func=memory_embedding_func)
+            self.conversation_memory = ConversationMemoryManager(
+                embedding_func=memory_embedding_func
+            )
             await self.conversation_memory.initialize()
             rag_provider = create_provider(settings.rag_settings.llm_provider)
-            rag_llm_func = rag_provider.get_llm_model_func(model_id=settings.rag_settings.llm_model)
+            rag_llm_func = rag_provider.get_llm_model_func(
+                model_id=settings.rag_settings.llm_model
+            )
             embedding_provider = create_provider(settings.rag_settings.embedding_provider)
             embedding_func = embedding_provider.get_embedding_function(
-                model_id=settings.rag_settings.embedding_model, task_type=settings.rag_settings.task_type
+                model_id=settings.rag_settings.embedding_model,
+                task_type=settings.rag_settings.task_type
             )
             reranker_func = None
             if self.session_settings.use_reranker and self.session_settings.reranker_provider:
                 reranker_provider = create_provider(self.session_settings.reranker_provider)
-                reranker_func = reranker_provider.get_reranker_model(model_id=self.session_settings.reranker_model)
-            rag_manager = CoreLightRAGManager(working_dir=str(self.run_dir / "rag_workspace"), llm_func=rag_llm_func,
-                                              embedding_func=embedding_func, reranker_func=reranker_func)
+                reranker_func = reranker_provider.get_reranker_model(
+                    model_id=self.session_settings.reranker_model
+                )
+            rag_manager = CoreLightRAGManager(
+                working_dir=str(self.run_dir / "rag_workspace"),
+                llm_func=rag_llm_func,
+                embedding_func=embedding_func,
+                reranker_func=reranker_func
+            )
             await rag_manager.initialize()
             self.log_access_tools = LogAccessTools()
-            self.jenkins_workspace_tools = JenkinsWorkspaceTools(str(self.run_dir), self.sanitizer, self.mapper)
+            self.jenkins_workspace_tools = JenkinsWorkspaceTools(
+                str(self.run_dir),
+                self.sanitizer,
+                self.mapper
+            )
             self.knowledge_base_tools = KnowledgeBaseTools(rag_manager)
 
     @staticmethod
@@ -185,12 +233,20 @@ class CLISession:
             for i, step in enumerate(data.suggested_fix, 1):
                 md_content += f"{i}. {step}\n"
         md_content += f"\n---\n*Confidence: **{data.confidence.title()}***"
-        return Panel(Markdown(md_content), title="[bold green]Diagnosis Report[/bold green]", border_style="green")
+        return Panel(
+            Markdown(md_content),
+            title="[bold green]Diagnosis Report[/bold green]",
+            border_style="green"
+        )
 
     @staticmethod
     def _render_quick_summary(data: QuickSummaryReport) -> Panel:
         md_content = f"{data.summary}\n\n---\n*Confidence: **{data.confidence.title()}***"
-        return Panel(Markdown(md_content), title="[bold green]Quick Summary[/bold green]", border_style="green")
+        return Panel(
+            Markdown(md_content),
+            title="[bold green]Quick Summary[/bold green]",
+            border_style="green"
+        )
 
     @staticmethod
     def _render_learning_report(data: LearningReport) -> Panel:
@@ -199,7 +255,11 @@ class CLISession:
             md_content += "### Further Reading\n"
             for link in data.documentation_links:
                 md_content += f"- {link}\n"
-        return Panel(Markdown(md_content), title="[bold green]Learning Report[/bold green]", border_style="green")
+        return Panel(
+            Markdown(md_content),
+            title="[bold green]Learning Report[/bold green]",
+            border_style="green"
+        )
 
     @staticmethod
     def _render_interactive_clarification(data: InteractiveClarification) -> Panel:
@@ -208,7 +268,11 @@ class CLISession:
             md_content += "### Suggested Actions\n"
             for action in data.suggested_actions:
                 md_content += f"- {action}\n"
-        return Panel(Markdown(md_content), title="[bold cyan]Agent Question[/bold cyan]", border_style="cyan")
+        return Panel(
+            Markdown(md_content),
+            title="[bold cyan]Agent Question[/bold cyan]",
+            border_style="cyan"
+        )
 
     def display_report(self, report: Any):
         try:
@@ -218,14 +282,23 @@ class CLISession:
                     report_obj = self._reconstruct_model(json.loads(report))
                 except json.JSONDecodeError:
                     console.print(
-                        Panel(report, title="[bold yellow]Agent Message[/bold yellow]", border_style="yellow"))
+                        Panel(
+                            report,
+                            title="[bold yellow]Agent Message[/bold yellow]",
+                            border_style="yellow"
+                        )
+                    )
                     return
             if isinstance(report_obj, dict) and "error" in report_obj:
                 details = report_obj.get("details", "No additional details provided.")
-                console.print(Panel(
-                    f"[bold]An error occurred:[/bold]\n[red]{report_obj['error']}[/red]\n\n[dim]Details: {details}[/dim]",
-                    title="[bold red]Pipeline Error[/bold red]"))
+                console.print(
+                    Panel(
+                        f"[bold]An error occurred:[/bold]\n[red]{report_obj['error']}[/red]\n\n[dim]Details: {details}[/dim]",
+                        title="[bold red]Pipeline Error[/bold red]"
+                    )
+                )
                 return
+
             panel_renderers = {
                 DiagnosisReport: self._render_diagnosis_report,
                 QuickSummaryReport: self._render_quick_summary,
@@ -240,9 +313,14 @@ class CLISession:
                                          indent=2, default=str)
                 panel = Panel(pretty_json, title="[bold yellow]Raw Agent Response[/bold yellow]", border_style="yellow")
             console.print(panel)
+
         except Exception as e:
-            console.print(Panel(f"A critical error occurred while displaying the report: {e}\n\nRaw Data:\n{report}",
-                                title="[bold red]Display Engine Error[/bold red]"))
+            console.print(
+                Panel(
+                    f"A critical error occurred while displaying the report: {e}\n\nRaw Data:\n{report}",
+                    title="[bold red]Display Engine Error[/bold red]"
+                )
+            )
 
     async def _handle_history(self):
         runs = self.session_logger.list_runs(self.runs_dir)
@@ -305,7 +383,12 @@ class CLISession:
         log_file = self.logs_dir / f"llm_{self.run_id}.log"
         if log_file.exists():
             console.print(
-                Panel(log_file.read_text(), title=f"LLM Logs for Session {self.run_id}", border_style="yellow"))
+                Panel(
+                    log_file.read_text(),
+                    title=f"LLM Logs for Session {self.run_id}",
+                    border_style="yellow"
+                )
+            )
         else:
             console.print("[yellow]No LLM logs recorded for this session yet.[/yellow]")
 
@@ -335,19 +418,30 @@ class CLISession:
                         log_file_path = await self._prompt_for_path("Enter path to Jenkins build log")
                         if not log_file_path: return
 
-                        workspace_path = await self._prompt_for_path("Enter path to build workspace (optional)",
-                                                                     is_dir=True)
+                        workspace_path = await self._prompt_for_path(
+                            "Enter path to build workspace (optional)",
+                            is_dir=True
+                        )
                         if workspace_path:
                             shutil.copytree(workspace_path, self.run_dir, dirs_exist_ok=True)
 
-                        raw_log_content = log_file_path.read_text(encoding='utf-8', errors='ignore')
+                        raw_log_content = log_file_path.read_text(
+                            encoding='utf-8',
+                            errors='ignore'
+                        )
                         user_query = raw_log_content
                         memory_query = f"Analyze Jenkins log: {log_file_path.name}"
 
-                        self.log_access_tools.set_log_contents(sanitized_log=raw_log_content, raw_log=raw_log_content)
+                        self.log_access_tools.set_log_contents(
+                            sanitized_log=raw_log_content,
+                            raw_log=raw_log_content
+                        )
                         self.session_logger.log.initial_input = "Log file analysis"
 
-                        enable_correction = await self._prompt_bool("Enable self-correction?", default=True)
+                        enable_correction = await self._prompt_bool(
+                            "Enable self-correction?",
+                            default=True
+                        )
                     else:
                         user_query = await self._prompt_str(">", default="")
                         memory_query = user_query
@@ -366,10 +460,16 @@ class CLISession:
 
                     if is_first_turn:
                         if self.selected_mode in [OperatingMode.STANDARD, OperatingMode.QUICK_SUMMARY]:
-                            pipeline_input = InitialLogInput(raw_log=raw_log_content,
-                                                             enable_self_correction=enable_correction, **context)
+                            pipeline_input = InitialLogInput(
+                                raw_log=raw_log_content,
+                                enable_self_correction=enable_correction,
+                                **context
+                            )
                         else:
-                            pipeline_input = InitialInteractiveInput(user_input=user_query, **context)
+                            pipeline_input = InitialInteractiveInput(
+                                user_input=user_query,
+                                **context
+                            )
                         result_object = await pipeline.run(pipeline_input)
                     else:
                         pipeline_input = FollowupInput(user_input=user_query, **context)
@@ -377,7 +477,11 @@ class CLISession:
 
                 rehydrated_result = self.mapper.rehydrate_model(result_object)
                 if hasattr(rehydrated_result, 'model_dump'):
-                    await self.conversation_memory.add_turn(self.run_id, user_query, rehydrated_result)
+                    await self.conversation_memory.add_turn(
+                        self.run_id,
+                        user_query,
+                        rehydrated_result
+                    )
 
                 self.display_report(rehydrated_result)
                 is_first_turn = False
@@ -388,9 +492,17 @@ class CLISession:
 
 
     async def run(self):
-        console.print(Panel(JENKINS_LOGO, border_style="blue"))
-        console.print(Panel("Tips: Type 'quit' or 'exit' at any prompt to leave. Type '/help' for a list of commands.",
-                            title="Getting Started"))
+        console.print(
+            Panel(
+                JENKINS_LOGO,
+                border_style="blue")
+        )
+        console.print(
+            Panel(
+                "Tips: Type 'quit' or 'exit' at any prompt to leave. Type '/help' for a list of commands.",
+                title="Getting Started"
+            )
+        )
         await self._handle_status()
         start_choices = ["Start with Default Settings", "Customize Session Settings"]
         start_action = await self._prompt_for_choice("Select an action to continue", start_choices, start_choices[0])
@@ -417,8 +529,11 @@ class CLISession:
         await self._session_loop(pipeline)
 
         self.session_logger.save()
-        summary_panel = Panel(f"[bold yellow]LLM Interaction Summary:[/bold yellow]\n{self.llm_logger.get_summary()}",
-                              title="Usage Statistics", border_style="yellow")
+        summary_panel = Panel(
+            f"[bold yellow]LLM Interaction Summary:[/bold yellow]\n{self.llm_logger.get_summary()}",
+            title="Usage Statistics",
+            border_style="yellow"
+        )
         console.print(Padding(summary_panel, (1, 0)))
 
 

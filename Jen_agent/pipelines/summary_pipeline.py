@@ -13,7 +13,10 @@ class SummaryPipeline(BasePipeline):
             return {"error": "Summary pipeline requires InitialLogInput."}
 
         self.session_state["enable_self_correction"] = pipeline_input.enable_self_correction
-        followup_input = FollowupInput(user_input=pipeline_input.raw_log, **pipeline_input.model_dump())
+        followup_input = FollowupInput(
+            user_input=pipeline_input.raw_log,
+            **pipeline_input.model_dump()
+        )
         return await self.run_followup(followup_input)
 
     async def run_followup(self, followup_input: FollowupInput) -> Any:
