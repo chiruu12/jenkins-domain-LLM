@@ -170,3 +170,21 @@ class SessionSettings(BaseModel):
     use_reranker: bool
     reranker_provider: Optional[str] = None
     reranker_model: Optional[str] = None
+
+class ConversationTurn(BaseModel):
+    user_input: str
+    agent_response: Dict[str, Any]
+
+class BasePipelineContext(BaseModel):
+    short_term_history: List[ConversationTurn]
+    long_term_memory: List[ConversationTurn]
+
+class InitialLogInput(BasePipelineContext):
+    raw_log: str
+    enable_self_correction: bool
+
+class InitialInteractiveInput(BasePipelineContext):
+    user_input: str
+
+class FollowupInput(BasePipelineContext):
+    user_input: str

@@ -3,6 +3,7 @@ from typing import Dict, Type
 from data_models import OperatingMode
 from agents import AgentFactory
 from log_manager import LLMInteractionLogger
+from memory import ConversationMemoryManager
 from agno.models.base import Model
 from pipelines import (
     StandardPipeline,
@@ -21,32 +22,30 @@ PIPELINE_MAP: Dict[OperatingMode, Type[BasePipeline]] = {
     OperatingMode.LEARNING: LearningPipeline,
 }
 
-
 def create_pipeline(
         mode: OperatingMode,
         agent_factory: AgentFactory,
         llm_logger: LLMInteractionLogger,
         model: Model,
+        conversation_memory: ConversationMemoryManager,
 ) -> BasePipeline:
     """
-    A factory function that creates and returns the appropriate pipeline instance.
+        A factory function that creates and returns the appropriate pipeline instance.
 
-    Args:
-        mode: The OperatingMode enum that determines which pipeline to create.
-        agent_factory: The initialized factory for creating agents.
-        llm_logger: The logger for recording LLM interactions.
-        model: The initialized model.
+        Args:
+            mode: The OperatingMode enum that determines which pipeline to create.
+            agent_factory: The initialized factory for creating agents.
+            llm_logger: The logger for recording LLM interactions.
+            model: The initialized model.
+            conversation_memory: The conversation memory manager.
 
-    Returns:
-        An initialized instance of a class that inherits from BasePipeline.
-    """
+        Returns:
+            An initialized instance of a class that inherits from BasePipeline.
+        """
     logger.info(f"Factory creating pipeline for mode: {mode.value}")
-
     pipeline_class = PIPELINE_MAP.get(mode)
     if not pipeline_class:
         logger.error(f"No pipeline is configured for the operating mode: {mode.value}")
         raise ValueError(f"No pipeline configured for operating mode: {mode.value}")
-
-    pipeline = pipeline_class(agent_factory, llm_logger, model)
-
+    pipeline = pipeline_class(agent_factory, llm_logger, model, conversation_memory)
     return pipeline
