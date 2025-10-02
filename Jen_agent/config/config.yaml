@@ -47,16 +47,26 @@ providers:
       class_name: "CohereProvider"
       init_args:
         api_key: "COHERE_API_KEY"
+  sentence_transformer:
+    module: "models.sentence_transformer.client"
+    class_name: "SentenceTransformerProvider"
+    init_args: { }
 
 application:
   prompts_dir: "prompts"
 
 rag_settings:
-  working_dir: "./rag_workspace"
-  embedding_provider: "google"
-  embedding_model: "gemini-embedding-001"
+  working_dir: "agent_workspace/rag_kb"
+  embedding_provider: "sentence_transformer"
+  embedding_model: "all-MiniLM-L6-v2"
   llm_provider: "google"
   llm_model: "gemini-2.5-flash"
+  task_type: "RETRIEVAL_DOCUMENT"
+
+memory_settings:
+  working_dir: "agent_workspace/conversation_memory"
+  embedding_provider: "sentence_transformer"
+  embedding_model: "all-MiniLM-L6-v2"
   task_type: "RETRIEVAL_DOCUMENT"
 
 tools:

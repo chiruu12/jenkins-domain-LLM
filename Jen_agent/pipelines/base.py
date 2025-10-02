@@ -1,28 +1,59 @@
 from abc import ABC, abstractmethod
+from typing import Any, List, Union
 from agno.models.base import Model
-from pydantic import BaseModel
-from typing import Any
-
 from agents import AgentFactory
 from log_manager import LLMInteractionLogger
-from models import create_provider
-from settings import settings
+from memory import ConversationMemoryManager
+from data_models import (
+    ConversationTurn,
+    InitialLogInput,
+    InitialInteractiveInput,
+    FollowupInput
+)
+import json
+from typing import Dict
+
 
 class BasePipeline(ABC):
     def __init__(
             self,
             agent_factory: AgentFactory,
             llm_logger: LLMInteractionLogger,
-            model : Model
+            model: Model,
+            conversation_memory: ConversationMemoryManager
     ):
         self.agent_factory = agent_factory
         self.llm_logger = llm_logger
         self.model = model
+        self.conversation_memory = conversation_memory
+        self.session_state: Dict[str, Any] = {}
 
-    def _get_default_model(self) -> Model:
-        provider = create_provider(settings.defaults.provider)
-        return provider.get_chat_model(model_id=settings.defaults.chat_model)
+    def _construct_prompt_with_memory(
+        self,
+        base_prompt: str,
+        short_term_history: List[ConversationTurn],
+        long_term_memory: List[ConversationTurn]
+    ) -> str:
+        prompt_parts = []
+        if short_term_history:
+            history_str = "\n---\n".join([
+                f"User: {turn.user_input}\nAgent: {json.dumps(turn.agent_response)}"
+                for turn in short_term_history
+            ])
+            prompt_parts.append(f"### Recent Conversation History (Short-Term Memory)\n{history_str}")
+        if long_term_memory:
+            memory_str = "\n---\n".join([
+                f"User: {turn.user_input}\nAgent: {json.dumps(turn.agent_response)}"
+                for turn in long_term_memory
+            ])
+            prompt_parts.append(f"### Relevant Past Conversations (Long-Term Memory)\n{memory_str}")
+        prompt_parts.append(f"### Current Task\n{base_prompt}")
+        return "\n\n".join(prompt_parts)
 
     @abstractmethod
-    async def run(self, **kwargs) -> Any:
+    async def run(self, pipeline_input: Union[InitialLogInput, InitialInteractiveInput]) -> Any:
+        pass
+
+    @abstractmethod
+    async def run_followup(self, followup_input: FollowupInput) -> Any:
         pass

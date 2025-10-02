@@ -48,12 +48,19 @@ class AgentSettings(BaseModel):
     example: str
     tools: List[str] = Field(default_factory=list)
 
+class MemorySettings(BaseModel):
+    """Configuration for the cross-session conversation memory."""
+    working_dir: str
+    embedding_provider: str
+    embedding_model: str
+    task_type: str
 
 class Settings(BaseModel):
     defaults: DefaultsSettings
     providers: Dict[str, ProviderSettings]
     application: ApplicationSettings
     rag_settings: RagSettings
+    memory_settings: MemorySettings
     tools: Dict[str, Union[MCPSettings, ToolSettings]]
     agents: Dict[str, AgentSettings]
 

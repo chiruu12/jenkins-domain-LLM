@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict
+from typing import List, Dict, Any
 from pathlib import Path
 import data_models
 import prompt_examples
@@ -17,7 +17,7 @@ class ChainedAgent:
         self.critic_agent = critic_agent
         self.model = main_agent.model
 
-    async def arun(self, message: str, llm_logger) -> str:
+    async def arun(self, message: str, llm_logger) -> Any:
         last_report = None
         max_retries = 2
         for attempt in range(max_retries):
@@ -51,7 +51,7 @@ class ChainedAgent:
                 feedback = f"\n\nA previous attempt was critiqued: '{critique.critique}'. Address this and generate an improved report."
                 message += feedback
 
-        return last_report.model_dump_json(indent=2) if last_report else "{}"
+        return last_report if last_report else {"error": "Chained agent failed to produce a valid report after multiple retries."}
 
 
 class BaseAgent(Agent):
@@ -129,15 +129,15 @@ class AgentFactory:
         agent_config = settings.get_agent_config(agent_name)
         return [self.configured_tools[name] for name in agent_config.tools]
 
-    def get_router_agent(self, model: Model) -> Agent:
+    def get_router_agent(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("router")
         return self._create_agent(agent_name="router", model=model, agent_tools=tools)
 
-    def get_critic_agent(self, model: Model) -> Agent:
+    def get_critic_agent(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("critic")
         return self._create_agent(agent_name="critic", model=model, agent_tools=tools)
 
-    def get_specialist_agent(self, failure_category: str, model: Model) -> Agent:
+    def get_specialist_agent(self, failure_category: str, model: Model) -> BaseAgent:
         agent_name = f"specialist_{failure_category.lower()}"
         if agent_name not in settings.agents:
             agent_name = "specialist_unknown"
@@ -145,22 +145,22 @@ class AgentFactory:
         tools = self._get_tools_for_agent(agent_name)
         return self._create_agent(agent_name=agent_name, model=model, agent_tools=tools)
 
-    def get_quick_summary_agent(self, model: Model) -> Agent:
+    def get_quick_summary_agent(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("quick_summary_main")
         return self._create_agent(agent_name="quick_summary_main", model=model, agent_tools=tools)
 
-    def get_quick_summary_critic(self, model: Model) -> Agent:
+    def get_quick_summary_critic(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("quick_summary_critic")
         return self._create_agent(agent_name="quick_summary_critic", model=model, agent_tools=tools)
 
-    def get_interactive_agent(self, model: Model) -> Agent:
+    def get_interactive_agent(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("interactive_main")
         return self._create_agent(agent_name="interactive_main", model=model, agent_tools=tools)
 
-    def get_interactive_critic(self, model: Model) -> Agent:
+    def get_interactive_critic(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("interactive_critic")
         return self._create_agent(agent_name="interactive_critic", model=model, agent_tools=tools)
 
-    def get_learning_agent(self, model: Model) -> Agent:
+    def get_learning_agent(self, model: Model) -> BaseAgent:
         tools = self._get_tools_for_agent("learning_main")
         return self._create_agent(agent_name="learning_main", model=model, agent_tools=tools)
