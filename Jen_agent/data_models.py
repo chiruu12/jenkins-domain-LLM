@@ -168,6 +168,7 @@ class SessionSettings(BaseModel):
     provider: str
     chat_model: str
     use_reranker: bool
+    use_conversation_memory: bool = True
     reranker_provider: Optional[str] = None
     reranker_model: Optional[str] = None
 

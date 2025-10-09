@@ -10,6 +10,10 @@ from lightrag.rerank import cohere_rerank
 logger = logging.getLogger(__name__)
 
 class CohereProvider(BaseProvider):
+    supports_chat = True
+    supports_embedding = True
+    supports_reranker = True
+
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("COHERE_API_KEY")
         if not self.api_key:

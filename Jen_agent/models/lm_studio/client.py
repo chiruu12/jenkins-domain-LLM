@@ -13,6 +13,10 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 class LMStudioProvider(BaseProvider):
+    supports_chat = True
+    supports_embedding = True
+    supports_reranker = False
+
     def __init__(self, base_url: Optional[str] = None):
         self.base_url = base_url or os.environ.get("LMSTUDIO_BASE_URL")
         if not self.base_url:

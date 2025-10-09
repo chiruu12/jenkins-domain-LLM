@@ -10,6 +10,7 @@ class DefaultsSettings(BaseModel):
     provider: str
     chat_model: str
     embedding_model: str
+    use_conversation_memory: bool
     use_reranker: bool
     reranker_provider: Optional[str] = None
     reranker_model: Optional[str] = None
