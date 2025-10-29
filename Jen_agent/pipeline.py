@@ -1,6 +1,6 @@
 import logging
 from typing import Dict, Type
-from data_models import OperatingMode
+from data_models import OperatingMode, SessionSettings
 from agents import AgentFactory
 from log_manager import LLMInteractionLogger
 from memory import ConversationMemoryManager
@@ -28,6 +28,7 @@ def create_pipeline(
         llm_logger: LLMInteractionLogger,
         model: Model,
         conversation_memory: ConversationMemoryManager,
+        session_settings: SessionSettings,
 ) -> BasePipeline:
     """
         A factory function that creates and returns the appropriate pipeline instance.
@@ -38,6 +39,7 @@ def create_pipeline(
             llm_logger: The logger for recording LLM interactions.
             model: The initialized model.
             conversation_memory: The conversation memory manager.
+            session_settings: The initialized session settings.
 
         Returns:
             An initialized instance of a class that inherits from BasePipeline.
@@ -47,5 +49,11 @@ def create_pipeline(
     if not pipeline_class:
         logger.error(f"No pipeline is configured for the operating mode: {mode.value}")
         raise ValueError(f"No pipeline configured for operating mode: {mode.value}")
-    pipeline = pipeline_class(agent_factory, llm_logger, model, conversation_memory)
+    pipeline = pipeline_class(
+        agent_factory,
+        llm_logger,
+        model,
+        conversation_memory,
+        session_settings
+    )
     return pipeline

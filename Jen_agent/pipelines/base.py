@@ -8,7 +8,8 @@ from data_models import (
     ConversationTurn,
     InitialLogInput,
     InitialInteractiveInput,
-    FollowupInput
+    FollowupInput,
+    SessionSettings
 )
 import json
 from typing import Dict
@@ -20,12 +21,14 @@ class BasePipeline(ABC):
             agent_factory: AgentFactory,
             llm_logger: LLMInteractionLogger,
             model: Model,
-            conversation_memory: ConversationMemoryManager
+            conversation_memory: ConversationMemoryManager,
+            session_settings: SessionSettings,
     ):
         self.agent_factory = agent_factory
         self.llm_logger = llm_logger
         self.model = model
         self.conversation_memory = conversation_memory
+        self.session_settings = session_settings
         self.session_state: Dict[str, Any] = {}
 
     def _construct_prompt_with_memory(

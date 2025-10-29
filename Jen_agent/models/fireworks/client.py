@@ -10,6 +10,10 @@ from models.base import BaseProvider
 logger = logging.getLogger(__name__)
 
 class FireworksProvider(BaseProvider):
+    supports_chat = True
+    supports_embedding = True
+    supports_reranker = False
+
     def __init__(self, api_key: Optional[str] = None, base_url: str = "https://api.fireworks.ai/inference/v1"):
         self.api_key = api_key or os.environ.get("FIREWORKS_API_KEY")
         if not self.api_key:

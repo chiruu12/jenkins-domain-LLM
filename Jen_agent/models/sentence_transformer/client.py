@@ -10,11 +10,14 @@ logger = logging.getLogger(__name__)
 
 
 class SentenceTransformerProvider(BaseProvider):
+    supports_chat = False
+    supports_embedding = True
+    supports_reranker = False
+
     """
     A provider that uses the local sentence-transformers library for embeddings.
     This is intended as a default, local option for the conversation memory.
     """
-
     def __init__(self):
         logger.info("Initialized SentenceTransformerProvider (model will be loaded on first use).")
 

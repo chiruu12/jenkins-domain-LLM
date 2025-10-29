@@ -20,7 +20,7 @@ providers:
       api_key: "OPENROUTER_API_KEY"
 
   lmstudio:
-    module: "models.lmstudio.client"
+    module: "models.lm_studio.client"
     class_name: "LMStudioProvider"
     init_args:
       base_url: "LMSTUDIO_BASE_URL"
@@ -37,16 +37,17 @@ providers:
     init_args: {}
 
   openai:
-    module: "models.clients.openai_client"
+    module: "models.openai.client"
     class_name: "OpenAIProvider"
     init_args:
       api_key: "OPENAI_API_KEY"
 
-    cohere:
-      module: "models.clients.cohere_client"
-      class_name: "CohereProvider"
-      init_args:
-        api_key: "COHERE_API_KEY"
+  cohere:
+    module: "models.cohere.client"
+    class_name: "CohereProvider"
+    init_args:
+      api_key: "COHERE_API_KEY"
+
   sentence_transformer:
     module: "models.sentence_transformer.client"
     class_name: "SentenceTransformerProvider"
@@ -92,6 +93,7 @@ defaults:
   provider: "openrouter"
   chat_model: "openai/gpt-4.1-mini"
   embedding_model: "gemini-embedding-001"
+  use_conversation_memory: true
   use_reranker: false
   reranker_provider: null
   reranker_model: null

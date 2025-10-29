@@ -59,6 +59,8 @@ class LLMInteractionLogger:
 
         self.total_input_tokens: int = 0
         self.total_output_tokens: int = 0
+        self.last_call_input_tokens: int = 0
+        self.last_call_output_tokens: int = 0
 
     def _log_structured_message(self, log_model: BaseModel):
         self._logger.debug(log_model.model_dump_json(indent=2))
@@ -99,6 +101,8 @@ class LLMInteractionLogger:
 
             self.total_input_tokens += input_tokens
             self.total_output_tokens += output_tokens
+            self.last_call_input_tokens = input_tokens
+            self.last_call_output_tokens = output_tokens
 
             token_log = TokenUsageLog(
                 call_input_tokens=input_tokens,
@@ -131,5 +135,13 @@ class LLMInteractionLogger:
         self._log_structured_message(error_log)
 
     def get_summary(self) -> str:
-        return (f"Total Input Tokens: {self.total_input_tokens} | "
-                f"Total Output Tokens: {self.total_output_tokens}")
+        return (
+            f"Total Input Tokens: {self.total_input_tokens} | "
+            f"Total Output Tokens: {self.total_output_tokens}"
+        )
+
+    def get_last_turn_summary(self) -> str:
+        return (
+            f"Last Turn - Input Tokens: {self.last_call_input_tokens} | "
+            f"Output Tokens: {self.last_call_output_tokens}"
+        )

@@ -16,6 +16,10 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 class GoogleProvider(BaseProvider):
+    supports_chat = True
+    supports_embedding = True
+    supports_reranker = False
+
     def __init__(
         self,
         api_key: Optional[str] = None,

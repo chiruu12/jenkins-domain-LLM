@@ -10,6 +10,10 @@ from models.base import BaseProvider
 logger = logging.getLogger(__name__)
 
 class OpenAIProvider(BaseProvider):
+    supports_chat = True
+    supports_embedding = True
+    supports_reranker = False
+
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("OPENAI_API_KEY")
         if not self.api_key:

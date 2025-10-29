@@ -31,6 +31,7 @@ from data_models import (
 from log_manager import LLMInteractionLogger, setup_application_logger
 from memory import ConversationMemoryManager, SessionJsonLogger
 from models import create_provider
+from models.utils import get_provider_capabilities
 from pipeline import create_pipeline
 from sanitizer import ContentSanitizer, CredentialMapper
 from settings import settings, CONFIG_PATH
@@ -131,35 +132,47 @@ class CLISession:
                 title="[bold]Session Configuration[/bold]", style="yellow"
             )
         )
+        chat_providers, reranker_providers = get_provider_capabilities()
+
+        if self.session_settings.provider not in chat_providers:
+            self.session_settings.provider = chat_providers[0] if chat_providers else ""
+
         self.session_settings.provider = await self._prompt_for_choice(
             "Select Chat Provider",
-            list(settings.providers.keys()),
+            chat_providers,
             self.session_settings.provider
         )
         self.session_settings.chat_model = await self._prompt_str(
             "Enter Chat Model ID",
             default=self.session_settings.chat_model
         )
-        if await self._prompt_bool(
-                "Enable and configure RAG reranker?",
-                default=self.session_settings.use_reranker
-        ):
+
+        if await self._prompt_bool("Enable and configure RAG reranker?", default=self.session_settings.use_reranker):
             self.session_settings.use_reranker = True
-            reranker_providers = list(settings.providers.keys()) + ["None"]
+
+            all_reranker_options = reranker_providers + ["None"]
+
+            default_reranker = self.session_settings.reranker_provider or "None"
+            if default_reranker not in all_reranker_options:
+                default_reranker = "None"
+
             self.session_settings.reranker_provider = await self._prompt_for_choice(
                 "Select Reranker Provider",
-                reranker_providers,
-                self.session_settings.reranker_provider or "None"
+                all_reranker_options,
+                default_reranker
             )
+
             if self.session_settings.reranker_provider != "None":
                 self.session_settings.reranker_model = await self._prompt_str("Enter Reranker Model ID")
             else:
                 self.session_settings.reranker_provider = None
                 self.session_settings.use_reranker = False
+
         else:
             self.session_settings.use_reranker = False
             self.session_settings.reranker_provider = None
             self.session_settings.reranker_model = None
+
         console.print(
             Panel(
                 "Session settings have been updated.",
@@ -522,8 +535,12 @@ class CLISession:
         }
         agent_factory = AgentFactory(configured_tools=tools_dict)
         pipeline = create_pipeline(
-            mode=self.selected_mode, agent_factory=agent_factory, llm_logger=self.llm_logger,
-            model=active_model, conversation_memory=self.conversation_memory
+            mode=self.selected_mode,
+            agent_factory=agent_factory,
+            llm_logger=self.llm_logger,
+            model=active_model,
+            conversation_memory=self.conversation_memory,
+            session_settings=self.session_settings
         )
 
         await self._session_loop(pipeline)
