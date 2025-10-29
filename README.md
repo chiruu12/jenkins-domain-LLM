@@ -187,6 +187,14 @@ The agent's configuration is managed through `config/config.yaml` and environmen
     FIREWORKS_API_KEY="your-fireworks-api-key"
     ```
 
+#### 6. Initialize the vector store
+Before running the application for the first time, you need to initialize the vector store for the Agentic RAG.
+
+Run this script in the root of the project to create and populate the vector store:
+```bash
+./scripts/vector_store.sh
+```
+
 #### 6. Run the Application
 ```bash
 python cli.py
@@ -201,5 +209,4 @@ When you launch the application, you will be guided through a series of prompts 
 Once in an interactive mode, you can type `/help` at any time to see a list of available slash commands for managing your session.
 
 ## License
-
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
