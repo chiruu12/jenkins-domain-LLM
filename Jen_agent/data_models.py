@@ -189,3 +189,26 @@ class InitialInteractiveInput(BasePipelineContext):
 
 class FollowupInput(BasePipelineContext):
     user_input: str
+
+class BenchmarkCritique(BaseModel):
+    """
+    A structured model for the critic agent's evaluation of a RAG response.
+    """
+    is_answer_correct: bool = Field(
+        description="A boolean flag that is true if the agent's answer correctly addresses the user's question."
+    )
+    is_answer_grounded: bool = Field(
+        description="A boolean flag that is true if the answer is fully supported by the provided ground truth context and does not contain outside information."
+    )
+    context_is_relevant: bool = Field(
+        description="A boolean flag that is true if the retrieved context was relevant to the user's question."
+    )
+    context_is_sufficient: bool = Field(
+        description="A boolean flag that is true if the retrieved context contained enough information to fully answer the question."
+    )
+    score: int = Field(
+        description="An overall score from 1 to 5, where 1 is poor/incorrect and 5 is excellent/perfect."
+    )
+    reasoning: str = Field(
+        description="A detailed explanation for the score, explaining why the answer was or was not correct and grounded."
+    )

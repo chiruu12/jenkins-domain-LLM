@@ -1,0 +1,9 @@
+{
+  "embedding_provider": "google",
+  "embedding_model_id": "text-embedding-004",
+  "llm_model_id": "gemini-2.0-flash",
+  "last_updated_utc": "2025-10-25T12:32:32.974249+00:00",
+  "total_documents_processed": 3417,
+  "chunk_size": 1000,
+  "chunk_overlap": 200
+}
