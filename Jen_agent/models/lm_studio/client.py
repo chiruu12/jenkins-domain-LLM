@@ -47,6 +47,9 @@ class LMStudioProvider(BaseProvider):
             history_messages: Optional[List[Dict[str, Any]]] = None,
             **kwargs
         ) -> str:
+            kwargs.pop("hashing_kv", None)
+            kwargs.pop("keyword_extraction", None)
+
             if history_messages is None:
                 history_messages = []
 
@@ -62,7 +65,7 @@ class LMStudioProvider(BaseProvider):
                 messages=messages,
                 **kwargs
             )
-            return response.choices[0].message.content
+            return response.choices[0].message.content or ""
 
         return llm_model_func
 

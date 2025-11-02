@@ -66,6 +66,7 @@ class CLISession:
             d.mkdir(parents=True, exist_ok=True)
         setup_application_logger(self.logs_dir, self.run_id)
         self.session_logger = SessionJsonLogger(self.runs_dir, self.run_id)
+
         self.conversation_memory: Optional[ConversationMemoryManager] = None
         self.llm_logger = LLMInteractionLogger(self.logs_dir, self.run_id)
         self.sanitizer = ContentSanitizer()
@@ -336,6 +337,9 @@ class CLISession:
             )
 
     async def _handle_history(self):
+        #TODO: the commands logs and history are not working
+        # Add a json file to keep a mapping of all the sessions that we had
+        # And update them whenever the system is run and files seems to be deleted
         runs = self.session_logger.list_runs(self.runs_dir)
         if not runs:
             console.print("[yellow]No past sessions found.[/yellow]")

@@ -90,6 +90,9 @@ class GoogleProvider(BaseProvider):
             history_messages: Optional[List[Dict[str, Any]]] = None,
             **kwargs
         ) -> str:
+            kwargs.pop("hashing_kv", None)
+            kwargs.pop("keyword_extraction", None)
+
             if history_messages is None:
                 history_messages = []
 
@@ -100,10 +103,12 @@ class GoogleProvider(BaseProvider):
                 combined_prompt += f"{msg.get('role', 'user')}: {msg.get('content', '')}\n"
             combined_prompt += f"user: {prompt}"
 
+            api_config = {'temperature': 0.1}
+
             response = await self.client.aio.models.generate_content(
                 model=model_id,
                 contents=combined_prompt,
-                config=GenerateContentConfig(temperature=0.1),
+                config=GenerateContentConfig(**api_config),
             )
 
             return response.text if response.text is not None else ""

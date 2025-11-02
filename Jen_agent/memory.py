@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SessionJsonLogger:
+    #TODO: Edit the class to handle the logs and history command properly
     def __init__(self, runs_dir: Path, run_id: str):
         self.run_dir = runs_dir / run_id
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -28,11 +29,13 @@ class SessionJsonLogger:
         self.log = SessionLog(run_id=self.run_dir.name, mode=mode, initial_input=initial_input)
 
     def log_agent_exchange(self, record: AgentExecutionRecord):
-        if not self.log: raise RuntimeError("Session not started.")
+        if not self.log:
+            raise RuntimeError("Session not started.")
         self.log.session_flow.append(record)
 
     def log_user_exchange(self, user_input: str):
-        if not self.log: raise RuntimeError("Session not started.")
+        if not self.log:
+            raise RuntimeError("Session not started.")
         self.log.session_flow.append(UserInteractionRecord(user_input=user_input))
 
     def save(self):
