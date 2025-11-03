@@ -195,9 +195,16 @@ Run this script in the root of the project to create and populate the vector sto
 ./scripts/vector_store.sh
 ```
 
-#### 6. Run the Application
+#### 7. Run the Application
+
+- ##### CLI 
 ```bash
 python cli.py
+```
+
+- ##### UI
+```bash
+python gui.py
 ```
 
 ## Usage
