@@ -19,7 +19,9 @@ class ChainedAgent:
 
     async def arun(self, message: str, llm_logger) -> Any:
         last_report = None
+        original_message = message  # Store the original prompt
         max_retries = 2
+        
         for attempt in range(max_retries):
             logger.info(f"Chained execution: Main agent attempt {attempt + 1}/{max_retries}...")
             draft_response = await self.main_agent.arun(message=message)
@@ -27,8 +29,12 @@ class ChainedAgent:
 
             if not isinstance(draft_response.content, (DiagnosisReport, QuickSummaryReport, InteractiveClarification)):
                 logger.error("Main agent failed to produce a valid Pydantic object. Retrying with feedback.")
-                feedback = "\n\nCRITICAL FEEDBACK: Your previous response was not in the correct format. You MUST respond with a valid JSON object."
-                message += feedback
+                # Reconstruct prompt with structured feedback instead of appending
+                message = self._construct_retry_prompt(
+                    original_message,
+                    "CRITICAL: Your previous response was not in the correct format. You MUST respond with a valid JSON object.",
+                    previous_attempt=None
+                )
                 continue
 
             last_report = draft_response.content
@@ -48,10 +54,46 @@ class ChainedAgent:
             if critique.is_approved:
                 break
             else:
-                feedback = f"\n\nA previous attempt was critiqued: '{critique.critique}'. Address this and generate an improved report."
-                message += feedback
+                # Reconstruct prompt instead of appending to avoid bloating
+                message = self._construct_retry_prompt(
+                    original_message,
+                    critique.critique,
+                    previous_attempt=last_report.model_dump_json()
+                )
 
         return last_report if last_report else {"error": "Chained agent failed to produce a valid report after multiple retries."}
+
+    def _construct_retry_prompt(self, original_task: str, critique_feedback: str, previous_attempt: str = None) -> str:
+        """
+        Constructs a focused retry prompt that maintains the original task's prominence
+        while incorporating critique feedback without bloating.
+        
+        Args:
+            original_task: The original diagnostic task/question
+            critique_feedback: Specific feedback from the critic
+            previous_attempt: The previous report (optional, for reference)
+            
+        Returns:
+            A well-structured retry prompt that doesn't accumulate feedback
+        """
+        sections = []
+        
+        # Section 1: Original task (always at the top for prominence)
+        sections.append(f"### Primary Task\n{original_task}")
+        
+        # Section 2: Specific improvement guidance (concise, actionable)
+        sections.append(f"### Required Improvements\n{critique_feedback}")
+        
+        # Section 3: Previous attempt context (if available, kept brief)
+        if previous_attempt:
+            # Truncate if too long to prevent bloat
+            max_attempt_length = 500
+            truncated_attempt = previous_attempt[:max_attempt_length]
+            if len(previous_attempt) > max_attempt_length:
+                truncated_attempt += "... [truncated]"
+            sections.append(f"### Previous Attempt (for reference)\n{truncated_attempt}")
+        
+        return "\n\n".join(sections)
 
 
 class BaseAgent(Agent):
