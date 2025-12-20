@@ -41,6 +41,17 @@ class StandardPipeline(BasePipeline):
         )
         return await self.run_followup(followup_input)
 
+    def _construct_retry_prompt(self, base_task: str, latest_feedback: str) -> str:
+        """
+        Reconstructs the prompt to prevent cumulative bloating while 
+        preserving full context for response quality.
+        """
+        return (
+            f"{base_task}\n\n"
+            f"### REQUIRED IMPROVEMENTS FROM PREVIOUS ATTEMPT:\n"
+            f"{latest_feedback}"
+        )
+
     async def run_followup(self, followup_input: FollowupInput) -> Any:
         logger.info("--- STANDARD DIAGNOSIS PIPELINE (FOLLOW-UP) ---")
         if "category" not in self.session_state or "raw_log" not in self.session_state:
@@ -52,6 +63,7 @@ class StandardPipeline(BasePipeline):
 
         specialist = self.agent_factory.get_specialist_agent(category, self.model)
 
+        # Store the base prompt to use as a template for retries
         base_prompt_for_specialist = f"Full Log for context:\n{raw_log}\n\nUser Question:\n{followup_input.user_input}"
 
         diagnosis_prompt = self._construct_prompt_with_memory(
@@ -66,5 +78,13 @@ class StandardPipeline(BasePipeline):
             return response.content
 
         critic = self.agent_factory.get_critic_agent(self.model)
+        
+        # Apply structured prompt reconstruction to the self-correction loop
+        # This prevents '+= feedback' bloating and satisfies context requirements
         chained_pipeline = specialist + critic
-        return await chained_pipeline.arun(diagnosis_prompt, self.llm_logger)
+        return await chained_pipeline.arun(
+            diagnosis_prompt, 
+            self.llm_logger,
+            prompt_reconstructor=self._construct_retry_prompt,
+            base_task=diagnosis_prompt
+        )
