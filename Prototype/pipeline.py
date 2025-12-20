@@ -95,7 +95,11 @@ def run_diagnosis_pipeline(raw_log: str, workspace_path: str, enable_self_correc
             logger.info("--- LOOP END: Report Approved ---")
             return draft_report.content.response
         else:
-            diagnosis_prompt += f"\n\nA previous attempt was critiqued: '{critique_report.content.critique}'. Please generate an improved report."
+            max_chars=500
+            feedback_text=critique_report.content.critique
+            if len(feedback_text)>max_chars:
+                feedback_text=feedback_text[:max_chars]+"...[Truncated for brevity]"
+            diagnosis_prompt += f"\n\nA previous attempt was critiqued: '{feedback_text}'. Please generate an improved report."
             logger.info("Report rejected. Retrying with feedback.")
 
         logger.warning("--- LOOP END: Max retries reached ---")
