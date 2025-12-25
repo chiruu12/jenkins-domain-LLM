@@ -20,6 +20,7 @@ class ChainedAgent:
     async def arun(self, message: str, llm_logger) -> Any:
         last_report = None
         original_message = message  # Store the original prompt
+        critique_history = []  # Track all critique feedback for learning context
         max_retries = 2
         
         for attempt in range(max_retries):
@@ -29,11 +30,15 @@ class ChainedAgent:
 
             if not isinstance(draft_response.content, (DiagnosisReport, QuickSummaryReport, InteractiveClarification)):
                 logger.error("Main agent failed to produce a valid Pydantic object. Retrying with feedback.")
-                # Reconstruct prompt with structured feedback instead of appending
+                format_feedback = "CRITICAL: Your previous response was not in the correct format. You MUST respond with a valid JSON object."
+                # Add to history for learning context
+                critique_history.append(format_feedback)
+                # Reconstruct prompt with full context
                 message = self._construct_retry_prompt(
                     original_message,
-                    "CRITICAL: Your previous response was not in the correct format. You MUST respond with a valid JSON object.",
-                    previous_attempt=None
+                    format_feedback,
+                    previous_attempt=None,
+                    critique_history=critique_history[:-1]  # Exclude current, it's passed separately
                 )
                 continue
 
@@ -54,44 +59,81 @@ class ChainedAgent:
             if critique.is_approved:
                 break
             else:
-                # Reconstruct prompt instead of appending to avoid bloating
+                # Add to critique history for context preservation
+                critique_history.append(critique.critique)
+                # Reconstruct prompt with accumulated learning context
                 message = self._construct_retry_prompt(
                     original_message,
                     critique.critique,
-                    previous_attempt=last_report.model_dump_json()
+                    previous_attempt=last_report.model_dump_json(),
+                    critique_history=critique_history[:-1]  # Exclude current, it's passed as current_focus
                 )
 
         return last_report if last_report else {"error": "Chained agent failed to produce a valid report after multiple retries."}
 
-    def _construct_retry_prompt(self, original_task: str, critique_feedback: str, previous_attempt: str = None) -> str:
+    def _construct_retry_prompt(
+        self, 
+        original_task: str, 
+        critique_feedback: str, 
+        previous_attempt: str = None,
+        critique_history: list = None
+    ) -> str:
         """
         Constructs a focused retry prompt that maintains the original task's prominence
-        while incorporating critique feedback without bloating.
+        while preserving essential context from all critique iterations.
+        
+        This approach balances two competing concerns:
+        1. Prevent unbounded prompt growth (token bloating)
+        2. Preserve learning signal from previous critiques (context retention)
         
         Args:
             original_task: The original diagnostic task/question
-            critique_feedback: Specific feedback from the critic
-            previous_attempt: The previous report (optional, for reference)
+            critique_feedback: Latest feedback from the critic
+            previous_attempt: The most recent report (for reference)
+            critique_history: List of all previous critique feedback strings
             
         Returns:
-            A well-structured retry prompt that doesn't accumulate feedback
+            A well-structured retry prompt with preserved context
         """
         sections = []
         
         # Section 1: Original task (always at the top for prominence)
         sections.append(f"### Primary Task\n{original_task}")
         
-        # Section 2: Specific improvement guidance (concise, actionable)
-        sections.append(f"### Required Improvements\n{critique_feedback}")
+        # Section 2: Accumulated learnings (compressed history)
+        if critique_history and len(critique_history) > 0:
+            # Keep history concise but informative
+            if len(critique_history) == 1:
+                history_text = f"Previous feedback: {critique_history[0]}"
+            else:
+                # Summarize older critiques, keep recent ones detailed
+                history_items = []
+                for i, past_critique in enumerate(critique_history, 1):
+                    # Compress older critiques more aggressively
+                    if i < len(critique_history):
+                        # Older critique - keep brief
+                        compressed = past_critique[:150] + ("..." if len(past_critique) > 150 else "")
+                        history_items.append(f"{i}. {compressed}")
+                    else:
+                        # Most recent - keep full detail
+                        history_items.append(f"{i}. {past_critique}")
+                history_text = "Previous feedback (in order):\n" + "\n".join(history_items)
+            
+            sections.append(f"### Learning Context\n{history_text}")
         
-        # Section 3: Previous attempt context (if available, kept brief)
+        # Section 3: Current improvement focus (latest critique)
+        sections.append(f"### Current Focus\n{critique_feedback}")
+        
+        # Section 4: Previous attempt (for comparison)
         if previous_attempt:
-            # Truncate if too long to prevent bloat
-            max_attempt_length = 500
-            truncated_attempt = previous_attempt[:max_attempt_length]
-            if len(previous_attempt) > max_attempt_length:
-                truncated_attempt += "... [truncated]"
-            sections.append(f"### Previous Attempt (for reference)\n{truncated_attempt}")
+            # Smart truncation that preserves key structure
+            max_length = 600  # Slightly more generous than before
+            if len(previous_attempt) <= max_length:
+                truncated = previous_attempt
+            else:
+                # Try to keep the JSON structure visible
+                truncated = previous_attempt[:max_length] + "... [truncated]"
+            sections.append(f"### Previous Attempt\n{truncated}")
         
         return "\n\n".join(sections)
 
